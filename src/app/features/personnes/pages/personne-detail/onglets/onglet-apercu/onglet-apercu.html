@@ -1,0 +1,353 @@
+<div class="apercu-grille">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- COL 1 : Informations clés                                               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="apercu-col apercu-col--gauche">
+
+    <section class="carte carte--infos">
+      <header class="carte__header">
+        <h3 class="carte__titre">
+          <lucide-icon [name]="icons['User']" [size]="15" class="carte__icone"></lucide-icon>
+          Informations clés
+        </h3>
+      </header>
+
+      <div class="carte__corps">
+        @if (detailPhysique(); as p) {
+          <dl class="liste-infos">
+            <div class="liste-infos__ligne">
+              <dt>Nom complet</dt>
+              <dd>{{ p.nomNaissance }} {{ p.prenoms }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Nom d'usage</dt>
+              <dd>{{ p.nomUsage || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Prénom(s)</dt>
+              <dd>{{ p.prenoms || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Date de naissance</dt>
+              <dd>
+                @if (p.dateNaissance) {
+                  {{ p.dateNaissance | date:'dd/MM/yyyy':'':'fr' }}<span class="age-suffix">{{ ageAffichage() }}</span>
+                } @else { — }
+              </dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Lieu de naissance</dt>
+              <dd>{{ p.lieuNaissance || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Nationalité</dt>
+              <dd>{{ (p.nationaliteLibelle || p.nationalite) || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Sexe</dt>
+              <dd>{{ libelleSexe(p.sexe) }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Situation matrimoniale</dt>
+              <dd>{{ libelleSituation(p.situationMatrimoniale) }}</dd>
+            </div>
+          </dl>
+        } @else if (detailMorale(); as m) {
+          <dl class="liste-infos">
+            <div class="liste-infos__ligne">
+              <dt>Dénomination</dt>
+              <dd>{{ m.denominationSociale }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Sigle</dt>
+              <dd>{{ m.sigle || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Forme juridique</dt>
+              <dd>{{ m.formeJuridique }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Secteur d'activité</dt>
+              <dd>{{ m.secteurActivite }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>RCCM</dt>
+              <dd class="mono">{{ m.rccm || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>IFU</dt>
+              <dd class="mono">{{ m.ifu || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Siège social</dt>
+              <dd>{{ m.siegeSocial || '—' }}</dd>
+            </div>
+            <div class="liste-infos__ligne">
+              <dt>Statut</dt>
+              <dd>{{ m.statut || '—' }}</dd>
+            </div>
+          </dl>
+        }
+      </div>
+
+      <footer class="carte__footer">
+        <button type="button" class="btn-voir-tout" (click)="voirToutesInfos.emit()">
+          <span>Voir toutes les informations</span>
+          <lucide-icon [name]="icons['ChevronDown']" [size]="14"></lucide-icon>
+        </button>
+      </footer>
+    </section>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- COL 2 : Alias & Pièces d'identité                                       -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="apercu-col apercu-col--centre">
+
+    <!-- ─── Alias ─── -->
+    <section class="carte carte--alias">
+      <header class="carte__header">
+        <h3 class="carte__titre">
+          <lucide-icon [name]="icons['Tag']" [size]="15" class="carte__icone"></lucide-icon>
+          Alias connus
+          <span class="carte__compteur">({{ nombreAliasTotal() }})</span>
+        </h3>
+        <button type="button" class="btn-ajouter-mini" (click)="ajouterAlias.emit()">
+          <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+          <span>Ajouter</span>
+        </button>
+      </header>
+
+      <div class="carte__corps">
+        @if (aliasAffiches().length > 0) {
+          <ul class="liste-alias">
+            @for (a of aliasAffiches(); track a.id; let i = $index) {
+              <li class="liste-alias__item">
+                <div class="liste-alias__contenu">
+                  <span class="puce puce--vert"></span>
+                  <span class="liste-alias__nom">{{ a.nomAlias }}</span>
+                  @if (i === 0) {
+                    <span class="badge-mini badge-mini--principal">Principal</span>
+                  }
+                  <span class="liste-alias__commentaire">
+                    {{ a.commentaire || 'Aucun commentaire' }}
+                  </span>
+                </div>
+                <button type="button" class="btn-menu-item" matTooltip="Actions">
+                  <lucide-icon [name]="icons['MoreVertical']" [size]="14"></lucide-icon>
+                </button>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="etat-vide">Aucun alias connu</p>
+        }
+      </div>
+
+      @if (nombreAliasTotal() > 3) {
+        <footer class="carte__footer carte__footer--lien">
+          <button type="button" class="lien-vert" (click)="voirTousAlias.emit()">
+            Voir tous les alias
+          </button>
+        </footer>
+      }
+    </section>
+
+    <!-- ─── Pièces d'identité ─── -->
+    @if (estPhysique()) {
+      <section class="carte carte--pieces">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['IdCard']" [size]="15" class="carte__icone"></lucide-icon>
+            Pièces d'identité
+            <span class="carte__compteur">({{ nombrePiecesTotal() }})</span>
+          </h3>
+          <button type="button" class="btn-ajouter-mini" (click)="ajouterPiece.emit()">
+            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+            <span>Ajouter</span>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          @if (piecesAffichees().length > 0) {
+            @for (piece of piecesAffichees(); track piece.id) {
+              <dl class="fiche-piece">
+                <div class="fiche-piece__ligne">
+                  <dt>Type de pièce</dt>
+                  <dd>{{ (piece.typePieceLibelle || piece.typePiece) || '—' }}</dd>
+                </div>
+                <div class="fiche-piece__ligne">
+                  <dt>Numéro</dt>
+                  <dd class="mono">{{ piece.numero || '—' }}</dd>
+                </div>
+                <div class="fiche-piece__ligne">
+                  <dt>Date délivrance</dt>
+                  <dd>
+                    @if (piece.dateDelivrance) {
+                      {{ piece.dateDelivrance | date:'dd/MM/yyyy':'':'fr' }}
+                    } @else { — }
+                  </dd>
+                </div>
+                <div class="fiche-piece__ligne">
+                  <dt>Date expiration</dt>
+                  <dd>
+                    @if (piece.dateExpiration) {
+                      {{ piece.dateExpiration | date:'dd/MM/yyyy':'':'fr' }}
+                    } @else { — }
+                  </dd>
+                </div>
+              </dl>
+            }
+          } @else {
+            <p class="etat-vide">Aucune pièce d'identité enregistrée</p>
+          }
+        </div>
+
+        @if (nombrePiecesTotal() > 1) {
+          <footer class="carte__footer carte__footer--lien">
+            <button type="button" class="lien-vert" (click)="voirToutesPieces.emit()">
+              Voir toutes les pièces
+            </button>
+          </footer>
+        }
+      </section>
+    }
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- COL 3 : Dossier & Faits & Peines                                         -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="apercu-col apercu-col--droite">
+
+    <!-- ─── Dossier associé ─── -->
+    <section class="carte carte--dossier">
+      <header class="carte__header">
+        <h3 class="carte__titre">
+          <lucide-icon [name]="icons['FolderOpen']" [size]="15" class="carte__icone"></lucide-icon>
+          Dossier associé
+          <span class="carte__compteur">({{ nombreDossiersTotal() }})</span>
+        </h3>
+        @if (dossierPrincipal()) {
+          <button type="button" class="lien-vert"
+                  (click)="voirDossier.emit(dossierPrincipal()!.id)">
+            Voir le dossier
+          </button>
+        }
+      </header>
+
+      <div class="carte__corps">
+        @if (dossierPrincipal(); as d) {
+          <div class="grille-dossier">
+            <div class="grille-dossier__cellule">
+              <span class="grille-dossier__label">N° Dossier</span>
+              <span class="grille-dossier__valeur mono">{{ d.numeroDossier || '—' }}</span>
+            </div>
+            <div class="grille-dossier__cellule">
+              <span class="grille-dossier__label">Intitulé</span>
+              <span class="grille-dossier__valeur">{{ d.intitule || 'Sans intitulé' }}</span>
+            </div>
+            <div class="grille-dossier__cellule">
+              <span class="grille-dossier__label">Date d'ouverture</span>
+              <span class="grille-dossier__valeur">
+                @if (d.dateOuverture) {
+                  {{ d.dateOuverture | date:'dd/MM/yyyy':'':'fr' }}
+                } @else { — }
+              </span>
+            </div>
+            <div class="grille-dossier__cellule">
+              <span class="grille-dossier__label">Statut</span>
+              <span class="badge-statut" [class]="classeStatutDossier(d.statutDossier)">
+                {{ libelleStatutDossier(d.statutDossier) | uppercase }}
+              </span>
+            </div>
+          </div>
+        } @else {
+          <p class="etat-vide">Aucun dossier associé</p>
+        }
+      </div>
+    </section>
+
+    <!-- ─── Faits reprochés ─── -->
+    <section class="carte carte--faits">
+      <header class="carte__header">
+        <h3 class="carte__titre">
+          <lucide-icon [name]="icons['FileText']" [size]="15" class="carte__icone"></lucide-icon>
+          Faits reprochés
+          <span class="carte__compteur">({{ nombreFaitsTotal() }})</span>
+        </h3>
+        @if (nombreFaitsTotal() > 0) {
+          <button type="button" class="lien-vert" (click)="voirTousFaits.emit()">
+            Voir tous
+          </button>
+        }
+      </header>
+
+      <div class="carte__corps">
+        @if (faitsPropres().length > 0) {
+          <ul class="liste-faits">
+            @for (fait of faitsPropres(); track fait.id) {
+              <li class="liste-faits__item">
+                <span class="puce puce--orange"></span>
+                <span class="liste-faits__libelle">
+                  {{ fait.typeInfractionLibelle || fait.description || 'Fait sans description' }}
+                </span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="etat-vide">Aucun fait reproché</p>
+        }
+      </div>
+    </section>
+
+    <!-- ─── Peine prononcée ─── -->
+    <section class="carte carte--peine">
+      <header class="carte__header">
+        <h3 class="carte__titre">
+          <lucide-icon [name]="icons['Gavel']" [size]="15" class="carte__icone"></lucide-icon>
+          Peine prononcée
+          <span class="carte__compteur">({{ nombrePeines() }})</span>
+        </h3>
+        @if (nombrePeines() > 0) {
+          <button type="button" class="lien-vert" (click)="voirToutesPeines.emit()">
+            Voir toutes
+          </button>
+        }
+      </header>
+
+      <div class="carte__corps">
+        @if (peinePrincipale(); as p) {
+          <div class="grille-peine">
+            <div class="grille-peine__cellule">
+              <span class="grille-peine__label">Type de peine</span>
+              <span class="grille-peine__valeur">{{ libelleTypePeine(p.typePeine) }}</span>
+            </div>
+            <div class="grille-peine__cellule">
+              <span class="grille-peine__label">Montant</span>
+              <span class="grille-peine__valeur">
+                @if (p.montantAmende) {
+                  {{ p.montantAmende | number:'1.0-0':'fr' }} <span class="devise">XOF</span>
+                } @else { — }
+              </span>
+            </div>
+            <div class="grille-peine__cellule">
+              <span class="grille-peine__label">Date</span>
+              <span class="grille-peine__valeur">
+                @if (p.dateDecision) {
+                  {{ p.dateDecision | date:'dd/MM/yyyy':'':'fr' }}
+                } @else { — }
+              </span>
+            </div>
+          </div>
+        } @else {
+          <p class="etat-vide">Aucune peine prononcée</p>
+        }
+      </div>
+    </section>
+
+  </div>
+
+</div>

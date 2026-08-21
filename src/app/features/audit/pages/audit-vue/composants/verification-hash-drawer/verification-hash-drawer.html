@@ -1,0 +1,144 @@
+@if (ouvert()) {
+  <div class="drawer-backdrop" (click)="onFermer()"></div>
+}
+
+<aside class="verif-drawer" [class.verif-drawer--ouvert]="ouvert()">
+  <header class="verif-drawer__header">
+    <div>
+      <h2 class="verif-drawer__titre">
+        <lucide-icon [name]="icons['ShieldCheck']" [size]="18"></lucide-icon>
+        Vérifier un maillon
+      </h2>
+      <p class="verif-drawer__sous-titre">
+        Collez un hash (complet ou préfixe ≥ 8 caractères) pour en vérifier l'intégrité.
+      </p>
+    </div>
+    <button type="button" class="verif-drawer__close" (click)="onFermer()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <div class="verif-drawer__body">
+    <!-- ═══════ Zone de saisie ═══════ -->
+    <div class="verif-input-zone">
+      <mat-form-field appearance="outline" class="verif-input">
+        <mat-label>Hash SHA-256</mat-label>
+        <input matInput
+               [ngModel]="hashSaisi()"
+               (ngModelChange)="hashSaisi.set($event)"
+               (keydown.enter)="verifier()"
+               placeholder="Ex: 9f4b3a2c8d1e7f6a…"
+               autocomplete="off"
+               spellcheck="false"
+               class="mono">
+      </mat-form-field>
+
+      <button type="button"
+              class="btn-verifier"
+              [disabled]="enCours() || hashSaisi().trim().length < 8"
+              (click)="verifier()">
+        @if (enCours()) {
+          <span>Vérification…</span>
+        } @else {
+          <lucide-icon [name]="icons['Search']" [size]="16"></lucide-icon>
+          <span>Vérifier</span>
+        }
+      </button>
+    </div>
+
+    <!-- ═══════ Message d'erreur ═══════ -->
+    @if (erreur(); as msg) {
+      <div class="alerte-erreur">
+        <lucide-icon [name]="icons['ShieldAlert']" [size]="16"></lucide-icon>
+        <span>{{ msg }}</span>
+      </div>
+    }
+
+    <!-- ═══════ Résultat ═══════ -->
+    @if (resultat(); as r) {
+      <div class="resultat" [class.resultat--integre]="r.integre" [class.resultat--altere]="!r.integre">
+
+        <!-- Statut principal -->
+        <div class="resultat__statut">
+          <div class="resultat__statut-icone">
+            @if (r.integre) {
+              <lucide-icon [name]="icons['ShieldCheck']" [size]="32"></lucide-icon>
+            } @else {
+              <lucide-icon [name]="icons['ShieldAlert']" [size]="32"></lucide-icon>
+            }
+          </div>
+          <div class="resultat__statut-texte">
+            <div class="resultat__statut-libelle">
+              @if (r.integre) { Maillon intègre } @else { Maillon altéré ! }
+            </div>
+            <div class="resultat__statut-detail">
+              @if (r.integre) {
+                Le hash recalculé correspond à celui stocké en base.
+              } @else {
+                Le hash recalculé diffère du hash stocké — la ligne a été altérée en base.
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Détails du maillon -->
+        <dl class="resultat__details">
+          <div class="detail-ligne">
+            <dt><lucide-icon [name]="icons['Hash']" [size]="14"></lucide-icon> Position dans la chaîne</dt>
+            <dd class="mono">#{{ r.positionDansChaine | number:'1.0-0':'fr' }}</dd>
+          </div>
+
+          <div class="detail-ligne">
+            <dt><lucide-icon [name]="icons['Calendar']" [size]="14"></lucide-icon> Date de l'action</dt>
+            <dd>{{ r.dateAction | date:'dd/MM/yyyy HH:mm:ss':'':'fr' }}</dd>
+          </div>
+
+          <div class="detail-ligne">
+            <dt><lucide-icon [name]="icons['Package']" [size]="14"></lucide-icon> Action</dt>
+            <dd><span class="pill">{{ r.action }}</span> sur <strong>{{ r.entiteCible }}</strong></dd>
+          </div>
+
+          <div class="detail-ligne detail-ligne--full">
+            <dt>Hash stocké</dt>
+            <dd class="mono hash-full" (click)="copier(r.hashStocke)" title="Cliquer pour copier">
+              {{ r.hashStocke }}
+            </dd>
+          </div>
+
+          <div class="detail-ligne detail-ligne--full">
+            <dt>Hash recalculé</dt>
+            <dd class="mono hash-full"
+                [class.hash-full--match]="r.integre"
+                [class.hash-full--diff]="!r.integre"
+                (click)="copier(r.hashRecalcule)"
+                title="Cliquer pour copier">
+              {{ r.hashRecalcule }}
+            </dd>
+          </div>
+
+          @if (r.hashPrecedent) {
+            <div class="detail-ligne detail-ligne--full">
+              <dt>Hash du maillon précédent</dt>
+              <dd class="mono hash-full" (click)="copier(r.hashPrecedent)" title="Cliquer pour copier">
+                {{ r.hashPrecedent }}
+              </dd>
+            </div>
+          }
+        </dl>
+      </div>
+    }
+
+    <!-- ═══════ Aide ═══════ -->
+    @if (!resultat() && !erreur()) {
+      <div class="aide">
+        <p class="aide__titre">Comment ça marche ?</p>
+        <ol>
+          <li>Copiez un hash observé sur un rapport papier ou un export PV.</li>
+          <li>Collez-le dans le champ ci-dessus (8 caractères minimum suffisent).</li>
+          <li>Le serveur localise le maillon, recalcule son hash à partir de son contenu, et compare.</li>
+          <li>Si les deux hashs matchent, la ligne d'audit n'a jamais été altérée en base.</li>
+        </ol>
+      </div>
+    }
+  </div>
+</aside>

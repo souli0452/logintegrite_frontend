@@ -1,0 +1,79 @@
+<div class="dialog-form">
+  <!-- Header -->
+  <header class="dialog-form__header">
+    <div class="dialog-form__titre-bloc">
+      <lucide-icon [name]="icons['IdCard']" [size]="20" class="dialog-form__icone"></lucide-icon>
+      <div>
+        <h1>{{ estCreation() ? 'Nouveau' : 'Modifier le' }} type de pièce d'identité</h1>
+        <p>Référentiel des documents d'identité acceptés</p>
+      </div>
+    </div>
+    <button type="button" class="btn-close" (click)="annuler()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <!-- Corps -->
+  <form [formGroup]="form" (ngSubmit)="soumettre()" class="dialog-form__corps">
+    <!-- Code -->
+    <div class="champ-groupe">
+      <label class="champ-label">
+        Code technique <span class="requis">*</span>
+      </label>
+      <mat-form-field appearance="outline" class="champ-full">
+        <input matInput formControlName="code"
+               placeholder="Ex : PERMIS_ECOWAS"
+               maxlength="30"
+               style="text-transform:uppercase">
+        <mat-hint>Majuscules et underscores uniquement (ex : CNIB, PASSEPORT)</mat-hint>
+        @if (form.controls.code.invalid && form.controls.code.touched) {
+          @if (form.controls.code.errors?.['required']) {
+            <mat-error>Code obligatoire</mat-error>
+          }
+          @if (form.controls.code.errors?.['pattern']) {
+            <mat-error>Uniquement lettres majuscules et underscores</mat-error>
+          }
+        }
+      </mat-form-field>
+      @if (!estCreation()) {
+        <p class="hint-lecture">
+          <lucide-icon [name]="icons['Info']" [size]="12"></lucide-icon>
+          Le code est immuable après création (utilisé par le code métier).
+        </p>
+      }
+    </div>
+
+    <!-- Libellé -->
+    <div class="champ-groupe">
+      <label class="champ-label">
+        Libellé <span class="requis">*</span>
+      </label>
+      <mat-form-field appearance="outline" class="champ-full">
+        <input matInput formControlName="libelle"
+               placeholder="Ex : Permis de conduire CEDEAO"
+               maxlength="150">
+        @if (form.controls.libelle.invalid && form.controls.libelle.touched) {
+          <mat-error>Libellé obligatoire</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <!-- Actif -->
+    <div class="champ-groupe">
+      <mat-slide-toggle formControlName="actif" class="toggle-actif">
+        Actif (visible dans les formulaires)
+      </mat-slide-toggle>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <footer class="dialog-form__footer">
+    <button type="button" class="btn-secondaire" (click)="annuler()">Annuler</button>
+    <button type="button" class="btn-principal"
+            [disabled]="form.invalid"
+            (click)="soumettre()">
+      <lucide-icon [name]="icons['Save']" [size]="14"></lucide-icon>
+      <span>{{ estCreation() ? 'Créer' : 'Enregistrer' }}</span>
+    </button>
+  </footer>
+</div>

@@ -1,0 +1,33 @@
+.liste-loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.liste-table {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+
+  table {
+    width: 100%;
+  }
+}
+
+.cellule-strong {
+  font-weight: 500;
+}
+
+.cellule-muted {
+  color: var(--text-secondary);
+}
+
+.cellule-right {
+  text-align: right;
+}
+
+.icone-danger {
+  color: var(--status-danger);
+}

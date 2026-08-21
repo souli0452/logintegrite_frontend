@@ -1,0 +1,59 @@
+<!-- 🆕 Bouton retour vers le hub -->
+@if (retourVers()) {
+  <button type="button" class="btn-retour-hub" (click)="retour()" [matTooltip]="retourLibelle()">
+    <lucide-icon [name]="icons['ArrowLeft']" [size]="14"></lucide-icon>
+    <span>{{ retourLibelle() }}</span>
+  </button>
+}
+
+<app-page-header [titre]="titrePage()" [sousTitre]="sousTitrePage() + ' ' + items().length + ' element(s).'">
+  <button mat-flat-button color="primary" (click)="ouvrir(null)">
+    <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+    <span>Nouveau {{ libelleSingulier() }}</span>
+  </button>
+</app-page-header>
+
+@if (chargement()) {
+  <div class="liste-loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+} @else if (items().length === 0) {
+  <app-empty-state titre="Aucun element" message="Creez le premier via le bouton ci-dessus." />
+} @else {
+  <div class="liste-table">
+    <table mat-table [dataSource]="items()">
+      <ng-container matColumnDef="libelle">
+        <th mat-header-cell *matHeaderCellDef>Libelle</th>
+        <td mat-cell *matCellDef="let item" class="cellule-strong">{{ item.libelle }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actif">
+        <th mat-header-cell *matHeaderCellDef>Statut</th>
+        <td mat-cell *matCellDef="let item">
+          @if (avecActif()) {
+            <app-status-badge
+              [libelle]="item.actif ? 'Actif' : 'Inactif'"
+              [type]="item.actif ? 'success' : 'neutral'" />
+          } @else {
+            —
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="cellule-right">Actions</th>
+        <td mat-cell *matCellDef="let item" class="cellule-right">
+          <button mat-icon-button matTooltip="Modifier" (click)="ouvrir(item)">
+            <lucide-icon [name]="icons['Pencil']" [size]="16"></lucide-icon>
+          </button>
+          <button mat-icon-button matTooltip="Supprimer" (click)="supprimer(item)">
+            <lucide-icon [name]="icons['Trash2']" [size]="16" class="icone-danger"></lucide-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colonnesAffichees"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnesAffichees;"></tr>
+    </table>
+  </div>
+}

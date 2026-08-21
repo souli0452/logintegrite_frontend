@@ -1,0 +1,40 @@
+<div class="onglet-panel">
+  @if (faits().length > 0) {
+    <table mat-table [dataSource]="faits()" class="onglet-table">
+      <ng-container matColumnDef="dateFaits">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let f">{{ f.dateFaits }}</td>
+      </ng-container>
+      <ng-container matColumnDef="infraction">
+        <th mat-header-cell *matHeaderCellDef>Infraction</th>
+        <td mat-cell *matCellDef="let f" class="cellule-strong">{{ f.typeInfractionLibelle }}</td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let f" class="cellule-description">{{ f.description }}</td>
+      </ng-container>
+      <ng-container matColumnDef="montant">
+        <th mat-header-cell *matHeaderCellDef>Prejudice</th>
+        <td mat-cell *matCellDef="let f">
+          {{ f.montantPrejudice | number:'1.0-0' }} {{ f.devise }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="zone">
+        <th mat-header-cell *matHeaderCellDef>Zone</th>
+        <td mat-cell *matCellDef="let f">{{ f.zoneGeographiqueLibelle ?? '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="statut">
+        <th mat-header-cell *matHeaderCellDef>Statut</th>
+        <td mat-cell *matCellDef="let f">
+          <app-status-badge [libelle]="f.statutValidation" [type]="typeStatut(f.statutValidation)" />
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnes;"></tr>
+    </table>
+  } @else {
+    <app-empty-state
+      titre="Aucun fait reproche"
+      message="Les faits reproches apparaitront ici." />
+  }
+</div>

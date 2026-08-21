@@ -1,0 +1,14 @@
+.message {
+  min-width: 360px;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.detail {
+  margin: var(--spacing-sm) 0 0;
+  padding: var(--spacing-sm);
+  background: var(--bg-hover);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}

@@ -1,0 +1,60 @@
+<div class="audit-page">
+
+  <!-- ═══════ Header ═══════ -->
+  <app-page-header
+    titre="Audit forensique"
+    sousTitre="Piste d'audit cryptographiquement scellée · vérification d'intégrité en temps réel">
+    <button type="button" class="btn-drawer" (click)="ouvrirDrawer()">
+      <lucide-icon [name]="icons['Search']" [size]="16"></lucide-icon>
+      <span>Vérifier un hash</span>
+    </button>
+  </app-page-header>
+
+  <!-- ═══════ Bandeau d'intégrité ═══════ -->
+  <app-bandeau-integrite
+    [etat]="etat()"
+    [verification]="verification()"
+    [chargementEtat]="chargementEtat()"
+    [verificationEnCours]="verificationEnCours()"
+    (verifier)="declencherVerification()"
+    (rafraichir)="rafraichirTout()">
+  </app-bandeau-integrite>
+
+  <!-- ═══════ KPI forensiques ═══════ -->
+  <app-kpi-forensique
+    [kpi]="kpi()"
+    [chargement]="chargementKpi()">
+  </app-kpi-forensique>
+
+  <!-- ═══════ Onglets historique ═══════ -->
+  <section class="onglets-section">
+    <mat-tab-group class="audit-tabs" mat-stretch-tabs="false" animationDuration="200ms">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['ClipboardList']" [size]="16"></lucide-icon>
+          <span>Modifications</span>
+        </ng-template>
+        <div class="onglet-contenu">
+          <app-onglet-audit-modifications />
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['Eye']" [size]="16"></lucide-icon>
+          <span>Consultations</span>
+        </ng-template>
+        <div class="onglet-contenu">
+          <app-onglet-audit-consultations />
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+
+  <!-- ═══════ Drawer de vérification ═══════ -->
+  <app-verification-hash-drawer
+    [ouvert]="drawerOuvert()"
+    (fermer)="fermerDrawer()">
+  </app-verification-hash-drawer>
+
+</div>

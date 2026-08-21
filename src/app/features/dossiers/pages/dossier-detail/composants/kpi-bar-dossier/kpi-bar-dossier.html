@@ -1,0 +1,53 @@
+<nav class="kpi-bar" aria-label="Chiffres clés du dossier">
+
+  <button type="button" class="kpi-bar__item kpi-bar__item--personnes"
+          (click)="naviguer.emit(0)"
+          matTooltip="Voir les personnes impliquées">
+    <div class="kpi-bar__icone">
+      <lucide-icon [name]="icons['Users']" [size]="18"></lucide-icon>
+    </div>
+    <div class="kpi-bar__contenu">
+      <div class="kpi-bar__valeur">{{ nbPersonnes() | number:'1.0-0':'fr' }}</div>
+      <div class="kpi-bar__label">Personne{{ nbPersonnes() > 1 ? 's' : '' }} impliquée{{ nbPersonnes() > 1 ? 's' : '' }}</div>
+    </div>
+  </button>
+
+  <button type="button" class="kpi-bar__item kpi-bar__item--faits"
+          (click)="naviguer.emit(1)"
+          matTooltip="Voir les faits reprochés">
+    <div class="kpi-bar__icone">
+      <lucide-icon [name]="icons['FileText']" [size]="18"></lucide-icon>
+    </div>
+    <div class="kpi-bar__contenu">
+      <div class="kpi-bar__valeur">{{ nbFaits() | number:'1.0-0':'fr' }}</div>
+      <div class="kpi-bar__label">Fait{{ nbFaits() > 1 ? 's' : '' }} reproché{{ nbFaits() > 1 ? 's' : '' }}</div>
+    </div>
+  </button>
+
+  <div class="kpi-bar__item kpi-bar__item--prejudice"
+       matTooltip="Somme des préjudices des faits validés">
+    <div class="kpi-bar__icone">
+      <lucide-icon [name]="icons['TrendingUp']" [size]="18"></lucide-icon>
+    </div>
+    <div class="kpi-bar__contenu">
+      <div class="kpi-bar__valeur kpi-bar__valeur--monetaire">
+        {{ prejudiceFormate() }}
+        <span class="kpi-bar__devise">{{ deviseMajoritaire() }}</span>
+      </div>
+      <div class="kpi-bar__label">Préjudice estimé</div>
+    </div>
+  </div>
+
+  <button type="button" class="kpi-bar__item kpi-bar__item--documents"
+          (click)="naviguer.emit(2)"
+          matTooltip="Voir les documents">
+    <div class="kpi-bar__icone">
+      <lucide-icon [name]="icons['Paperclip']" [size]="18"></lucide-icon>
+    </div>
+    <div class="kpi-bar__contenu">
+      <div class="kpi-bar__valeur">{{ nbDocuments() | number:'1.0-0':'fr' }}</div>
+      <div class="kpi-bar__label">Document{{ nbDocuments() > 1 ? 's' : '' }} joint{{ nbDocuments() > 1 ? 's' : '' }}</div>
+    </div>
+  </button>
+
+</nav>

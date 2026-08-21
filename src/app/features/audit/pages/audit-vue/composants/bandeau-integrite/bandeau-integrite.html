@@ -1,0 +1,106 @@
+<section class="bandeau"
+         [class.bandeau--intacte]="statut() === 'intacte'"
+         [class.bandeau--rompue]="statut() === 'rompue'"
+         [class.bandeau--non-verifiee]="statut() === 'non-verifiee'">
+
+  <!-- ================ SECTION GAUCHE : statut + dernier hash ================ -->
+  <div class="bandeau__gauche">
+    <div class="statut-bloc">
+      <div class="statut-icone">
+        @if (statut() === 'intacte') {
+          <lucide-icon [name]="icons['ShieldCheck']" [size]="28"></lucide-icon>
+        } @else if (statut() === 'rompue') {
+          <lucide-icon [name]="icons['ShieldAlert']" [size]="28"></lucide-icon>
+        } @else {
+          <lucide-icon [name]="icons['ShieldCheck']" [size]="28"></lucide-icon>
+        }
+        <span class="statut-icone__pulse" aria-hidden="true"></span>
+      </div>
+
+      <div class="statut-texte">
+        <div class="statut-libelle">{{ libelleStatut() }}</div>
+        <div class="statut-detail">
+          @if (verification(); as v) {
+            @if (v.chaineIntegre) {
+              {{ v.maillonsVerifies | number:'1.0-0':'fr' }} maillons vérifiés
+              · dernière vérif il y a {{ (v.dureeMillisecondes / 1000) | number:'1.1-1':'fr' }}s
+            } @else {
+              {{ v.nombreRuptures | number:'1.0-0':'fr' }} rupture(s) sur
+              {{ v.maillonsVerifies | number:'1.0-0':'fr' }} maillons
+            }
+          } @else {
+            Chaîne SHA-256 · aucune vérification effectuée dans cette session
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="dernier-hash">
+      <div class="dernier-hash__label">
+        <lucide-icon [name]="icons['Hash']" [size]="12"></lucide-icon>
+        <span>Dernier hash de la chaîne</span>
+      </div>
+      <button type="button"
+              class="dernier-hash__valeur"
+              (click)="copierHash()"
+              matTooltip="Copier le hash complet"
+              [disabled]="!etat()?.dernierHash">
+        <span class="dernier-hash__mono">{{ hashCourt() }}…</span>
+        <lucide-icon [name]="icons['Copy']" [size]="14"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================ SECTION DROITE : stats + actions ================ -->
+  <div class="bandeau__droite">
+    <div class="mini-stats">
+      <div class="mini-stat">
+        <div class="mini-stat__valeur">
+          {{ (etat()?.totalEntrees ?? 0) | number:'1.0-0':'fr' }}
+        </div>
+        <div class="mini-stat__label">
+          <lucide-icon [name]="icons['Layers']" [size]="12"></lucide-icon>
+          entrées scellées
+        </div>
+      </div>
+
+      <div class="mini-stat">
+        <div class="mini-stat__valeur">
+          {{ (etat()?.totalUtilisateurs ?? 0) | number:'1.0-0':'fr' }}
+        </div>
+        <div class="mini-stat__label">
+          <lucide-icon [name]="icons['Users']" [size]="12"></lucide-icon>
+          utilisateurs
+        </div>
+      </div>
+
+      <div class="mini-stat">
+        <div class="mini-stat__valeur">
+          @if (etat()?.dateDerniereAction) {
+            {{ etat()!.dateDerniereAction! | date:'dd/MM HH:mm':'':'fr' }}
+          } @else { — }
+        </div>
+        <div class="mini-stat__label">
+          <lucide-icon [name]="icons['Clock']" [size]="12"></lucide-icon>
+          dernière action
+        </div>
+      </div>
+    </div>
+
+    <button type="button"
+            class="btn-verifier"
+            [class.btn-verifier--intacte]="statut() === 'intacte'"
+            [class.btn-verifier--rompue]="statut() === 'rompue'"
+            [disabled]="verificationEnCours() || chargementEtat()"
+            (click)="declencherVerification()">
+      @if (verificationEnCours()) {
+        <lucide-icon [name]="icons['RefreshCw']" [size]="16" class="anim-tourne"></lucide-icon>
+        <span>Vérification…</span>
+      } @else {
+        <lucide-icon [name]="icons['ShieldCheck']" [size]="16"></lucide-icon>
+        <span>Vérifier l'intégrité</span>
+      }
+    </button>
+  </div>
+
+</section>

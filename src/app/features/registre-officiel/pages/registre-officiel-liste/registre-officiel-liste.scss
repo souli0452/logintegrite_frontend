@@ -1,0 +1,620 @@
+// ============================================================================
+// REGISTRE OFFICIEL — Palette ASCE-LC
+// ============================================================================
+$asce-vert:        #009640;
+$asce-vert-fonce:  #007a33;
+$asce-vert-clair:  #e6f5ec;
+$asce-vert-ultra:  #f4faf6;
+$asce-rouge:       #E30613;
+$asce-rouge-fonce: #b8050f;
+$asce-rouge-clair: #fce8ea;
+$asce-noir:        #1D1D1B;
+$asce-blanc:       #FFFFFF;
+
+$gris-900: #2a2a28;
+$gris-700: #4a4a48;
+$gris-500: #7a7a78;
+$gris-300: #d4d4d2;
+$gris-200: #e5e5e3;
+$gris-100: #f2f2f0;
+$gris-50:  #f8f8f6;
+
+$ombre-carte:      0 1px 2px rgba($asce-noir, 0.05), 0 1px 3px rgba($asce-noir, 0.08);
+$ombre-carte-hover:0 4px 12px rgba($asce-noir, 0.10), 0 2px 4px rgba($asce-noir, 0.06);
+$ombre-drawer:     -8px 0 24px rgba($asce-noir, 0.12);
+
+$radius-sm: 4px;
+$radius-md: 6px;
+$transition: 200ms ease;
+
+// ============================================================================
+// PAGE
+// ============================================================================
+.registre-page {
+  padding: 20px 32px 40px;
+  background: $gris-50;
+  min-height: 100%;
+  position: relative;
+}
+
+// ============================================================================
+// EN-TÊTE MINIMALISTE
+// ============================================================================
+.registre-header {
+  margin-bottom: 18px;
+
+  &__ligne {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__titre-zone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__icone-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: $asce-vert-clair;
+    color: $asce-vert;
+    flex-shrink: 0;
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: $asce-noir;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  &__meta {
+    margin: 6px 0 0 50px;
+    font-size: 12px;
+    color: $gris-500;
+    font-weight: 400;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+// --- Chip d'état ---
+.chip-etat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  background: $asce-vert-clair;
+  border: 1px solid rgba($asce-vert, 0.2);
+  border-radius: 12px;
+  font-size: 12.5px;
+  color: $asce-vert-fonce;
+  font-weight: 500;
+
+  strong {
+    font-weight: 700;
+    color: $asce-vert-fonce;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__pastille {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $asce-rouge;
+    box-shadow: 0 0 0 2px rgba($asce-rouge, 0.15);
+    animation: pulseRouge 2.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+}
+
+@keyframes pulseRouge {
+  0%, 100% { box-shadow: 0 0 0 2px rgba($asce-rouge, 0.15); }
+  50%      { box-shadow: 0 0 0 4px rgba($asce-rouge, 0.05); }
+}
+
+// --- Bouton Recherche avancée ---
+.btn-recherche-avancee {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px solid $gris-300;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+  position: relative;
+
+  &:hover {
+    background: $asce-vert-clair;
+    border-color: $asce-vert;
+    color: $asce-vert-fonce;
+  }
+
+  &--actif {
+    background: $asce-vert-clair;
+    border-color: $asce-vert;
+    color: $asce-vert-fonce;
+    font-weight: 600;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: $asce-vert;
+    color: $asce-blanc;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 2px;
+  }
+}
+
+// ============================================================================
+// BARRE FILTRES RAPIDES
+// ============================================================================
+.barre-filtres-rapide {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 0 16px;
+  border-top: 1px solid $gris-200;
+}
+
+.filtres-chips { display: flex; gap: 6px; }
+
+.filtre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+
+  lucide-icon { color: $gris-500; }
+
+  &:hover {
+    background: $gris-50;
+    border-color: $gris-300;
+    color: $asce-noir;
+    lucide-icon { color: $gris-700; }
+  }
+
+  &--actif {
+    background: $asce-vert;
+    border-color: $asce-vert;
+    color: $asce-blanc;
+    lucide-icon { color: $asce-blanc; }
+
+    &:hover {
+      background: $asce-vert-fonce;
+      border-color: $asce-vert-fonce;
+      color: $asce-blanc;
+    }
+  }
+}
+
+.tri-select {
+  padding: 6px 30px 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $asce-noir;
+  background: $asce-blanc url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237a7a78' viewBox='0 0 16 16'%3e%3cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3e%3c/svg%3e") no-repeat right 10px center;
+  border: 1px solid $gris-200;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  appearance: none;
+  font-family: inherit;
+  transition: all $transition;
+
+  &:hover { border-color: $gris-300; background-color: $gris-50; }
+  &:focus { outline: none; border-color: $asce-vert; box-shadow: 0 0 0 3px rgba($asce-vert, 0.12); }
+}
+
+// ============================================================================
+// LOADER / EMPTY / VIDE
+// ============================================================================
+.loader-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  ::ng-deep .mat-mdc-progress-spinner circle { stroke: $asce-vert; }
+}
+
+.empty-officiel {
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius-md;
+  padding: 64px 32px;
+  text-align: center;
+  max-width: 640px;
+  margin: 40px auto;
+
+  &__icone {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background: $asce-vert-ultra;
+    border-radius: 50%;
+    color: $asce-vert;
+    margin-bottom: 20px;
+  }
+
+  &__titre { margin: 0 0 12px 0; font-size: 18px; font-weight: 600; color: $asce-noir; }
+  &__message { margin: 0; font-size: 14px; color: $gris-700; line-height: 1.6; }
+}
+
+.filtre-vide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px dashed $gris-300;
+  border-radius: $radius-md;
+}
+
+.btn-lien {
+  background: transparent;
+  border: none;
+  color: $asce-vert;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: underline;
+
+  &:hover { color: $asce-vert-fonce; }
+}
+
+// ============================================================================
+// GRILLE + CARTES
+// ============================================================================
+.grille-cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.carte-officielle {
+  position: relative;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius-md;
+  padding: 18px 20px 16px 24px;
+  cursor: pointer;
+  transition: all $transition;
+  overflow: hidden;
+  box-shadow: $ombre-carte;
+
+  &__ruban {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: $asce-vert;
+    transition: background $transition;
+  }
+
+  &:hover {
+    border-color: $asce-vert;
+    box-shadow: $ombre-carte-hover;
+    transform: translateY(-1px);
+
+    .carte-officielle__ruban { background: $asce-vert-fonce; width: 5px; }
+  }
+
+  &__entete { display: flex; gap: 12px; margin-bottom: 14px; }
+
+  &__avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: $gris-100;
+    color: $gris-700;
+
+    &--pp { background: $asce-vert-clair; color: $asce-vert; }
+    &--pm { background: $gris-100; color: $gris-700; }
+  }
+
+  &__scelle {
+    position: absolute;
+    bottom: -2px; right: -2px;
+    width: 18px; height: 18px;
+    background: $asce-vert;
+    color: $asce-blanc;
+    border-radius: 50%;
+    border: 2px solid $asce-blanc;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  &__ident { flex: 1; min-width: 0; }
+
+  &__nom {
+    font-size: 15px;
+    font-weight: 600;
+    color: $asce-noir;
+    line-height: 1.35;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  &__meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  &__corps {
+    padding: 10px 0;
+    border-top: 1px solid $gris-100;
+    border-bottom: 1px solid $gris-100;
+    margin-bottom: 12px;
+  }
+
+  &__pied {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: $gris-500;
+    lucide-icon { color: $gris-500; }
+  }
+}
+
+.identifiant-mono {
+  font-family: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $gris-100;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+
+.type-libelle { font-size: 12px; color: $gris-500; font-weight: 500; }
+
+.badge-officiel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  lucide-icon { color: $asce-rouge; flex-shrink: 0; }
+
+  &__label { flex: 1; font-size: 12.5px; color: $gris-700; font-weight: 500; }
+
+  &__nombre {
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    background: $asce-rouge-clair;
+    color: $asce-rouge-fonce;
+    padding: 2px 10px;
+    border-radius: 10px;
+    min-width: 28px;
+    text-align: center;
+  }
+}
+
+.btn-consulter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: $asce-vert;
+  background: transparent;
+  border: 1px solid $asce-vert;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+
+  &:hover {
+    background: $asce-vert;
+    color: $asce-blanc;
+    lucide-icon { color: $asce-blanc; }
+  }
+}
+
+// ============================================================================
+// DRAWER RECHERCHE AVANCÉE
+// ============================================================================
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba($asce-noir, 0.35);
+  z-index: 999;
+  animation: fadeIn 200ms ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.drawer-recherche {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  max-width: 92vw;
+  height: 100vh;
+  background: $asce-blanc;
+  box-shadow: $ombre-drawer;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--ouvert { transform: translateX(0); }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 18px 20px 16px;
+    border-bottom: 1px solid $gris-200;
+    flex-shrink: 0;
+  }
+
+  &__titre { margin: 0; font-size: 17px; font-weight: 600; color: $asce-noir; }
+  &__sous-titre { margin: 3px 0 0 0; font-size: 12.5px; color: $gris-500; }
+
+  &__close {
+    background: transparent;
+    border: none;
+    color: $gris-500;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: $radius-sm;
+    display: flex; align-items: center; justify-content: center;
+    transition: all $transition;
+
+    &:hover { background: $gris-100; color: $asce-noir; }
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 20px;
+
+    ::ng-deep {
+      .mat-expansion-panel {
+        box-shadow: none !important;
+        border: 1px solid $gris-200;
+        border-radius: $radius-sm !important;
+        margin-bottom: 8px;
+      }
+      .mat-expansion-panel-header { padding: 0 14px; height: 44px; }
+      .mat-expansion-panel-body { padding: 8px 14px 14px; }
+      .mat-mdc-form-field { width: 100%; margin-bottom: 4px; }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid $gris-200;
+    flex-shrink: 0;
+    background: $gris-50;
+  }
+}
+
+.btn-reset {
+  flex: 1;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px solid $gris-300;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all $transition;
+
+  &:hover { background: $gris-100; color: $asce-noir; }
+}
+
+.btn-apply {
+  flex: 1.4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $asce-blanc;
+  background: $asce-vert;
+  border: 1px solid $asce-vert;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all $transition;
+
+  &:hover { background: $asce-vert-fonce; border-color: $asce-vert-fonce; }
+}
+
+// ============================================================================
+// PAGINATOR
+// ============================================================================
+::ng-deep .mat-mdc-paginator {
+  background: transparent !important;
+  color: $gris-700 !important;
+  font-family: inherit !important;
+
+  .mat-mdc-icon-button:not(.mat-mdc-paginator-navigation-disabled):hover {
+    background: $asce-vert-clair !important;
+    color: $asce-vert !important;
+  }
+}
+
+// ============================================================================
+// RESPONSIVE
+// ============================================================================
+@media (max-width: 900px) {
+  .registre-page { padding: 16px 20px 32px; }
+  .registre-header__titre { font-size: 19px; }
+  .registre-header__meta { margin-left: 0; }
+
+  .barre-filtres-rapide {
+    flex-direction: column;
+    align-items: stretch;
+    .tri-select { align-self: flex-end; }
+  }
+
+  .grille-cartes { grid-template-columns: 1fr; gap: 12px; }
+  .drawer-recherche { width: 100%; }
+}

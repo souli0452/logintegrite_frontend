@@ -1,0 +1,181 @@
+:host {
+  display: block;
+
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-rouge:      #E30613;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-500: #78716C;
+  --neutre-700: #44403C;
+}
+
+.kpi-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(29, 29, 27, 0.04);
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ITEM KPI
+// ═══════════════════════════════════════════════════════════════════════════
+.kpi-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.15rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--neutre-100);
+  text-align: left;
+  transition: all 180ms ease;
+  position: relative;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:last-child { border-right: none; }
+
+  // Barre de couleur qui apparaît en bas au hover
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms ease;
+  }
+
+  &:not(.kpi-item--statique):hover {
+    background: var(--neutre-50);
+
+    &::after { transform: scaleX(1); }
+
+    .kpi-item__icone {
+      transform: scale(1.06);
+    }
+  }
+
+  &--statique {
+    cursor: default;
+  }
+
+  // Responsive : gestion des bordures
+  @media (max-width: 1100px) {
+    &:nth-child(3n) { border-right: none; }
+    &:nth-child(-n+3) { border-bottom: 1px solid var(--neutre-100); }
+  }
+
+  @media (max-width: 700px) {
+    &:nth-child(2n) { border-right: none; }
+    &:nth-child(-n+4) { border-bottom: 1px solid var(--neutre-100); }
+    &:nth-child(4) { border-right: none; }
+  }
+
+  @media (max-width: 500px) {
+    border-right: none;
+    border-bottom: 1px solid var(--neutre-100);
+    &:last-child { border-bottom: none; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COULEURS PAR TYPE
+// ═══════════════════════════════════════════════════════════════════════════
+.kpi-item--dossiers  { color: var(--ascelc-vert); }
+.kpi-item--faits     { color: #D97706; }        // Ambre-orange
+.kpi-item--peines    { color: #DC2626; }        // Rouge
+.kpi-item--documents { color: #2563EB; }        // Bleu
+.kpi-item--maj       { color: #7C3AED; }        // Violet
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ICÔNE
+// ═══════════════════════════════════════════════════════════════════════════
+.kpi-item__icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+
+// Fonds légers colorés (10% opacité)
+.kpi-item--dossiers .kpi-item__icone {
+  background: rgba(0, 150, 64, 0.1);
+  color: var(--ascelc-vert);
+}
+.kpi-item--faits .kpi-item__icone {
+  background: rgba(217, 119, 6, 0.1);
+  color: #D97706;
+}
+.kpi-item--peines .kpi-item__icone {
+  background: rgba(220, 38, 38, 0.1);
+  color: #DC2626;
+}
+.kpi-item--documents .kpi-item__icone {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563EB;
+}
+.kpi-item--maj .kpi-item__icone {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7C3AED;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CONTENU (valeur + label)
+// ═══════════════════════════════════════════════════════════════════════════
+.kpi-item__contenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.kpi-item__valeur {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ascelc-noir);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+
+  &--texte {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+.kpi-item__label {
+  font-size: 0.75rem;
+  color: var(--neutre-500);
+  font-weight: 500;
+  line-height: 1.3;
+}

@@ -1,0 +1,126 @@
+<h2 mat-dialog-title>Ajouter {{ data.personneNomAffichage }} à un dossier</h2>
+
+<mat-dialog-content>
+
+  <!-- Choix du mode : dossier existant vs nouveau -->
+  <div class="mode-choix">
+    <mat-button-toggle-group [value]="modeChoix()" (change)="changerMode($event.value)">
+      <mat-button-toggle value="nouveau">Créer un nouveau dossier</mat-button-toggle>
+      <mat-button-toggle value="existant">Ajouter à un dossier existant</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <!-- MODE 1 : nouveau dossier -->
+  @if (modeChoix() === 'nouveau') {
+    <section class="section">
+      <h3 class="section__titre">Informations du nouveau dossier</h3>
+      <form [formGroup]="formNouveauDossier" class="grille">
+        <mat-form-field appearance="outline" class="grille__full">
+          <mat-label>Intitulé *</mat-label>
+          <input matInput formControlName="intitule" placeholder="Détournement de fonds - Marchés 2024">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Numéro de dossier</mat-label>
+          <input matInput formControlName="numeroDossier" placeholder="DOS-2026-001 (optionnel)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Source du signalement *</mat-label>
+          <mat-select formControlName="sourceSignalementId">
+            @for (s of sources(); track s.id) {
+              <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Date d'ouverture *</mat-label>
+          <input matInput [matDatepicker]="pickerOuverture" formControlName="dateOuverture">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerOuverture"></mat-datepicker-toggle>
+          <mat-datepicker #pickerOuverture></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="grille__full">
+          <mat-label>Description du contexte</mat-label>
+          <textarea matInput formControlName="descriptionContexte" rows="3"></textarea>
+        </mat-form-field>
+      </form>
+    </section>
+  }
+
+  <!-- MODE 2 : dossier existant avec filtrage -->
+  @if (modeChoix() === 'existant') {
+    <section class="section">
+      <h3 class="section__titre">Choisir un dossier ouvert</h3>
+      <mat-form-field appearance="outline" class="pleine-largeur">
+        <mat-label>Filtrer par numéro ou intitulé</mat-label>
+        <input matInput [value]="filtreDossier()"
+               (input)="filtreDossier.set($any($event.target).value)">
+      </mat-form-field>
+      <form [formGroup]="formDossierExistant">
+        <mat-form-field appearance="outline" class="pleine-largeur">
+          <mat-label>Dossier *</mat-label>
+          <mat-select formControlName="dossierId">
+            @for (d of dossiersFiltres(); track d.id) {
+              <mat-option [value]="d.id">
+                {{ d.numeroDossier ?? '(sans numéro)' }} · {{ d.intitule ?? 'Sans intitulé' }}
+              </mat-option>
+            }
+            @if (dossiersFiltres().length === 0) {
+              <mat-option disabled>Aucun dossier ne correspond</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </section>
+  }
+
+  <!-- Formulaire implication (commun aux 2 modes) -->
+  <section class="section">
+    <h3 class="section__titre">Implication de la personne</h3>
+    <form [formGroup]="formImplication" class="grille">
+      <mat-form-field appearance="outline">
+        <mat-label>Rôle *</mat-label>
+        <mat-select formControlName="roleImplicationId">
+          @for (r of roles(); track r.id) {
+            <mat-option [value]="r.id">{{ r.libelle }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Fonction occupée</mat-label>
+        <input matInput formControlName="fonctionOccupee">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="grille__full">
+        <mat-label>Entité / structure à l'époque</mat-label>
+        <input matInput formControlName="entiteLibelleALEpoque">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de début *</mat-label>
+        <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDebut></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de fin</mat-label>
+        <input matInput [matDatepicker]="pickerFin" formControlName="dateFin">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFin></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="grille__full">
+        <mat-label>Observations</mat-label>
+        <textarea matInput formControlName="observations" rows="2"></textarea>
+      </mat-form-field>
+    </form>
+  </section>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="annuler()" [disabled]="enCoursCreation()">Annuler</button>
+  <button mat-flat-button color="primary" (click)="soumettre()" [disabled]="!formulaireValide() || enCoursCreation()">
+    @if (enCoursCreation()) {
+      <mat-spinner diameter="18"></mat-spinner>
+      <span>Enregistrement...</span>
+    } @else {
+      <span>Enregistrer</span>
+    }
+  </button>
+</mat-dialog-actions>

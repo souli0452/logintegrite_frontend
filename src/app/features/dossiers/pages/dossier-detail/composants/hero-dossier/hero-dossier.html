@@ -1,0 +1,165 @@
+<article class="hero" [class]="'hero--' + variantStatut()">
+
+  <!-- ═══════ Bande verte supérieure — sceau officiel ═══════ -->
+  <header class="hero__sceau">
+    <div class="hero__sceau-gauche">
+      <button type="button" class="btn-retour" (click)="retour.emit()">
+        <lucide-icon [name]="icons['ArrowLeft']" [size]="15"></lucide-icon>
+        <span>Retour</span>
+      </button>
+    </div>
+
+    <div class="hero__sceau-centre">
+      <span class="sceau-institut">ASCE-LC</span>
+      <span class="sceau-sep">·</span>
+      <span class="sceau-libelle">Dossier d'enquête</span>
+      <span class="sceau-sep">·</span>
+      <button type="button"
+              class="sceau-numero"
+              (click)="copierNumero()"
+              matTooltip="Cliquer pour copier">
+        {{ numeroFicheDisplay() }}
+        <lucide-icon [name]="icons['Copy']" [size]="11"></lucide-icon>
+      </button>
+      @if (dossier().dateOuverture) {
+        <span class="sceau-sep">·</span>
+        <span class="sceau-date">
+          Ouvert le {{ dossier().dateOuverture | date:'dd/MM/yyyy':'':'fr' }}
+        </span>
+      }
+    </div>
+
+    <div class="hero__sceau-droite">
+      <button type="button"
+              class="btn-pdf"
+              [disabled]="telechargementEnCours()"
+              (click)="imprimer.emit()"
+              matTooltip="Télécharger le rapport PDF du dossier">
+        <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+        <span>{{ telechargementEnCours() ? 'Génération…' : 'PDF' }}</span>
+      </button>
+
+      <button type="button" class="btn-menu"
+              [matMenuTriggerFor]="menuActions"
+              matTooltip="Toutes les actions">
+        <span>Actions</span>
+        <lucide-icon [name]="icons['ChevronDown']" [size]="12"></lucide-icon>
+      </button>
+
+      <mat-menu #menuActions="matMenu" xPosition="before">
+        @if (estOuvert()) {
+          <button mat-menu-item (click)="modifier.emit()">
+            <lucide-icon [name]="icons['Pencil']" [size]="14"></lucide-icon>
+            <span>Modifier le dossier</span>
+          </button>
+          <button mat-menu-item (click)="cloturer.emit()">
+            <lucide-icon [name]="icons['Lock']" [size]="14"></lucide-icon>
+            <span>Clôturer le dossier</span>
+          </button>
+        }
+        <button mat-menu-item (click)="supprimer.emit()" class="menu-danger">
+          <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+          <span>Supprimer le dossier</span>
+        </button>
+      </mat-menu>
+    </div>
+  </header>
+
+  <!-- ═══════ Corps principal — 2 colonnes ═══════ -->
+  <div class="hero__corps">
+
+    <!-- ─── COL 1 : Identité du dossier ─── -->
+    <div class="identite">
+
+      <div class="identite__entete">
+        <div class="identite__badge-type">
+          <lucide-icon [name]="icons['Folder']" [size]="14"></lucide-icon>
+          <span>Dossier d'enquête</span>
+        </div>
+
+        <h1 class="identite__titre">
+          {{ dossier().intitule || 'Dossier sans intitulé' }}
+        </h1>
+
+        <div class="identite__meta">
+          <span class="meta-item">
+            <lucide-icon [name]="icons['Radio']" [size]="13"></lucide-icon>
+            Source :
+            <strong>{{ dossier().sourceSignalementLibelle }}</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Description / contexte -->
+      @if (dossier().descriptionContexte) {
+        <div class="contexte">
+          <div class="contexte__label">
+            <lucide-icon [name]="icons['Info']" [size]="12"></lucide-icon>
+            Contexte
+          </div>
+          <p class="contexte__texte">{{ dossier().descriptionContexte }}</p>
+        </div>
+      } @else {
+        <div class="contexte contexte--vide">
+          <lucide-icon [name]="icons['Info']" [size]="14"></lucide-icon>
+          <em>Aucun contexte renseigné</em>
+        </div>
+      }
+
+    </div>
+
+    <!-- ─── COL 2 : Vitrine statut ─── -->
+    <aside class="statut-vitrine">
+      <div class="statut-vitrine__label">
+        <lucide-icon [name]="icons['FileSearch']" [size]="13"></lucide-icon>
+        <span>Statut du dossier</span>
+      </div>
+
+      <div class="statut-vitrine__badge">
+        @if (estOuvert()) {
+          <lucide-icon [name]="icons['ShieldAlert']" [size]="18"></lucide-icon>
+        } @else {
+          <lucide-icon [name]="icons['ShieldCheck']" [size]="18"></lucide-icon>
+        }
+        <span>{{ libelleStatut() }}</span>
+      </div>
+
+      <dl class="statut-vitrine__details">
+        <div class="statut-vitrine__ligne">
+          <dt><lucide-icon [name]="icons['Calendar']" [size]="12"></lucide-icon> Ouvert le</dt>
+          <dd>{{ dossier().dateOuverture | date:'dd/MM/yyyy':'':'fr' }}</dd>
+        </div>
+
+        @if (dossier().dateCloture) {
+          <div class="statut-vitrine__ligne">
+            <dt><lucide-icon [name]="icons['Lock']" [size]="12"></lucide-icon> Clos le</dt>
+            <dd>{{ dossier().dateCloture | date:'dd/MM/yyyy':'':'fr' }}</dd>
+          </div>
+        }
+
+        @if (dureeInstruction(); as duree) {
+          <div class="statut-vitrine__ligne">
+            <dt><lucide-icon [name]="icons['Clock']" [size]="12"></lucide-icon> Durée</dt>
+            <dd>{{ duree }}</dd>
+          </div>
+        }
+      </dl>
+
+      @if (estOuvert()) {
+        <div class="statut-vitrine__note">
+          Ce dossier est actuellement en cours d'instruction. Les personnes,
+          faits et documents peuvent être ajoutés ou modifiés.
+        </div>
+      } @else {
+        <div class="statut-vitrine__note statut-vitrine__note--clos">
+          Ce dossier est <strong>clôturé</strong> — plus aucune modification n'est possible.
+        </div>
+      }
+    </aside>
+
+  </div>
+
+  <!-- ═══════ Filet du bas — identité ASCE-LC ═══════ -->
+  <div class="hero__filet"></div>
+
+</article>

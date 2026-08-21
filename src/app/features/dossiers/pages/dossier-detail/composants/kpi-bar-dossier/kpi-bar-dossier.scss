@@ -1,0 +1,153 @@
+:host {
+  display: block;
+
+  --ascelc-rouge:      #E30613;
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-500: #78716C;
+  --neutre-700: #44403C;
+}
+
+.kpi-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(29, 29, 27, 0.04);
+
+  @media (max-width: 800px)  { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 500px)  { grid-template-columns: 1fr; }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--neutre-100);
+    text-align: left;
+    transition: all 180ms ease;
+    position: relative;
+    color: inherit;
+
+    &:last-child { border-right: none; }
+
+    @media (max-width: 800px) {
+      &:nth-child(2n) { border-right: none; }
+      &:nth-child(-n+2) { border-bottom: 1px solid var(--neutre-100); }
+    }
+
+    @media (max-width: 500px) {
+      border-right: none;
+      border-bottom: 1px solid var(--neutre-100);
+      &:last-child { border-bottom: none; }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 250ms ease;
+    }
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--neutre-50);
+      &::after { transform: scaleX(1); }
+      .kpi-bar__icone { transform: scale(1.05); }
+    }
+
+    // Style spécial pour la carte "Préjudice" (non-cliquable)
+    &--prejudice {
+      cursor: default;
+      &:hover::after { transform: scaleX(0); }
+    }
+  }
+
+  // Couleurs (accent visible au hover)
+  &__item--personnes  { color: var(--ascelc-vert); }
+  &__item--faits      { color: var(--ascelc-vert-fonce); }
+  &__item--prejudice  { color: var(--ascelc-rouge); }
+  &__item--documents  { color: var(--neutre-700); }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    transition: transform 200ms ease;
+  }
+
+  &__item--personnes .kpi-bar__icone {
+    background: rgba(0, 150, 64, 0.1);
+    color: var(--ascelc-vert);
+  }
+  &__item--faits .kpi-bar__icone {
+    background: rgba(0, 122, 52, 0.1);
+    color: var(--ascelc-vert-fonce);
+  }
+  &__item--prejudice .kpi-bar__icone {
+    background: rgba(227, 6, 19, 0.08);
+    color: var(--ascelc-rouge);
+  }
+  &__item--documents .kpi-bar__icone {
+    background: rgba(29, 29, 27, 0.08);
+    color: var(--neutre-700);
+  }
+
+  &__contenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  &__valeur {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ascelc-noir);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+
+    &--monetaire {
+      font-size: 1.25rem;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+  }
+
+  &__devise {
+    font-size: 0.75rem;
+    color: var(--neutre-500);
+    font-weight: 600;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: var(--neutre-500);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}

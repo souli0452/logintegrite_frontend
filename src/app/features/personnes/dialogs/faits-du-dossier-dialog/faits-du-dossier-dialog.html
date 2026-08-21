@@ -1,0 +1,127 @@
+<div class="dialog-faits">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-faits__header">
+    <div class="dialog-faits__titre-bloc">
+      <div class="dialog-faits__icone">
+        <lucide-icon [name]="icons['FileText']" [size]="20"></lucide-icon>
+      </div>
+      <div class="dialog-faits__titre-texte">
+        <h2 class="dialog-faits__titre">
+          Faits reprochés à {{ data.personneCouranteNom }}
+          @if (!chargement()) {
+            <span class="dialog-faits__count">({{ faitsPropres().length }})</span>
+          }
+        </h2>
+        <p class="dialog-faits__sous-titre">
+          <span class="mono">{{ data.numeroDossier || '' }}</span>
+          @if (data.numeroDossier) { <span class="sep">·</span> }
+          <span>{{ data.dossierIntitule }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="dialog-faits__actions">
+      @if (data.implicationCourante) {
+        <button type="button" class="btn-ajouter-mini"
+                (click)="ajouterFait()"
+                matTooltip="Ajouter un fait à cette personne dans ce dossier">
+          <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+          <span>Ajouter un fait</span>
+        </button>
+      }
+      <button type="button" class="btn-close" (click)="fermer()" aria-label="Fermer">
+        <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════ Body ═══════ -->
+  <div class="dialog-faits__body">
+
+    @if (chargement()) {
+      <div class="chargement">
+        <mat-spinner diameter="32"></mat-spinner>
+        <p>Chargement des faits reprochés…</p>
+      </div>
+    } @else if (erreur()) {
+      <div class="etat-erreur">{{ erreur() }}</div>
+    } @else if (faitsPropres().length === 0) {
+      <div class="etat-vide">
+        <lucide-icon [name]="icons['FileText']" [size]="36"></lucide-icon>
+        <h4>Aucun fait reproché</h4>
+        <p>
+          {{ data.personneCouranteNom }} n'a actuellement aucun fait reproché dans ce dossier.
+        </p>
+        @if (data.implicationCourante) {
+          <button type="button" class="btn-principal-vide" (click)="ajouterFait()">
+            <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+            <span>Ajouter un premier fait</span>
+          </button>
+        }
+      </div>
+    } @else {
+
+      <ul class="liste-faits">
+        @for (fait of faitsPropres(); track fait.id) {
+          <li class="fait-item">
+
+            <!-- Puce statut colorée en tête -->
+            <div class="fait-item__marqueur">
+              <div class="statut-pastille"
+                   [class]="'statut-pastille--' + variantStatut(fait.statutValidation)">
+                <lucide-icon [name]="iconeStatut(fait.statutValidation)" [size]="14"></lucide-icon>
+              </div>
+            </div>
+
+            <div class="fait-item__contenu">
+              <!-- Ligne 1 : type infraction -->
+              <div class="fait-item__ligne-titre">
+                <h4 class="fait-item__type">
+                  {{ fait.typeInfractionLibelle || 'Infraction non typée' }}
+                </h4>
+              </div>
+
+              <!-- Ligne 2 : description -->
+              @if (fait.description) {
+                <p class="fait-item__description">{{ fait.description }}</p>
+              }
+
+              <!-- Ligne 3 : métadonnées -->
+              <div class="fait-item__meta">
+                @if (fait.dateFaits) {
+                  <span class="chip">
+                    <lucide-icon [name]="icons['Calendar']" [size]="10"></lucide-icon>
+                    {{ fait.dateFaits | date:'dd/MM/yyyy':'':'fr' }}
+                  </span>
+                }
+                @if (fait.lieuPrecis || fait.zoneGeographiqueLibelle) {
+                  <span class="chip">
+                    <lucide-icon [name]="icons['MapPin']" [size]="10"></lucide-icon>
+                    {{ fait.lieuPrecis || fait.zoneGeographiqueLibelle }}
+                  </span>
+                }
+                @if (fait.montantPrejudice) {
+                  <span class="chip chip--montant">
+                    <lucide-icon [name]="icons['Coins']" [size]="10"></lucide-icon>
+                    {{ fait.montantPrejudice | currency:(fait.devise || 'XOF'):'symbol':'1.0-0':'fr' }}
+                  </span>
+                }
+                <span class="chip"
+                      [class]="'chip--statut-' + variantStatut(fait.statutValidation)">
+                  {{ libelleStatut(fait.statutValidation) }}
+                </span>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+
+    }
+  </div>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="dialog-faits__footer">
+    <button type="button" class="btn-fermer" (click)="fermer()">Fermer</button>
+  </footer>
+</div>

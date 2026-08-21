@@ -1,0 +1,305 @@
+@use 'sass:list';
+
+:host {
+  /* CHARTE GRAPHIQUE OFFICIELLE ASCE-LC */
+  --ascelc-vert: #009640;
+  --ascelc-vert-fonce: #007a33;
+  --ascelc-vert-clair: #e6f5ec;
+  --ascelc-rouge: #E30613;
+  --ascelc-rouge-fonce: #b8050f;
+  --ascelc-rouge-clair: #fce8ea;
+  --ascelc-jaune: #FFDD00;
+  --ascelc-jaune-fonce: #b39a00;
+  --ascelc-noir: #1D1D1B;
+  --ascelc-blanc: #FFFFFF;
+
+  /* Gris neutres */
+  --gris-700: #4a4a48;
+  --gris-500: #7a7a78;
+  --gris-300: #d4d4d2;
+  --gris-200: #e5e5e3;
+  --gris-100: #f2f2f0;
+  --gris-50: #f8f8f6;
+
+  display: block;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  color: var(--ascelc-noir);
+}
+
+/* ==========================================================================
+   🛠️ UTILS & PLACEHOLDERS (Mutualisation)
+   ========================================================================== */
+%flex-center { display: flex; align-items: center; }
+%flex-between { @extend %flex-center; justify-content: space-between; }
+%truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+%carte-base {
+  background: var(--ascelc-blanc);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+%list-item-border {
+  border-bottom: 1px solid #f1f5f9;
+  &:last-child { border-bottom: none; }
+}
+
+/* ==========================================================================
+   LAYOUTS / GRILLES GLOBALES
+   ========================================================================== */
+// Règles communes à tous les blocs du dashboard
+.dashboard-cartes, .dashboard-metriques, .performance-section, 
+.dashboard-graphiques, .dashboard-triple, .dashboard-bas {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+// Définitions des colonnes
+.dashboard-cartes { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.dashboard-metriques { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.performance-section { grid-template-columns: 1fr 1fr; }
+.dashboard-graphiques { grid-template-columns: 3fr 2fr; }
+.dashboard-triple { grid-template-columns: repeat(3, 1fr); }
+.dashboard-bas { grid-template-columns: 2fr 1fr; }
+
+// Regroupement du Responsive
+@media (max-width: 992px) {
+  .dashboard-graphiques, .dashboard-triple, .dashboard-bas { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .performance-section { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   COMPOSANTS STANDARDS
+   ========================================================================== */
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  gap: 1rem;
+  color: rgba(29, 29, 27, 0.6);
+  font-weight: 500;
+}
+
+.executive-banner {
+  @extend %flex-between;
+  background: linear-gradient(135deg, var(--ascelc-vert) 0%, var(--ascelc-vert-fonce) 100%);
+  color: var(--ascelc-blanc);
+  padding: 1.75rem 2rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 150, 64, 0.2);
+
+  &__left {
+    .executive-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+    p { margin: 0.25rem 0 0; opacity: 0.9; font-size: 0.875rem; }
+  }
+
+  &__right {
+    text-align: right;
+    .executive-date { font-size: 0.875rem; font-weight: 600; text-transform: capitalize; }
+    .executive-status {
+      @extend %flex-center;
+      gap: 0.5rem; font-size: 0.8rem; margin-top: 0.5rem;
+      background: rgba(255, 255, 255, 0.15); padding: 0.25rem 0.75rem; border-radius: 20px;
+      .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background-color: var(--ascelc-jaune);
+        box-shadow: 0 0 8px rgba(255, 221, 0, 0.6);
+      }
+    }
+  }
+}
+
+.quick-actions {
+  display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  button { @extend %flex-center; gap: 0.5rem; border-radius: 8px; font-weight: 500; }
+}
+
+/* ==========================================================================
+   CARTES MULTIPLES (Génériques, Graphes, Métriques, Performances)
+   ========================================================================== */
+.carte, .carte-graphique, .carte-metrique { @extend %carte-base; }
+
+.carte {
+  &__header { @extend %flex-between; margin-bottom: 1rem; }
+  &__titre { font-size: 1rem; font-weight: 600; margin: 0 0 1rem; }
+  &__titre--sans-marge { margin: 0; }
+  &__vide, &-vide {
+    color: rgba(29, 29, 27, 0.5); font-size: 0.875rem;
+    text-align: center; padding: 2rem 0;
+  }
+  &__entete-avec-icone {
+    @extend %flex-center; gap: 0.5rem; margin-bottom: 0.875rem;
+    lucide-icon { color: var(--ascelc-vert); }
+  }
+}
+
+.carte-graphique {
+  &__titre { font-size: 1rem; font-weight: 600; margin: 0 0 1rem; }
+  &__zone { height: 280px; position: relative; }
+}
+
+.carte-metrique {
+  border-radius: 10px;
+  &__label { font-size: 0.8rem; color: rgba(29, 29, 27, 0.6); margin-bottom: 0.5rem; font-weight: 500; }
+  &__valeur { font-size: 1.6rem; font-weight: 700; }
+  &__unite { font-size: 0.9rem; font-weight: 400; color: rgba(29, 29, 27, 0.5); margin-left: 0.25rem; }
+}
+
+.performance-carte {
+  @extend %carte-base;
+  padding: 1.25rem 1.4rem;
+  display: flex; gap: 1rem;
+  box-shadow: 0 1px 3px rgba(29, 29, 27, 0.05);
+  transition: box-shadow 200ms ease;
+  
+  &:hover { box-shadow: 0 4px 12px rgba(29, 29, 27, 0.08); }
+  &__icone { @extend %flex-center; justify-content: center; width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; }
+  &--delai &__icone { background: var(--ascelc-vert-clair); color: var(--ascelc-vert); }
+  &--completude &__icone { background: rgba(255, 221, 0, 0.15); color: var(--ascelc-jaune-fonce); }
+  
+  &__contenu { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+  &__label { font-size: 0.75rem; font-weight: 600; color: var(--gris-500); text-transform: uppercase; letter-spacing: 0.05em; }
+  &__ligne-valeur { display: flex; align-items: baseline; gap: 0.5rem; }
+  &__valeur { font-size: 2rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  &__unite { font-size: 0.875rem; font-weight: 500; color: var(--gris-500); }
+  &__hint { font-size: 0.72rem; color: var(--gris-500); line-height: 1.4; margin-top: 0.15rem; }
+}
+
+/* ==========================================================================
+   ELEMENTS SPECIFIQUES (Jauges, Liens, Barres)
+   ========================================================================== */
+.lien-voir-tout {
+  @extend %flex-center; gap: 0.25rem; color: var(--ascelc-vert); font-size: 0.85rem; font-weight: 600; text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+.jauge-completude {
+  @extend %flex-center; gap: 0.75rem; margin-top: 0.25rem; margin-bottom: 0.15rem;
+  &__barre { flex: 1; height: 10px; background: var(--gris-100); border-radius: 5px; overflow: hidden; position: relative; }
+  &__remplissage {
+    height: 100%; border-radius: 5px; transition: width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    &--bas { background: linear-gradient(90deg, var(--ascelc-rouge), #ff4444); }
+    &--moyen { background: linear-gradient(90deg, #ff9800, var(--ascelc-jaune)); }
+    &--haut { background: linear-gradient(90deg, var(--ascelc-vert), #4caf50); }
+  }
+  &__valeur { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; min-width: 60px; text-align: right; }
+}
+
+/* ==========================================================================
+   LISTES (Activités, Dossiers, Top, Répartitions)
+   ========================================================================== */
+.liste-activites, .liste-dossiers, .liste-top { list-style: none; padding: 0; margin: 0; }
+
+.liste-activites {
+  &__item { padding: 0.6rem 0; @extend %list-item-border; }
+  &__desc { font-size: 0.85rem; color: rgba(29, 29, 27, 0.85); }
+  &__date { font-size: 0.75rem; color: rgba(29, 29, 27, 0.5); margin-top: 0.15rem; }
+}
+
+.liste-dossiers {
+  &__item {
+    @extend %flex-between; padding: 0.75rem 0.5rem; border-radius: 6px; cursor: pointer; transition: background-color 0.15s ease;
+    @extend %list-item-border;
+    &:hover { background-color: #f8fafc; }
+  }
+  &__titre { font-size: 0.9rem; font-weight: 600; }
+  &__meta { @extend %flex-center; gap: 0.5rem; font-size: 0.78rem; color: rgba(29, 29, 27, 0.6); margin-top: 0.2rem; }
+  .badge-numero { background: #e2e8f0; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600; }
+  &__source { font-size: 0.8rem; color: var(--ascelc-vert); background: rgba(0, 150, 64, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500; }
+}
+
+.liste-top {
+  &__item { @extend %flex-center; gap: 0.75rem; padding: 0.5rem 0; @extend %list-item-border; }
+  &__rang { width: 22px; height: 22px; background: #f1f5f9; border-radius: 50%; @extend %flex-center; justify-content: center; font-size: 0.75rem; font-weight: 700; }
+  &__libelle { flex: 1; font-size: 0.85rem; color: rgba(29, 29, 27, 0.85); }
+  &__nombre { font-weight: 700; font-size: 0.875rem; color: var(--ascelc-vert); }
+}
+
+.liste-repartition {
+  display: flex; flex-direction: column; gap: 0.75rem;
+  .ligne-repartition {
+    @extend %flex-between; font-size: 0.875rem; padding-bottom: 0.5rem; border-bottom: 1px dashed #e2e8f0;
+    &__label { color: rgba(29, 29, 27, 0.8); }
+    &__valeur { @extend %flex-center; gap: 0.35rem; }
+    &__pct { color: rgba(29, 29, 27, 0.5); font-size: 0.75rem; }
+  }
+}
+
+.ligne-repartition-viz {
+  padding: 0.5rem 0;
+  &:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+  &__entete { @extend %flex-between; gap: 0.75rem; margin-bottom: 0.4rem; }
+  &__label { flex: 1; font-size: 0.85rem; color: var(--gris-700); font-weight: 500; @extend %truncate; }
+  &__valeur { display: flex; align-items: baseline; gap: 0.35rem; flex-shrink: 0;
+    strong { font-size: 0.9rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  }
+  &__pct { font-size: 0.72rem; color: var(--gris-500); }
+  &__barre { width: 100%; height: 5px; background: var(--gris-100); border-radius: 3px; overflow: hidden; }
+  &__remplissage {
+    height: 100%; border-radius: 3px; transition: width 600ms ease;
+    background: linear-gradient(90deg, var(--ascelc-vert), var(--ascelc-vert-fonce));
+    &--rouge { background: linear-gradient(90deg, var(--ascelc-rouge), var(--ascelc-rouge-fonce)); }
+  }
+}
+
+/* ==========================================================================
+   TOP STRUCTURES IMPLIQUEES
+   ========================================================================== */
+.top-structures-section { margin-top: 0.25rem; margin-bottom: 1.5rem; }
+.top-structures { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.top-structure-ligne {
+  @extend %flex-center; gap: 0.875rem; padding: 0.75rem 0.875rem;
+  background: var(--gris-50); border-radius: 8px; transition: background 200ms ease;
+  &:hover { background: var(--ascelc-vert-clair); }
+
+  &__rang {
+    @extend %flex-center; justify-content: center; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--ascelc-blanc); border: 1px solid var(--gris-200);
+    font-size: 0.75rem; font-weight: 700; color: var(--gris-700);
+
+    // Boucle générant automatiquement les médailles Or/Argent/Bronze
+    $medailles: (
+      "or": (#ffd700, #ffb347, #ffb347, var(--ascelc-noir)),
+      "argent": (#e8e8e8, #c0c0c0, #b0b0b0, var(--ascelc-noir)),
+      "bronze": (#cd7f32, #a0522d, #8b4513, var(--ascelc-blanc))
+    );
+    @each $type, $c in $medailles {
+      &--#{$type} {
+        background: linear-gradient(135deg, list.nth($c, 1), list.nth($c, 2));
+        border-color: list.nth($c, 3); color: list.nth($c, 4);
+      }
+    }
+  }
+
+  &__contenu { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+  &__libelle { font-size: 0.85rem; font-weight: 600; @extend %truncate; }
+  &__barre { height: 4px; background: var(--gris-200); border-radius: 2px; overflow: hidden; }
+  &__remplissage { height: 100%; background: linear-gradient(90deg, var(--ascelc-vert), var(--ascelc-vert-fonce)); border-radius: 2px; transition: width 700ms ease; }
+  &__nombre { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; font-size: 1.125rem; font-weight: 700; color: var(--ascelc-vert-fonce); line-height: 1; font-variant-numeric: tabular-nums; }
+  &__nombre-libelle { font-size: 0.625rem; font-weight: 500; color: var(--gris-500); margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
+    &__contenu { min-width: 60%; }
+    &__nombre { align-items: flex-start; }
+  }
+}

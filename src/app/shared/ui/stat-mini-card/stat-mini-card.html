@@ -1,0 +1,12 @@
+<div class="stat-mini" [attr.data-couleur]="couleur()">
+  <div class="stat-mini__icone">
+    <lucide-icon [name]="icone()" [size]="20"></lucide-icon>
+  </div>
+  <div class="stat-mini__body">
+    <div class="stat-mini__libelle">{{ libelle() }}</div>
+    <div class="stat-mini__valeur">{{ valeur() }}</div>
+    @if (soustitre()) {
+      <div class="stat-mini__soustitre">{{ soustitre() }}</div>
+    }
+  </div>
+</div>

@@ -1,0 +1,272 @@
+<app-page-header titre="Nouveau dossier" sousTitre="Remplissez les informations nécessaires pour créer un nouveau dossier.">
+  <button mat-button [routerLink]="['/personnes', personneId]">Retour</button>
+</app-page-header>
+
+@if (chargementPersonne()) {
+  <div class="chargement"><mat-spinner diameter="40"></mat-spinner></div>
+} @else {
+
+<div class="page-creation-dossier">
+
+  <aside class="panneau-personne">
+    <div class="carte-info">
+      <div class="carte-info__entete">Informations</div>
+      <p class="carte-info__texte">Un dossier ne peut être créé que pour une personne existante.</p>
+    </div>
+
+    <div class="carte-personne">
+      <div class="carte-personne__titre">Résumé de la personne</div>
+      <div class="carte-personne__avatar">
+        @if (resume()?.typePersonne === 'PHYSIQUE') {
+          <lucide-icon [name]="icons['User']" [size]="28"></lucide-icon>
+        } @else {
+          <lucide-icon [name]="icons['Building2']" [size]="28"></lucide-icon>
+        }
+      </div>
+
+      @if (detailPhysique(); as p) {
+        <dl class="liste-champs">
+          <dt>Type</dt><dd>Personne physique</dd>
+          <dt>Nom complet</dt><dd>{{ resume()?.nomAffichage }}</dd>
+          <dt>Sexe</dt><dd>{{ p.sexe === 'M' ? 'Masculin' : 'Féminin' }}</dd>
+          <dt>Date de naissance</dt><dd>{{ p.dateNaissance }}</dd>
+          <dt>Nationalité</dt><dd>{{ p.nationalite }}</dd>
+          <dt>Profession</dt><dd>{{ p.profession || '—' }}</dd>
+          <dt>Téléphone</dt><dd>{{ p.telephone || '—' }}</dd>
+          <dt>Adresse</dt><dd>{{ p.adresse || '—' }}</dd>
+        </dl>
+      } @else if (detailMorale(); as m) {
+        <dl class="liste-champs">
+          <dt>Type</dt><dd>Personne morale</dd>
+          <dt>Dénomination</dt><dd>{{ resume()?.nomAffichage }}</dd>
+          <dt>Forme juridique</dt><dd>{{ m.formeJuridique }}</dd>
+          <dt>Secteur</dt><dd>{{ m.secteurActivite }}</dd>
+          <dt>Siège social</dt><dd>{{ m.siegeSocial }}</dd>
+          <dt>Téléphone</dt><dd>{{ m.telephone || '—' }}</dd>
+          <dt>Email</dt><dd>{{ m.email || '—' }}</dd>
+        </dl>
+      }
+
+      @if (venantDeCreation) {
+        <div class="bandeau-succes">Personne créée avec succès</div>
+      }
+
+      <button mat-stroked-button class="bouton-modifier" [routerLink]="['/personnes', personneId]">
+        <lucide-icon [name]="icons['Pencil']" [size]="14"></lucide-icon>
+        <span>Modifier la personne</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="panneau-formulaire">
+    <mat-stepper orientation="horizontal" [linear]="false">
+
+      <mat-step label="Dossier" [completed]="formDossier.valid">
+        <form [formGroup]="formDossier" class="form-grille">
+          <mat-form-field appearance="outline">
+            <mat-label>Numéro du dossier</mat-label>
+            <input matInput formControlName="numeroDossier" placeholder="Si manuel">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Intitulé du dossier *</mat-label>
+            <input matInput formControlName="intitule">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Date d'ouverture *</mat-label>
+            <input matInput [matDatepicker]="pOuverture" formControlName="dateOuverture">
+            <mat-datepicker-toggle matIconSuffix [for]="pOuverture"></mat-datepicker-toggle>
+            <mat-datepicker #pOuverture></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Source du signalement *</mat-label>
+            <mat-select formControlName="sourceSignalementId">
+              @for (s of sources(); track s.id) { <mat-option [value]="s.id">{{ s.libelle }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-grille__full">
+            <mat-label>Résumé des faits</mat-label>
+            <textarea matInput formControlName="descriptionContexte" rows="4" maxlength="2000"></textarea>
+          </mat-form-field>
+        </form>
+        <div class="actions-etape">
+          <button mat-flat-button color="primary" type="button" matStepperNext [disabled]="formDossier.invalid">Suivant : Faits reprochés</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Faits reprochés">
+        <form [formGroup]="formFaitCourant" class="form-grille">
+          <mat-form-field appearance="outline">
+            <mat-label>Type d'infraction *</mat-label>
+            <mat-select formControlName="typeInfractionId">
+              @for (t of typesInfraction(); track t.id) { <mat-option [value]="t.id">{{ t.libelle }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Date des faits *</mat-label>
+            <input matInput [matDatepicker]="pFaits" formControlName="dateFaits">
+            <mat-datepicker-toggle matIconSuffix [for]="pFaits"></mat-datepicker-toggle>
+            <mat-datepicker #pFaits></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Zone géographique</mat-label>
+            <mat-select formControlName="zoneGeographiqueId">
+              @for (z of zones(); track z.id) { <mat-option [value]="z.id">{{ z.libelle }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Lieu précis</mat-label>
+            <input matInput formControlName="lieuPrecis">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-grille__full">
+            <mat-label>Description *</mat-label>
+            <textarea matInput formControlName="description" rows="2"></textarea>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Montant du préjudice *</mat-label>
+            <input matInput type="number" formControlName="montantPrejudice">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Devise *</mat-label>
+            <input matInput formControlName="devise">
+          </mat-form-field>
+        </form>
+        <button mat-stroked-button type="button" (click)="ajouterFait()" [disabled]="formFaitCourant.invalid">+ Ajouter à la liste</button>
+
+        @if (faitsAccumules().length > 0) {
+          <div class="liste-accumulee">
+            @for (f of faitsAccumules(); track $index) {
+              <div class="ligne-accumulee">
+                <span>{{ f.description }} · {{ f.montantPrejudice | currency: f.devise }}</span>
+                <button mat-icon-button type="button" (click)="retirerFait($index)">
+                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                </button>
+              </div>
+            }
+          </div>
+        }
+        <div class="actions-etape actions-etape--entre">
+          <button mat-button type="button" matStepperPrevious>Précédent</button>
+          <button mat-flat-button color="primary" type="button" matStepperNext>Suivant : Personnes impliquées</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Personnes impliquées" [completed]="etapePersonnesValide">
+        @for (ligne of lignesImplication(); track ligne; let i = $index) {
+          <div class="carte-implication" [formGroup]="ligne">
+            <div class="carte-implication__entete">
+              @if (ligne.value.verrouillee) {
+                <span class="badge-origine">{{ resume()?.nomAffichage }} (personne d'origine)</span>
+              } @else {
+                <mat-form-field appearance="outline" class="pleine-largeur">
+                  <mat-label>Rechercher une personne existante *</mat-label>
+                  <input matInput [formControl]="rechercheControl(ligne)"
+                         (input)="chercherPersonne(ligne, rechercheControl(ligne).value ?? '')"
+                         placeholder="Nom ou dénomination...">
+                </mat-form-field>
+                <button mat-icon-button type="button" (click)="retirerLignePersonne(i)">
+                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                </button>
+              }
+            </div>
+
+            @if (!ligne.value.verrouillee && optionsPour(ligne).length > 0) {
+              <div class="resultats-recherche">
+                @for (option of optionsPour(ligne); track option.id) {
+                  <button type="button" class="resultat-item" (click)="choisirPersonne(ligne, option)">{{ option.nomAffichage }}</button>
+                }
+              </div>
+            }
+
+            <div class="form-grille">
+              <mat-form-field appearance="outline">
+                <mat-label>Rôle d'implication *</mat-label>
+                <mat-select formControlName="roleImplicationId">
+                  @for (r of roles(); track r.id) { <mat-option [value]="r.id">{{ r.libelle }}</mat-option> }
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Fonction occupée</mat-label>
+                <input matInput formControlName="fonctionOccupee">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Date de début *</mat-label>
+                <input matInput [matDatepicker]="pDebut" formControlName="dateDebut">
+                <mat-datepicker-toggle matIconSuffix [for]="pDebut"></mat-datepicker-toggle>
+                <mat-datepicker #pDebut></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Date de fin</mat-label>
+                <input matInput [matDatepicker]="pFin" formControlName="dateFin">
+                <mat-datepicker-toggle matIconSuffix [for]="pFin"></mat-datepicker-toggle>
+                <mat-datepicker #pFin></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        }
+
+        <button mat-stroked-button type="button" (click)="ajouterLignePersonne()">+ Ajouter une autre personne impliquée</button>
+
+        <div class="actions-etape actions-etape--entre">
+          <button mat-button type="button" matStepperPrevious>Précédent</button>
+          <button mat-flat-button color="primary" type="button" matStepperNext [disabled]="!etapePersonnesValide">Suivant : Documents</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Documents">
+        <form [formGroup]="formDocumentCourant" class="form-grille">
+          <mat-form-field appearance="outline">
+            <mat-label>Type de document *</mat-label>
+            <mat-select formControlName="typeDocumentId">
+              @for (t of typesDocument(); track t.id) { <mat-option [value]="t.id">{{ t.libelle }}</mat-option> }
+            </mat-select>
+          </mat-form-field>
+          <div class="champ-fichier">
+            <input type="file" (change)="surSelectionFichier($event)">
+          </div>
+        </form>
+        <button mat-stroked-button type="button" (click)="ajouterDocumentEnAttente()" [disabled]="!fichierSelectionne() || formDocumentCourant.invalid">
+          <lucide-icon [name]="icons['Upload']" [size]="14"></lucide-icon>
+          <span>Mettre en attente</span>
+        </button>
+
+        @if (documentsEnAttente().length > 0) {
+          <div class="liste-accumulee">
+            @for (d of documentsEnAttente(); track $index) {
+              <div class="ligne-accumulee">
+                <span>{{ d.fichier.name }} · {{ libelleTypeDocument(d.typeDocumentId) }}</span>
+                <button mat-icon-button type="button" (click)="retirerDocument($index)">
+                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                </button>
+              </div>
+            }
+          </div>
+        }
+        <p class="aide-etape">Les documents seront réellement envoyés uniquement à la création finale du dossier.</p>
+
+        <div class="actions-etape actions-etape--entre">
+          <button mat-button type="button" matStepperPrevious>Précédent</button>
+          <button mat-flat-button color="primary" type="button" matStepperNext>Suivant : Récapitulatif</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Récapitulatif">
+        <div class="recap">
+          <div class="recap__ligne"><strong>Dossier :</strong> {{ formDossier.value.intitule }}</div>
+          <div class="recap__ligne"><strong>Personnes impliquées :</strong> {{ lignesImplication().length }}</div>
+          <div class="recap__ligne"><strong>Faits reprochés :</strong> {{ faitsAccumules().length }}</div>
+          <div class="recap__ligne"><strong>Documents :</strong> {{ documentsEnAttente().length }}</div>
+          <p class="recap__aide">Vérifiez les informations dans chaque étape avant de valider — un seul clic enregistre tout.</p>
+        </div>
+        <div class="actions-etape actions-etape--entre">
+          <button mat-button type="button" matStepperPrevious [disabled]="enCours()">Précédent</button>
+          <button mat-flat-button color="primary" type="button" [disabled]="!formulaireValide || enCours()" (click)="creerLeDossier()">
+            @if (enCours()) { <mat-spinner diameter="18"></mat-spinner> } @else { Créer le dossier }
+          </button>
+        </div>
+      </mat-step>
+
+    </mat-stepper>
+  </div>
+
+</div>
+}

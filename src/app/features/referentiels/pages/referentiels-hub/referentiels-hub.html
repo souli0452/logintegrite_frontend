@@ -1,0 +1,31 @@
+<app-page-header
+  titre="Referentiels"
+  sousTitre="Administrer les nomenclatures de l'application.">
+</app-page-header>
+
+<div class="hub-grille">
+  @for (carte of cartes; track carte.route) {
+    @if (carte.disponible) {
+      <a [routerLink]="carte.route" class="hub-carte hub-carte--active">
+        <div class="hub-carte__icone">
+          <lucide-icon [name]="carte.icone" [size]="24"></lucide-icon>
+        </div>
+        <div class="hub-carte__body">
+          <div class="hub-carte__titre">{{ carte.titre }}</div>
+          <div class="hub-carte__description">{{ carte.description }}</div>
+        </div>
+        <lucide-icon [name]="icons.ChevronRight" [size]="20" class="hub-carte__chevron"></lucide-icon>
+      </a>
+    } @else {
+      <div class="hub-carte hub-carte--inactive">
+        <div class="hub-carte__icone">
+          <lucide-icon [name]="carte.icone" [size]="24"></lucide-icon>
+        </div>
+        <div class="hub-carte__body">
+          <div class="hub-carte__titre">{{ carte.titre }}</div>
+          <div class="hub-carte__description">Bientot disponible.</div>
+        </div>
+      </div>
+    }
+  }
+</div>

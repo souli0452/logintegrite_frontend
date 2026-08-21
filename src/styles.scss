@@ -1,0 +1,129 @@
+@use '@angular/material' as mat;
+
+/* ===============================================
+   THEME MATERIAL - couleurs institutionnelles ASCE-LC
+   =============================================== */
+
+$asce-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$green-palette,
+    tertiary: mat.$red-palette,
+  ),
+  typography: (
+    brand-family: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+    plain-family: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
+  ),
+  density: (
+    scale: -1,
+  )
+));
+
+html {
+  @include mat.all-component-themes($asce-theme);
+}
+
+/* ===============================================
+   VARIABLES CSS - palette ASCE-LC + statuts metier
+   Utilisables dans tous les composants via var(--...)
+   =============================================== */
+
+:root {
+  /* Charte institutionnelle */
+  --asce-green: #009640;
+  --asce-red: #E30613;
+  --asce-yellow: #FFDD00;
+  --asce-black: #1D1D1B;
+
+  /* Fonds neutres */
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-hover: #f1f5f9;
+
+  /* Textes */
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+
+  /* Bordures */
+  --border-default: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Statuts metier */
+  --status-success: #166534;
+  --status-success-bg: #dcfce7;
+  --status-warning: #b45309;
+  --status-warning-bg: #fef3c7;
+  --status-danger: #b91c1c;
+  --status-danger-bg: #fee2e2;
+  --status-neutral: #475569;
+  --status-neutral-bg: #f1f5f9;
+
+  /* Espacements */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Rayons de bordure */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+
+  /* Palette de la barre laterale (chrome institutionnel sombre,
+     distinct du vert d'action utilise sur les boutons/CTA) */
+  --sidebar-bg: #04331d;
+  --sidebar-bg-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-bg-active: rgba(212, 175, 55, 0.15);
+  --sidebar-accent: #D4AF37;
+  --sidebar-accent-contrast: #003d1f;
+  --sidebar-text: #e8edf2;
+  --sidebar-text-muted: rgba(232, 237, 242, 0.7);
+  --sidebar-border: rgba(212, 175, 55, 0.35);
+
+  /* Teinte de fond pour les etats "rouge" (hover, alertes) */
+  --asce-red-bg: rgba(227, 6, 19, 0.12);
+}
+
+/* ===============================================
+   RESET / BASE
+   =============================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--asce-green);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

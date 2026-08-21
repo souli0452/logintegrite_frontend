@@ -1,0 +1,52 @@
+<app-page-header
+  titre="Categories d'infraction"
+  [sousTitre]="'Niveau 1 de la nomenclature. ' + categories().length + ' categories.'">
+  <button mat-flat-button color="primary" (click)="ouvrir(null)">
+    <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+    <span>Nouvelle categorie</span>
+  </button>
+</app-page-header>
+
+@if (chargement()) {
+  <div class="liste-loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+} @else if (categories().length === 0) {
+  <app-empty-state
+    titre="Aucune categorie"
+    message="Les categories d'infraction apparaitront ici une fois creees."
+    [icone]="icons['FolderTree']">
+    <button mat-flat-button color="primary" (click)="ouvrir(null)">
+      Creer la premiere
+    </button>
+  </app-empty-state>
+} @else {
+  <div class="liste-table">
+    <table mat-table [dataSource]="categories()">
+      <ng-container matColumnDef="libelle">
+        <th mat-header-cell *matHeaderCellDef>Libelle</th>
+        <td mat-cell *matCellDef="let categorie" class="cellule-strong">{{ categorie.libelle }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let categorie" class="cellule-muted">{{ categorie.description ?? '—' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="cellule-right">Actions</th>
+        <td mat-cell *matCellDef="let categorie" class="cellule-right">
+          <button mat-icon-button matTooltip="Modifier" (click)="ouvrir(categorie)">
+            <lucide-icon [name]="icons['Pencil']" [size]="16"></lucide-icon>
+          </button>
+          <button mat-icon-button matTooltip="Supprimer" (click)="supprimer(categorie)">
+            <lucide-icon [name]="icons['Trash2']" [size]="16" class="icone-danger"></lucide-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colonnesAffichees"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnesAffichees;"></tr>
+    </table>
+  </div>
+}

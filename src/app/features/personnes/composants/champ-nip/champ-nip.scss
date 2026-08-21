@@ -1,0 +1,110 @@
+:host {
+  display: block;
+}
+
+.champ-nip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.champ-full {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0;
+  }
+}
+
+// ─── Icônes de suffixe ────────────────────────────────────────────────────
+.ico-neutre {
+  color: var(--text-muted);
+}
+
+.ico-succes {
+  color: var(--asce-green);
+}
+
+.ico-alerte {
+  color: #D97706;
+}
+
+// ─── Alerte doublon (cliquable) ────────────────────────────────────────────
+.alerte-doublon {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+  border-radius: var(--radius-sm);
+  animation: apparition 200ms ease-out;
+
+  lucide-icon {
+    color: #B45309;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__contenu {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__titre {
+    margin: 0 0 3px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #78350F;
+  }
+
+  &__detail {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #92400E;
+    line-height: 1.4;
+  }
+
+  &__lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #B45309;
+    text-decoration: none;
+    border-bottom: 1px dashed currentColor;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #78350F;
+      border-bottom-style: solid;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+  }
+}
+
+// ─── Alerte disponible ────────────────────────────────────────────────────
+.alerte-disponible {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--asce-green-dark, #005a2b);
+  padding: 4px 0;
+
+  lucide-icon {
+    color: var(--asce-green);
+  }
+}
+
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

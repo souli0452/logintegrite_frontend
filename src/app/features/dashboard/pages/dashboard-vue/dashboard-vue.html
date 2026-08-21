@@ -1,0 +1,250 @@
+<app-page-header
+  titre="Tableaux de bord"
+  [sousTitre]="'Bienvenue, ' + (auth.username() ?? 'Utilisateur') + ' • Vue exécutive des dossiers d\'intégrité.'">
+  <button mat-flat-button color="primary" (click)="charger()">
+    <lucide-icon [name]="icons['RotateCw']" [size]="18"></lucide-icon>
+    <span>Actualiser</span>
+  </button>
+</app-page-header>
+
+@if (chargement()) {
+  <div class="dashboard-loading">
+    <mat-spinner diameter="42"></mat-spinner>
+    <p>Chargement des métriques exécutives...</p>
+  </div>
+} @else if (donnees(); as d) {
+
+  <!-- Banniere executive -->
+  <section class="executive-banner">
+    <div class="executive-banner__left">
+      <div class="executive-badge">ASCE-LC</div>
+      <h1>Centre National de Supervision</h1>
+      <p>Pilotage global des signalements, dossiers d'intégrité et chaîne de validation.</p>
+    </div>
+    <div class="executive-banner__right">
+      <div class="executive-date">{{ today | date:'EEEE dd MMMM yyyy':'':'fr' }}</div>
+      <div class="executive-status">
+        <span class="dot"></span>
+        Système opérationnel
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI executifs (5 cartes) -->
+  <div class="dashboard-cartes">
+    <app-stat-card-executif
+      libelle="Personnes impliquées"
+      [valeur]="d.totalPersonnesImpliquees"
+      [delta]="d.deltaPersonnes" />
+    <app-stat-card-executif
+      libelle="Dossiers ouverts"
+      [valeur]="d.totalDossiers"
+      [delta]="d.deltaDossiers" />
+    <app-stat-card-executif
+      libelle="Dossiers validés"
+      [valeur]="d.totalDossiersValides"
+      [delta]="d.deltaValides" />
+    <app-stat-card-executif
+      libelle="En attente"
+      [valeur]="d.totalDossiersEnAttente"
+      [delta]="d.deltaEnAttente" />
+    <app-stat-card-executif
+      libelle="Dossiers rejetés"
+      [valeur]="d.totalDossiersRejetes"
+      [delta]="d.deltaRejetes" />
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="quick-actions">
+    <button mat-stroked-button color="primary" routerLink="/personnes">
+      <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
+      <span>Nouvelle personne</span>
+    </button>
+    <button mat-stroked-button routerLink="/dossiers/nouveau">
+      <lucide-icon [name]="icons['FolderPlus']" [size]="16"></lucide-icon>
+      <span>Nouveau dossier</span>
+    </button>
+    <button mat-stroked-button routerLink="/validation">
+      <lucide-icon [name]="icons['CheckSquare']" [size]="16"></lucide-icon>
+      <span>Validation</span>
+    </button>
+    <button mat-stroked-button routerLink="/rapports">
+      <lucide-icon [name]="icons['FileText']" [size]="16"></lucide-icon>
+      <span>Rapports</span>
+    </button>
+  </div>
+
+  <!-- Performance operationnelle -->
+  <section class="performance-section">
+    <div class="performance-carte performance-carte--delai">
+      <div class="performance-carte__icone">
+        <lucide-icon [name]="icons['Clock']" [size]="20"></lucide-icon>
+      </div>
+      <div class="performance-carte__contenu">
+        <span class="performance-carte__label">Délai moyen de validation</span>
+        <div class="performance-carte__ligne-valeur">
+          <span class="performance-carte__valeur">{{ d.delaiMoyenValidationJours | number:'1.0-1':'fr' }}</span>
+          <span class="performance-carte__unite">jours</span>
+        </div>
+        <span class="performance-carte__hint">Depuis la création jusqu'à la validation d'un fait</span>
+      </div>
+    </div>
+
+    <div class="performance-carte performance-carte--completude">
+      <div class="performance-carte__icone">
+        <lucide-icon [name]="icons['Target']" [size]="20"></lucide-icon>
+      </div>
+      <div class="performance-carte__contenu">
+        <span class="performance-carte__label">Taux de complétude global</span>
+        <div class="jauge-completude">
+          <div class="jauge-completude__barre">
+            <div class="jauge-completude__remplissage"
+                 [style.width.%]="d.tauxCompletudeGlobal"
+                 [class.jauge-completude__remplissage--bas]="d.tauxCompletudeGlobal < 50"
+                 [class.jauge-completude__remplissage--moyen]="d.tauxCompletudeGlobal >= 50 && d.tauxCompletudeGlobal < 80"
+                 [class.jauge-completude__remplissage--haut]="d.tauxCompletudeGlobal >= 80"></div>
+          </div>
+          <span class="jauge-completude__valeur">{{ d.tauxCompletudeGlobal | number:'1.0-1':'fr' }}%</span>
+        </div>
+        <span class="performance-carte__hint">Faits validés sur le total des faits enregistrés</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Graphiques -->
+  <div class="dashboard-graphiques">
+    <div class="carte-graphique">
+      <h3 class="carte-graphique__titre">Évolution annuelle des dossiers</h3>
+      @if (d.evolutionDossiers && d.evolutionDossiers.length > 0) {
+        <div class="carte-graphique__zone">
+          <canvas #canvasCourbe></canvas>
+        </div>
+      } @else {
+        <div class="carte-vide">
+          <p>Aucune donnée d'évolution disponible.</p>
+        </div>
+      }
+    </div>
+
+    <div class="carte-graphique">
+      <h3 class="carte-graphique__titre">Répartition par catégorie d'infraction</h3>
+      @if (d.parCategorieInfraction && d.parCategorieInfraction.length > 0) {
+        <div class="carte-graphique__zone">
+          <canvas #canvasDonut></canvas>
+        </div>
+      } @else {
+        <div class="carte-vide">
+          <p>Aucune catégorie enregistrée.</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Triple colonne : Regions, Statuts, Activites -->
+  <div class="dashboard-triple">
+
+    <div class="carte">
+      <h3 class="carte__titre">Répartition géographique</h3>
+      @if (d.parRegion && d.parRegion.length > 0) {
+        <div class="liste-repartition">
+          @for (r of d.parRegion; track r.libelle) {
+            <div class="ligne-repartition-viz">
+              <div class="ligne-repartition-viz__entete">
+                <span class="ligne-repartition-viz__label">{{ r.libelle }}</span>
+                <span class="ligne-repartition-viz__valeur">
+                  <strong>{{ r.valeur | number:'1.0-0':'fr' }}</strong>
+                  <span class="ligne-repartition-viz__pct">{{ r.pourcentage }}%</span>
+                </span>
+              </div>
+              <div class="ligne-repartition-viz__barre">
+                <div class="ligne-repartition-viz__remplissage"
+                     [style.width.%]="r.pourcentage"></div>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="carte__vide">Aucune répartition régionale.</p>
+      }
+    </div>
+
+    <div class="carte">
+      <h3 class="carte__titre">Dossiers par statut</h3>
+      @if (d.parStatutDossier && d.parStatutDossier.length > 0) {
+        <div class="liste-repartition">
+          @for (s of d.parStatutDossier; track s.libelle) {
+            <div class="ligne-repartition-viz">
+              <div class="ligne-repartition-viz__entete">
+                <span class="ligne-repartition-viz__label">{{ s.libelle }}</span>
+                <span class="ligne-repartition-viz__valeur">
+                  <strong>{{ s.valeur | number:'1.0-0':'fr' }}</strong>
+                  <span class="ligne-repartition-viz__pct">{{ s.pourcentage }}%</span>
+                </span>
+              </div>
+              <div class="ligne-repartition-viz__barre">
+                <div class="ligne-repartition-viz__remplissage ligne-repartition-viz__remplissage--rouge"
+                     [style.width.%]="s.pourcentage"></div>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="carte__vide">Aucun statut enregistré.</p>
+      }
+    </div>
+
+    <div class="carte">
+      <h3 class="carte__titre">Activités récentes</h3>
+      @if (d.activitesRecentes && d.activitesRecentes.length > 0) {
+        <ul class="liste-activites">
+          @for (a of d.activitesRecentes; track a.dateAction) {
+            <li class="liste-activites__item">
+              <div class="liste-activites__desc">{{ a.description }}</div>
+              <div class="liste-activites__date">{{ a.dateAction | date:'dd/MM HH:mm':'':'fr' }}</div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="carte__vide">Aucune activité récente.</p>
+      }
+    </div>
+  </div>
+
+  <!-- Top structures impliquees -->
+  <section class="top-structures-section">
+    <div class="carte">
+      <div class="carte__entete-avec-icone">
+        <lucide-icon [name]="icons['Building2']" [size]="18"></lucide-icon>
+        <h3 class="carte__titre carte__titre--sans-marge">Top structures les plus impliquées</h3>
+      </div>
+      @if (d.topStructures && d.topStructures.length > 0) {
+        <div class="top-structures">
+          @for (ts of d.topStructures; track ts.rang) {
+            <div class="top-structure-ligne">
+              <div class="top-structure-ligne__rang"
+                   [class.top-structure-ligne__rang--or]="ts.rang === 1"
+                   [class.top-structure-ligne__rang--argent]="ts.rang === 2"
+                   [class.top-structure-ligne__rang--bronze]="ts.rang === 3">
+                #{{ ts.rang }}
+              </div>
+              <div class="top-structure-ligne__contenu">
+                <div class="top-structure-ligne__libelle">{{ ts.libelle }}</div>
+                <div class="top-structure-ligne__barre">
+                  <div class="top-structure-ligne__remplissage"
+                       [style.width.%]="calculerPourcentageStructure(ts.nombre, d.topStructures)"></div>
+                </div>
+              </div>
+              <div class="top-structure-ligne__nombre">
+                {{ ts.nombre }}
+                <span class="top-structure-ligne__nombre-libelle">personne(s)</span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="carte__vide">Aucune structure identifiée pour le moment.</p>
+      }
+    </div>
+  </section>
+
+}

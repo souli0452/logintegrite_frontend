@@ -1,0 +1,11 @@
+<div class="bar-chart">
+  @for (item of donnees(); track item.libelle) {
+    <div class="bar-chart__ligne">
+      <div class="bar-chart__label" [attr.title]="item.libelle">{{ item.libelle }}</div>
+      <div class="bar-chart__zone">
+        <div class="bar-chart__barre" [style.width.%]="pourcentage(item.valeur)"></div>
+      </div>
+      <div class="bar-chart__valeur">{{ item.valeur }}</div>
+    </div>
+  }
+</div>

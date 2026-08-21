@@ -1,0 +1,262 @@
+// Palette ASCE-LC
+$asce-vert:        #009640;
+$asce-vert-fonce:  #007a33;
+$asce-vert-clair:  #e6f5ec;
+$asce-rouge:       #E30613;
+$asce-rouge-fonce: #b8050f;
+$asce-rouge-clair: #fce8ea;
+$asce-noir:        #1D1D1B;
+$asce-blanc:       #FFFFFF;
+
+$gris-700: #4a4a48;
+$gris-500: #7a7a78;
+$gris-300: #d4d4d2;
+$gris-200: #e5e5e3;
+$gris-100: #f2f2f0;
+$gris-50:  #f8f8f6;
+
+$ombre: 0 1px 3px rgba($asce-noir, 0.06);
+$ombre-hover: 0 4px 12px rgba($asce-noir, 0.10);
+$radius: 6px;
+$transition: 200ms ease;
+
+.rapports-page {
+  padding: 20px 32px 40px;
+  background: $gris-50;
+  min-height: 100%;
+}
+
+// === EN-TETE ===
+.rapports-header {
+  margin-bottom: 28px;
+
+  &__titre-zone {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__icone-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: $asce-vert-clair;
+    color: $asce-vert;
+    flex-shrink: 0;
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: $asce-noir;
+    letter-spacing: -0.02em;
+  }
+
+  &__sous-titre {
+    margin: 2px 0 0 0;
+    font-size: 13px;
+    color: $gris-500;
+  }
+}
+
+// === SECTIONS ===
+.rapports-section {
+  margin-bottom: 32px;
+
+  &__titre {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $gris-500;
+
+    lucide-icon { color: $gris-500; }
+  }
+}
+
+.rapports-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 14px;
+}
+
+// === CARTE DE RAPPORT ===
+.carte-rapport {
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  box-shadow: $ombre;
+  transition: all $transition;
+  overflow: hidden;
+
+  &:hover {
+    border-color: rgba($asce-vert, 0.4);
+    box-shadow: $ombre-hover;
+  }
+
+  &--ouverte {
+    border-color: $asce-vert;
+  }
+
+  &__entete {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+  }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    flex-shrink: 0;
+
+    &--pdf {
+      background: $asce-rouge-clair;
+      color: $asce-rouge;
+    }
+
+    &--excel {
+      background: $asce-vert-clair;
+      color: $asce-vert;
+    }
+  }
+
+  &__contenu {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__titre {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: $asce-noir;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: 12.5px;
+    color: $gris-700;
+    line-height: 1.5;
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: $gris-700;
+    background: transparent;
+    border: 1px solid $gris-300;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all $transition;
+    font-family: inherit;
+    white-space: nowrap;
+
+    &:hover {
+      background: $gris-50;
+      border-color: $asce-vert;
+      color: $asce-vert-fonce;
+    }
+  }
+
+  &--ouverte &__toggle {
+    background: $asce-vert-clair;
+    border-color: $asce-vert;
+    color: $asce-vert-fonce;
+
+    lucide-icon { transform: rotate(180deg); }
+  }
+
+  &__params {
+    padding: 4px 18px 18px;
+    border-top: 1px solid $gris-100;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    ::ng-deep .mat-mdc-form-field {
+      width: 100%;
+    }
+  }
+
+  &__champ {
+    margin-bottom: 0;
+  }
+}
+
+// === BOUTONS ===
+.btn-generer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $asce-blanc;
+  background: $asce-vert;
+  border: 1px solid $asce-vert;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+  align-self: flex-start;
+  margin-top: 4px;
+
+  &:hover:not(:disabled) {
+    background: $asce-vert-fonce;
+    border-color: $asce-vert-fonce;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: $asce-blanc;
+  }
+
+  &--direct {
+    align-self: center;
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: $asce-blanc;
+    color: $asce-vert;
+    border-color: $gris-300;
+
+    &:hover:not(:disabled) {
+      background: $asce-vert;
+      color: $asce-blanc;
+      border-color: $asce-vert;
+
+      lucide-icon { color: $asce-blanc; }
+    }
+
+    lucide-icon { color: $asce-vert; }
+  }
+}
+
+// === RESPONSIVE ===
+@media (max-width: 900px) {
+  .rapports-page { padding: 16px 20px 32px; }
+  .rapports-grille { grid-template-columns: 1fr; }
+  .carte-rapport__entete { flex-wrap: wrap; }
+  .btn-generer--direct { width: 100%; margin-top: 8px; }
+}

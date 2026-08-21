@@ -1,0 +1,363 @@
+<article class="hero" [class]="'hero--variant-' + variantStatut()">
+
+  <!-- ═══════ Bande verte supérieure — sceau officiel (compacte) ═══════ -->
+  <header class="hero__sceau">
+    <div class="hero__sceau-gauche">
+      <button type="button" class="btn-retour" (click)="retour.emit()">
+        <lucide-icon [name]="icons['ArrowLeft']" [size]="14"></lucide-icon>
+        <span>Retour</span>
+      </button>
+    </div>
+
+    <div class="hero__sceau-centre">
+      <span class="sceau-institut">ASCE-LC</span>
+      <span class="sceau-sep">·</span>
+      <span class="sceau-libelle">Fiche officielle</span>
+      <span class="sceau-sep">·</span>
+      <span class="sceau-numero">N° {{ numeroFiche() }}</span>
+    </div>
+
+    <div class="hero__sceau-droite">
+      <button type="button" class="btn-menu"
+              [matMenuTriggerFor]="menuActions"
+              matTooltip="Toutes les actions">
+        <span>Actions</span>
+        <lucide-icon [name]="icons['ChevronDown']" [size]="12"></lucide-icon>
+      </button>
+
+      <mat-menu #menuActions="matMenu" xPosition="before">
+        <button mat-menu-item (click)="modifier.emit()">
+          <lucide-icon [name]="icons['Pencil']" [size]="14"></lucide-icon>
+          <span>Modifier la fiche</span>
+        </button>
+        <button mat-menu-item (click)="ajouterDossier.emit()">
+          <lucide-icon [name]="icons['FolderPlus']" [size]="14"></lucide-icon>
+          <span>Ajouter un dossier</span>
+        </button>
+        <button mat-menu-item (click)="voirRapports.emit()">
+          <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+          <span>Voir les rapports</span>
+        </button>
+
+        <div class="menu-separator"></div>
+
+        <button mat-menu-item (click)="exporterPdf.emit()">
+          <lucide-icon [name]="icons['FileDown']" [size]="14"></lucide-icon>
+          <span>Exporter la fiche (PDF)</span>
+        </button>
+
+        <div class="menu-separator"></div>
+
+        <button mat-menu-item (click)="retourRegistreOfficiel.emit()">
+          <lucide-icon [name]="icons['ScrollText']" [size]="14"></lucide-icon>
+          <span>Retour au registre officiel</span>
+        </button>
+      </mat-menu>
+    </div>
+  </header>
+
+  <!-- ═══════ Corps principal ═══════ -->
+  <div class="hero__corps">
+
+    <!-- ─── COL 1 : Portrait ─── -->
+    <div class="portrait-col">
+      <div class="portrait">
+        @if (photoUrl()) {
+          <img [src]="photoUrl()!"
+               [alt]="donnees().resume.nomAffichage"
+               class="portrait__img"
+               (error)="imageErreur($event)" />
+        } @else {
+          <div class="portrait__vide">
+            @if (estPhysique()) {
+              <lucide-icon [name]="icons['User']" [size]="54"></lucide-icon>
+            } @else {
+              <lucide-icon [name]="icons['Building2']" [size]="54"></lucide-icon>
+            }
+          </div>
+        }
+      </div>
+      <span class="portrait-type" [class.portrait-type--morale]="estMorale()">
+        {{ estPhysique() ? 'PERSONNE PHYSIQUE' : 'PERSONNE MORALE' }}
+      </span>
+    </div>
+
+    <!-- ─── COL 2 : Identité ─── -->
+    <div class="identite">
+      <div class="identite__titre-bloc">
+        <h1 class="identite__nom">
+          {{ donnees().resume.nomAffichage }}
+          @if (estAuRegistreOfficiel()) {
+            <lucide-icon [name]="icons['CheckCircle2']"
+                         [size]="20"
+                         class="identite__badge-valide"
+                         matTooltip="Ancrée au registre officiel"></lucide-icon>
+          }
+        </h1>
+
+        <!-- 🔴 MODIFIÉ : Wrapper conteneur des badges d'identifiant -->
+        <div class="identite__badges-ids">
+          <!-- ID Personne (existant) -->
+          <button type="button" class="identite__id" (click)="copierId()"
+                  matTooltip="Cliquer pour copier l'ID complet">
+            <span class="identite__id-label">ID Personne :</span>
+            <span class="identite__id-value">{{ idPersonne() }}</span>
+            <lucide-icon [name]="icons['Copy']" [size]="11"></lucide-icon>
+          </button>
+
+          <!-- 🔴 NOUVEAU : Badge NIP CNIB (physique uniquement) -->
+          @if (nipAffichage()) {
+            <button type="button" class="identite__id identite__id--nip" (click)="copierNip()"
+                    matTooltip="Cliquer pour copier le NIP">
+              <span class="identite__id-label">NIP :</span>
+              <span class="identite__id-value">{{ nipAffichage() }}</span>
+              <lucide-icon [name]="icons['Copy']" [size]="11"></lucide-icon>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Grille 3 colonnes de métadonnées -->
+      @if (detailPhysique(); as p) {
+        <div class="meta-grille">
+          <!-- Ligne 1 -->
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Calendar']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Né(e) le</span>
+              <span class="meta-item__valeur">
+                @if (p.dateNaissance) {
+                  {{ p.dateNaissance | date:'dd/MM/yyyy':'':'fr' }}<span class="meta-item__age">{{ ageAffichage() }}</span>
+                } @else { — }
+              </span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['MapPin']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Lieu de naissance</span>
+              <span class="meta-item__valeur">{{ p.lieuNaissance || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Flag']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Nationalité</span>
+              <span class="meta-item__valeur">{{ (p.nationaliteLibelle || p.nationalite) || '—' }}</span>
+            </div>
+          </div>
+
+          <!-- Ligne 2 -->
+          <div class="meta-item">
+            <lucide-icon [name]="icons['UserCog']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Sexe</span>
+              <span class="meta-item__valeur">{{ libelleSexe(p.sexe) }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Users']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Situation matrimoniale</span>
+              <span class="meta-item__valeur">{{ libelleSituation(p.situationMatrimoniale) }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Briefcase']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Profession</span>
+              <span class="meta-item__valeur">{{ p.profession || '—' }}</span>
+            </div>
+          </div>
+
+          <!-- Ligne 3 -->
+          <div class="meta-item">
+            <lucide-icon [name]="icons['IdCard']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Matricule F.P.</span>
+              <span class="meta-item__valeur mono">{{ p.matriculeFonctionPublique || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['User']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Enregistrée par</span>
+              <span class="meta-item__valeur">{{ creePar() }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Clock']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Date d'enregistrement</span>
+              <span class="meta-item__valeur">
+                @if (dateInscription()) {
+                  {{ dateInscription() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}
+                } @else { — }
+              </span>
+            </div>
+          </div>
+        </div>
+      } @else if (detailMorale(); as m) {
+        <!-- Grille adaptée pour personne morale -->
+        <div class="meta-grille">
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Briefcase']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Forme juridique</span>
+              <span class="meta-item__valeur">{{ m.formeJuridique }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Hash']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">RCCM</span>
+              <span class="meta-item__valeur mono">{{ m.rccm || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Hash']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">IFU</span>
+              <span class="meta-item__valeur mono">{{ m.ifu || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['MapPin']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Siège social</span>
+              <span class="meta-item__valeur">{{ m.siegeSocial || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Phone']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Téléphone</span>
+              <span class="meta-item__valeur">{{ m.telephone || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Mail']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Email</span>
+              <span class="meta-item__valeur">{{ m.email || '—' }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['User']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Enregistrée par</span>
+              <span class="meta-item__valeur">{{ creePar() }}</span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Clock']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Date d'enregistrement</span>
+              <span class="meta-item__valeur">
+                @if (dateInscription()) {
+                  {{ dateInscription() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}
+                } @else { — }
+              </span>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <lucide-icon [name]="icons['Calendar']" [size]="14" class="meta-item__icone"></lucide-icon>
+            <div class="meta-item__contenu">
+              <span class="meta-item__label">Créée en</span>
+              <span class="meta-item__valeur">
+                @if (m.dateCreationEntreprise) {
+                  {{ m.dateCreationEntreprise | date:'yyyy':'':'fr' }}
+                } @else { — }
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ─── COL 3 : Vitrine statut judiciaire ─── -->
+    <aside class="statut-vitrine">
+      <div class="statut-vitrine__label">
+        <lucide-icon [name]="icons['Scale']" [size]="14"></lucide-icon>
+        <span>Statut judiciaire actuel</span>
+
+        <button type="button"
+                class="btn-modifier-statut"
+                (click)="modifierStatut.emit()"
+                matTooltip="Mettre à jour">
+          <lucide-icon [name]="icons['Pencil']" [size]="11"></lucide-icon>
+        </button>
+      </div>
+
+      @if (statutJudiciaire(); as s) {
+        <div class="statut-vitrine__badge">
+          @if (variantStatut() === 'critique') {
+            <lucide-icon [name]="icons['ShieldAlert']" [size]="20"></lucide-icon>
+          } @else if (variantStatut() === 'positif') {
+            <lucide-icon [name]="icons['ShieldCheck']" [size]="20"></lucide-icon>
+          } @else {
+            <lucide-icon [name]="icons['Scale']" [size]="20"></lucide-icon>
+          }
+          <span>{{ s.libelle | uppercase }}</span>
+        </div>
+
+        <dl class="statut-vitrine__details">
+          @if (s.depuis) {
+            <div class="statut-vitrine__ligne">
+              <dt>
+                <lucide-icon [name]="icons['Calendar']" [size]="11"></lucide-icon>
+                Depuis le
+              </dt>
+              <dd>{{ s.depuis | date:'dd/MM/yyyy':'':'fr' }}</dd>
+            </div>
+          }
+          @if (s.autorite) {
+            <div class="statut-vitrine__ligne">
+              <dt>
+                <lucide-icon [name]="icons['ShieldCheck']" [size]="11"></lucide-icon>
+                Autorité
+              </dt>
+              <dd>{{ s.autorite }}</dd>
+            </div>
+          }
+          @if (s.reference) {
+            <div class="statut-vitrine__ligne">
+              <dt>
+                <lucide-icon [name]="icons['FileText']" [size]="11"></lucide-icon>
+                Référence
+              </dt>
+              <dd class="mono">{{ s.reference }}</dd>
+            </div>
+          }
+        </dl>
+      } @else {
+        <div class="statut-vitrine__badge statut-vitrine__badge--vide">
+          <lucide-icon [name]="icons['Scale']" [size]="18"></lucide-icon>
+          <span>Aucun statut</span>
+        </div>
+        <p class="statut-vitrine__note">
+          Le statut sera renseigné dès qu'une implication portera un jugement.
+        </p>
+      }
+    </aside>
+
+  </div>
+
+  <!-- ═══════ Filet du bas — signature ASCE-LC ═══════ -->
+  <div class="hero__filet"></div>
+
+</article>

@@ -1,0 +1,248 @@
+<div class="detail-personne">
+
+  @if (chargement()) {
+    <div class="skeleton-hero">
+      <div class="skeleton-portrait"></div>
+      <div class="skeleton-lignes">
+        <div class="skeleton-ligne skeleton-ligne--titre"></div>
+        <div class="skeleton-ligne skeleton-ligne--sous"></div>
+        <div class="skeleton-ligne"></div>
+        <div class="skeleton-ligne skeleton-ligne--court"></div>
+      </div>
+    </div>
+  } @else if (donnees(); as d) {
+
+    <!-- HERO -->
+    <app-hero-personne
+      [donnees]="d"
+      [photoUrl]="photoUrl()"
+      [numeroFiche]="numeroFiche()"
+      [dateInscription]="dateInscription()"
+      [creePar]="creePar()"
+      (retour)="retourListe()"
+      (retourRegistreOfficiel)="retourRegistreOfficiel()"
+      (modifier)="ouvrirModifier()"
+      (ajouterDossier)="ouvrirAjouterDossier()"
+      (voirRapports)="allerRapports()"
+      (modifierStatut)="ouvrirMiseAJourStatut()"
+      (exporterPdf)="exporterPdf()">
+    </app-hero-personne>
+
+    <!-- BARRE KPI -->
+    <app-kpi-bar-personne
+      [nbDossiers]="nombreDossiers()"
+      [nbFaits]="nombreFaitsPropres()"
+      [nbPeines]="nombrePeines()"
+      [nbDocuments]="nombreDocuments()"
+      [derniereMiseAJour]="derniereMiseAJour()"
+      (naviguer)="onNaviguerVersOnglet($event)">
+    </app-kpi-bar-personne>
+
+    <!-- ONGLETS -->
+    <mat-tab-group class="detail-tabs"
+                   mat-stretch-tabs="false"
+                   [selectedIndex]="ongletActif()"
+                   (selectedIndexChange)="onOngletChange($event)">
+
+      <!-- Onglet 0 : Aperçu -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
+          <span>Aperçu</span>
+        </ng-template>
+        <div class="onglet-contenu">
+          <app-onglet-apercu
+            [donnees]="d"
+            [nombrePeines]="nombrePeines()"
+            [alias]="aliasListe()"
+            [piecesIdentite]="piecesIdentiteListe()"
+            (voirToutesInfos)="allerAuxInfos()"
+            (ajouterAlias)="ajouterAlias()"
+            (voirTousAlias)="allerAuxInfos()"
+            (ajouterPiece)="ajouterPiece()"
+            (voirToutesPieces)="allerAuxInfos()"
+            (voirDossier)="ouvrirDossier($event)"
+            (voirTousFaits)="allerAuxDossiers()"
+            (voirToutesPeines)="allerAuxPeines()">
+          </app-onglet-apercu>
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 1 : Fiche identitaire -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['IdCard']" [size]="16"></lucide-icon>
+          <span>Fiche identitaire</span>
+        </ng-template>
+        <div class="onglet-contenu">
+
+          <app-onglet-infos
+            [personnePhysique]="detailPhysique()"
+            [personneMorale]="detailMorale()"
+            [alias]="aliasListe()"
+            [piecesIdentite]="piecesIdentiteListe()"
+            [photoUrl]="photoUrl()"
+            [creePar]="creePar()"
+            [dateCreation]="dateInscription()"
+            [dateModification]="derniereMiseAJour()"
+            (modifierIdentite)="ouvrirModifier()"
+            (modifierProfession)="ouvrirModifier()"
+            (modifierCoordonnees)="ouvrirModifier()"
+            (changerPhoto)="ouvrirModifier()"
+            (ajouterAlias)="ajouterAlias()"
+            (voirTousAlias)="ajouterAlias()"
+            (ajouterPiece)="ajouterPiece()"
+            (voirToutesPieces)="ajouterPiece()">
+          </app-onglet-infos>
+
+          <!-- Tableau dossiers associés -->
+          <div class="carte">
+            <div class="carte__header">
+              <h3 class="carte__titre">Dossiers associés</h3>
+              <button class="btn-modifier" (click)="ouvrirAjouterDossier()">
+                <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                <span>Ajouter un dossier</span>
+              </button>
+            </div>
+
+            @if (d.dossiers.length > 0) {
+              <table class="tableau-dossiers">
+                <thead>
+                  <tr>
+                    <th>N° Dossier</th>
+                    <th>Intitulé</th>
+                    <th>Date d'ouverture</th>
+                    <th>Statut</th>
+                    <th class="col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (dossier of d.dossiers; track dossier.id) {
+                    <tr>
+                      <td class="col-mono">{{ dossier.numeroDossier || '—' }}</td>
+                      <td class="col-titre">{{ dossier.intitule || 'Sans intitulé' }}</td>
+                      <td>{{ dossier.dateOuverture | date:'dd/MM/yyyy':'':'fr' }}</td>
+                      <td>
+                        <span class="badge-statut"
+                              [class.badge-statut--ouvert]="dossier.statutDossier === 'OUVERT'"
+                              [class.badge-statut--clos]="dossier.statutDossier === 'CLOTURE'">
+                          {{ dossier.statutDossier === 'OUVERT' ? 'En cours' : 'Clos' }}
+                        </span>
+                      </td>
+                      <td class="col-actions">
+                        <button class="btn-icone" title="Voir le dossier" (click)="voirDossier(dossier.id)">
+                          <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon>
+                        </button>
+
+                        <button class="btn-icone"
+                                title="Voir les personnes impliquées dans ce dossier"
+                                (click)="voirPersonnesDossier(dossier.id, dossier.intitule, dossier.numeroDossier)">
+                          <lucide-icon [name]="icons['Users']" [size]="14"></lucide-icon>
+                        </button>
+
+                        <button class="btn-icone"
+                                title="Télécharger le PDF du dossier"
+                                [disabled]="telechargementDossierId() === dossier.id"
+                                (click)="telechargerPdfDossier(dossier.id, dossier.numeroDossier)">
+                          <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            } @else {
+              <div class="etat-vide">
+                <lucide-icon [name]="icons['FolderOpen']" [size]="24"></lucide-icon>
+                <p>Aucun dossier associé à cette personne.</p>
+                <button class="btn-principal" (click)="ouvrirAjouterDossier()">
+                  <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                  <span>Ajouter le premier dossier</span>
+                </button>
+              </div>
+            }
+          </div>
+
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 2 : Dossiers & implications -->
+      <mat-tab [label]="'Dossiers & implications (' + d.dossiers.length + ')'">
+        <div class="onglet-contenu">
+          <app-onglet-dossiers-implications
+            [personneId]="d.resume.id"
+            [personneNomAffichage]="d.resume.nomAffichage"
+            [dossiers]="d.dossiers"
+            [implications]="d.implications"
+            [faits]="d.faits"
+            [implicationFaits]="d.implicationFaits"
+            (donneesModifiees)="rechargerFiche()" />
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 3 : Peines & sanctions -->
+      <mat-tab [label]="'Peines & sanctions (' + nombrePeines() + ')'">
+        <div class="onglet-contenu">
+          <app-onglet-peines
+            [implicationFaits]="d.implicationFaits"
+            (nombreChange)="nombrePeines.set($event)" />
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 4 : Timeline -->
+      <mat-tab label="Timeline">
+        <div class="onglet-contenu">
+          <app-onglet-timeline
+            [implications]="d.implications"
+            [faits]="d.faits"
+            [dossiers]="d.dossiers"
+            [documents]="d.documents" />
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 5 : Documents -->
+      <mat-tab [label]="'Documents (' + (d.documents.length || 0) + ')'">
+        <div class="onglet-contenu">
+          <app-onglet-documents
+            [personneId]="d.resume.id"
+            [personneNom]="d.resume.nomAffichage" />
+        </div>
+      </mat-tab>
+
+      <!-- Onglet 6 : Historique des statuts -->
+      <mat-tab label="Historique des statuts">
+        <div class="onglet-contenu">
+          @if (chargementHistorique()) {
+            <div class="loader-zone"><mat-spinner diameter="30"></mat-spinner></div>
+          } @else if (historique().length > 0) {
+            <div class="timeline">
+              @for (evt of historique(); track evt.dateAction) {
+                <div class="timeline__item">
+                  <div class="timeline__marqueur"></div>
+                  <div class="timeline__contenu">
+                    <div class="timeline__ligne1">
+                      <span class="timeline__action">{{ libelleAction(evt.action) }}</span>
+                      <span class="timeline__date">{{ evt.dateAction | date:'dd/MM/yyyy à HH:mm':'':'fr' }}</span>
+                    </div>
+                    <div class="timeline__ligne2">
+                      Par <strong>{{ evt.utilisateur || 'utilisateur inconnu' }}</strong>
+                      — Implication {{ evt.entiteCibleId }}
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="etat-vide">
+              <lucide-icon [name]="icons['History']" [size]="24"></lucide-icon>
+              <p>Aucun changement de statut enregistré.</p>
+              <p class="etat-vide__sous">L'historique se remplit dès qu'une implication est créée ou modifiée.</p>
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+  }
+</div>

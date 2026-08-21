@@ -1,0 +1,87 @@
+:host {
+  --ascelc-rouge:  #E30613;
+  --ascelc-vert:   #009640;
+  --ascelc-jaune:  #FFDD00;
+  --ascelc-noir:   #1D1D1B;
+  --ascelc-blanc:  #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-500: #78716C;
+
+  display: block;
+}
+
+.audit-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: var(--neutre-50);
+  min-height: 100vh;
+}
+
+.btn-drawer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--ascelc-noir);
+  color: var(--ascelc-blanc);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover {
+    background: var(--ascelc-vert);
+    transform: translateY(-1px);
+  }
+}
+
+// ─── Onglets ────────────────────────────────────────────────────────────────
+.onglets-section {
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.audit-tabs {
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid var(--neutre-200);
+      background: linear-gradient(180deg, var(--ascelc-blanc), var(--neutre-50));
+    }
+
+    .mat-mdc-tab .mdc-tab__content {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .mdc-tab__text-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      color: var(--neutre-500);
+    }
+
+    .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+      color: var(--ascelc-noir);
+    }
+
+    .mdc-tab-indicator__content--underline {
+      border-color: var(--ascelc-vert) !important;
+      border-top-width: 3px !important;
+    }
+  }
+}
+
+.onglet-contenu {
+  padding: 1.25rem;
+}

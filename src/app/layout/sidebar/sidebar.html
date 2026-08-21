@@ -1,0 +1,63 @@
+<aside class="sidebar"
+       [class.sidebar--pliee]="state.pliee()"
+       #hostSidebar
+       (mouseenter)="state.etendre()"
+       (mouseleave)="state.reduire()"
+       (focusin)="state.etendre()"
+       (focusout)="onFocusOut($event, hostSidebar)">
+  <div class="sidebar__brand">
+  <img src="images/logo-asce.svg"
+       alt="ASCE-LC"
+       class="sidebar__logo-img"
+       [class.sidebar__logo-img--pliee]="state.pliee()">
+  @if (!state.pliee()) {
+    <div class="sidebar__brand-text">
+     
+    </div>
+  }
+</div>
+  <nav class="sidebar__nav">
+    @for (item of menuVisible(); track item.label) {
+      @if (item.enfants && item.enfants.length > 0) {
+        <button type="button"
+                class="sidebar__group-header"
+                [class.sidebar__group-header--ouvert]="estOuvert(item.label)"
+                (click)="basculerGroupe(item.label)"
+                [title]="state.pliee() ? item.label : ''">
+          <lucide-icon [name]="item.icone" [size]="18" class="sidebar__group-icone"></lucide-icon>
+          @if (!state.pliee()) {
+            <span class="sidebar__group-label">{{ item.label }}</span>
+            <lucide-icon
+              [name]="estOuvert(item.label) ? icons['ChevronDown'] : icons['ChevronRight']"
+              [size]="14"
+              class="sidebar__group-chevron"></lucide-icon>
+          }
+        </button>
+        @if (estOuvert(item.label) && !state.pliee()) {
+          <div class="sidebar__enfants">
+            @for (enfant of item.enfants; track enfant.route) {
+              <a [routerLink]="enfant.route"
+                 routerLinkActive="sidebar__item--active"
+                 [routerLinkActiveOptions]="{ exact: true }"
+                 class="sidebar__item sidebar__item--enfant">
+                <span class="sidebar__enfant-puce"></span>
+                <span>{{ enfant.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      } @else if (item.route) {
+        <a [routerLink]="item.route"
+           routerLinkActive="sidebar__item--active"
+           class="sidebar__item"
+           [class.sidebar__item--principal]="item.principal"
+           [title]="state.pliee() ? item.label : ''">
+          <lucide-icon [name]="item.icone" [size]="18" class="sidebar__item-icone"></lucide-icon>
+          @if (!state.pliee()) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    }
+  </nav>
+</aside>

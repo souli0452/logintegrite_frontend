@@ -1,0 +1,130 @@
+<section class="actions-rapides">
+
+  <!-- En-tête -->
+  <header class="actions-rapides__header">
+    <div class="actions-rapides__titre">
+      <lucide-icon [name]="icons['Zap']" [size]="16"></lucide-icon>
+      <span>Actions rapides</span>
+    </div>
+    <span class="actions-rapides__hint">Raccourcis pour cette personne</span>
+  </header>
+
+  <!-- Grille d'actions -->
+  <div class="actions-rapides__grille">
+
+    <!-- Ajouter un dossier -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('dossier')"
+            matTooltip="Créer un nouveau dossier avec cette personne">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['FolderPlus']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Nouveau dossier</strong>
+        <span>Ouvrir une nouvelle enquête</span>
+      </div>
+    </button>
+
+    <!-- Ajouter une implication -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('implication')"
+            matTooltip="Lier cette personne à un dossier existant">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['Scale']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Ajouter implication</strong>
+        <span>Rejoindre un dossier existant</span>
+      </div>
+    </button>
+
+    <!-- Ajouter une peine -->
+    <button type="button"
+            class="action-btn"
+            [disabled]="!peutAjouterPeine()"
+            (click)="declencher('peine')"
+            [matTooltip]="tooltipPeine">
+      <div class="action-btn__icone action-btn__icone--rouge">
+        <lucide-icon [name]="icons['Gavel']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Ajouter peine</strong>
+        <span>Sanction ou condamnation</span>
+      </div>
+    </button>
+
+    <!-- Modifier statut judiciaire -->
+    <button type="button"
+            class="action-btn"
+            [disabled]="!peutModifierStatut()"
+            (click)="declencher('statut')"
+            [matTooltip]="tooltipStatut">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['Pencil']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Modifier statut</strong>
+        <span>Statut judiciaire courant</span>
+      </div>
+    </button>
+
+    <!-- Uploader document -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('document')"
+            matTooltip="Ajouter un document (PJ, PV, décision…)">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['Paperclip']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Uploader document</strong>
+        <span>Ajouter une pièce jointe</span>
+      </div>
+    </button>
+
+    <!-- Changer photo/logo -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('photo')"
+            matTooltip="Changer la photo ou le logo">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['Camera']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Changer photo</strong>
+        <span>Photo d'identité ou logo</span>
+      </div>
+    </button>
+
+    <!-- Ajouter alias -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('alias')"
+            matTooltip="Ajouter un surnom, pseudonyme ou nom d'usage">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['Tag']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Ajouter alias</strong>
+        <span>Surnom ou pseudonyme</span>
+      </div>
+    </button>
+
+    <!-- Ajouter pièce d'identité -->
+    <button type="button"
+            class="action-btn"
+            (click)="declencher('piece-identite')"
+            matTooltip="Enregistrer une pièce d'identité (CNIB, passeport…)">
+      <div class="action-btn__icone action-btn__icone--vert">
+        <lucide-icon [name]="icons['IdCard']" [size]="18"></lucide-icon>
+      </div>
+      <div class="action-btn__label">
+        <strong>Pièce d'identité</strong>
+        <span>CNIB, passeport, permis…</span>
+      </div>
+    </button>
+
+  </div>
+</section>

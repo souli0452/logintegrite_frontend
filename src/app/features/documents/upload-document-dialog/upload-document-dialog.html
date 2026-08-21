@@ -1,0 +1,129 @@
+<div class="dialog-upload">
+
+  <!-- Bandeau contexte (figé en haut) -->
+  <div class="bandeau">
+    <div class="bandeau__gauche">
+      <lucide-icon [name]="icons['Upload']" [size]="20"></lucide-icon>
+      <div>
+        <h2 class="bandeau__titre">Ajouter des documents</h2>
+        <p class="bandeau__sous-titre">
+          Dossier <strong>{{ contexte.dossierIntitule }}</strong>
+          @if (contexte.personneNom) { — Personne <strong>{{ contexte.personneNom }}</strong> }
+        </p>
+      </div>
+    </div>
+    <button type="button" class="btn-fermer" (click)="fermer()" [disabled]="enCoursDenvoi()">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Contenu central scrollable -->
+  <div class="dialog-corps">
+
+    <!-- Encart immuabilité -->
+    <div class="encart-alerte">
+      <lucide-icon [name]="icons['AlertTriangle']" [size]="18" class="encart-alerte__icone"></lucide-icon>
+      <div>
+        <strong>Attention : documents scellés après enregistrement.</strong>
+        <p>Une fois enregistrés, ces documents ne pourront plus être modifiés, remplacés ni supprimés. Ils reçoivent un hash cryptographique d'intégrité (SHA-256) qui garantit leur authenticité.</p>
+      </div>
+    </div>
+
+    <!-- Zone de dépôt -->
+    <label class="drop-zone"
+           [class.drop-zone--survol]="survole()"
+           (drop)="onDrop($event)"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)">
+      <input type="file" multiple hidden (change)="onFichiersChoisis($event)" #inputFichier>
+      <lucide-icon [name]="icons['Upload']" [size]="32" class="drop-zone__icone"></lucide-icon>
+      <p class="drop-zone__titre">Glissez vos fichiers ici ou cliquez pour parcourir</p>
+      <p class="drop-zone__sous">Taille max : {{ TAILLE_MAX_MB }} Mo par fichier</p>
+    </label>
+
+    <!-- Liste des fichiers ajoutés -->
+    @if (fichiers().length > 0) {
+      <div class="liste-fichiers">
+        <h3 class="liste-fichiers__titre">Fichiers à enregistrer ({{ fichiers().length }})</h3>
+
+        @for (f of fichiers(); track f.id) {
+          <div class="fichier"
+               [class.fichier--succes]="f.statut === 'succes'"
+               [class.fichier--erreur]="f.statut === 'erreur'">
+
+            <div class="fichier__ligne1">
+              <div class="fichier__meta">
+                <lucide-icon [name]="icons['FileText']" [size]="18" class="fichier__icone"></lucide-icon>
+                <div class="fichier__infos">
+                  <div class="fichier__nom">{{ f.fichier.name }}</div>
+                  <div class="fichier__taille">{{ tailleFormattee(f.fichier.size) }}</div>
+                </div>
+              </div>
+
+              @if (f.statut === 'attente') {
+                <button type="button" class="btn-retirer" (click)="retirerFichier(f.id)" title="Retirer">
+                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                </button>
+              }
+              @if (f.statut === 'succes') {
+                <div class="badge-succes">
+                  <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+                  <span>Scellé</span>
+                </div>
+              }
+            </div>
+
+            <!-- Sélection du type (masqué si succès) -->
+            @if (f.statut !== 'succes') {
+              <div class="fichier__type">
+                <mat-form-field appearance="outline" class="champ-full">
+                  <mat-label>Type de document</mat-label>
+                  <mat-select
+                    [value]="f.typeDocumentId"
+                    (selectionChange)="changerType(f.id, $event.value)"
+                    [disabled]="f.statut === 'envoi'">
+                    @for (t of typesDocument(); track t.id) {
+                      <mat-option [value]="t.id">{{ t.libelle }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            }
+
+            <!-- Progression -->
+            @if (f.statut === 'envoi') {
+              <div class="fichier__progression">
+                <mat-progress-bar mode="determinate" [value]="f.progression"></mat-progress-bar>
+                <span>{{ f.progression }}%</span>
+              </div>
+            }
+
+            <!-- Erreur -->
+            @if (f.statut === 'erreur' && f.messageErreur) {
+              <div class="fichier__erreur">{{ f.messageErreur }}</div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+
+  <!-- Actions (figé en bas) -->
+  <div class="dialog-actions">
+    <button type="button" class="btn-secondaire" (click)="fermer()" [disabled]="enCoursDenvoi()">
+      @if (aAuMoinsUnSucces()) { Terminer } @else { Annuler }
+    </button>
+    <button type="button" class="btn-principal"
+            (click)="uploaderTout()"
+            [disabled]="!tousPrets() || enCoursDenvoi()">
+      @if (enCoursDenvoi()) {
+        <span>Envoi en cours...</span>
+      } @else {
+        <lucide-icon [name]="icons['Upload']" [size]="16"></lucide-icon>
+        <span>Enregistrer et sceller</span>
+      }
+    </button>
+  </div>
+
+</div>

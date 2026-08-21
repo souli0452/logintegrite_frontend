@@ -1,0 +1,279 @@
+.onglet-panel {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.onglet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-default);
+
+  &__gauche { flex: 1; }
+
+  &__titre {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__sous {
+    margin: 4px 0 0 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+}
+
+/* Mini-dialogue inline de selection du dossier destinataire */
+.carte-selection {
+  background: var(--asce-green-light, #e6f4ea);
+  border: 1px solid var(--asce-green);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__titre {
+    margin: 0 0 4px 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--asce-green-dark, #005a2b);
+  }
+
+  &__sous {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
+  &__corps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+  }
+}
+
+.champ-full {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper { display: none; }
+}
+
+/* Option dropdown : numero + intitule sur une ligne */
+.option-dossier {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__numero {
+    font-family: 'Menlo', 'Courier New', monospace;
+    font-weight: 600;
+    font-size: 0.8125rem;
+  }
+
+  &__intitule {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Boutons */
+.btn-ajouter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--asce-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: var(--asce-green-dark, #005a2b); }
+}
+
+.btn-principal {
+  padding: 8px 16px;
+  background: var(--asce-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: var(--asce-green-dark, #005a2b); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-secondaire {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--asce-green);
+    color: var(--asce-green);
+  }
+}
+
+.btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--asce-green-light, #e6f4ea);
+    border-color: var(--asce-green);
+    color: var(--asce-green-dark, #005a2b);
+  }
+}
+
+.loader-zone {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+/* Tableau */
+.table-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table-documents {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    text-align: left;
+    padding: 12px var(--spacing-md);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  tbody td {
+    padding: 12px var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-default);
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover { background: var(--bg-hover); }
+
+  .col-taille { width: 90px; text-align: right; font-variant-numeric: tabular-nums; }
+  .col-hash { width: 200px; }
+  .col-actions { width: 60px; text-align: right; }
+}
+
+.cellule-nom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+
+  &__icone {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 280px;
+  }
+}
+
+.badge-type {
+  display: inline-flex;
+  padding: 2px 10px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.cellule-dossier {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  cursor: help;
+  font-family: 'Menlo', 'Courier New', monospace;
+  font-size: 0.8125rem;
+
+  &__icone {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+}
+
+.cellule-date {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.hash-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--asce-green-light, #e6f4ea);
+  color: var(--asce-green-dark, #005a2b);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  cursor: help;
+
+  &__valeur {
+    font-family: 'Menlo', 'Courier New', monospace;
+    font-weight: 500;
+  }
+}

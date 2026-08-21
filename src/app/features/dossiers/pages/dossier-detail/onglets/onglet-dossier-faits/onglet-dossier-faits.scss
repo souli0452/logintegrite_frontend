@@ -1,0 +1,17 @@
+.onglet-panel {
+  padding: var(--spacing-lg);
+}
+
+.onglet-table {
+  width: 100%;
+}
+
+.cellule-strong {
+  font-weight: 500;
+}
+
+.cellule-description {
+  color: var(--text-secondary);
+  max-width: 300px;
+  white-space: normal;
+}

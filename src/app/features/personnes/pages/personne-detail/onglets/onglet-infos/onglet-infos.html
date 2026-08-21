@@ -1,0 +1,589 @@
+<div class="fiche-identitaire">
+
+  @if (personnePhysique(); as p) {
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- LIGNE 1 : État civil / Profession / Coordonnées                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="fiche-grille">
+
+      <!-- ─── CARTE État civil ─── -->
+      <section class="carte carte--etat-civil">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['User']" [size]="16" class="carte__icone"></lucide-icon>
+            État civil
+          </h3>
+          <button type="button" class="btn-modifier-section"
+                  (click)="modifierIdentite.emit()"
+                  matTooltip="Modifier l'état civil">
+            <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Nom complet</dt>
+              <dd>{{ p.nomNaissance }} {{ p.prenoms }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Nom d'usage</dt>
+              <dd>{{ p.nomUsage || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Prénom(s)</dt>
+              <dd>{{ p.prenoms || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Sexe</dt>
+              <dd class="champ__valeur-icone">
+                @if (p.sexe === 'M') {
+                  <lucide-icon [name]="icons['Mars']" [size]="14" class="icone-sexe icone-sexe--m"></lucide-icon>
+                  <span>Masculin</span>
+                } @else if (p.sexe === 'F') {
+                  <lucide-icon [name]="icons['Venus']" [size]="14" class="icone-sexe icone-sexe--f"></lucide-icon>
+                  <span>Féminin</span>
+                } @else { — }
+              </dd>
+            </div>
+            <div class="champ">
+              <dt>Date de naissance</dt>
+              <dd>
+                @if (p.dateNaissance) {
+                  {{ p.dateNaissance | date:'dd/MM/yyyy':'':'fr' }}<span class="age-suffix">{{ ageAffichage() }}</span>
+                } @else { — }
+              </dd>
+            </div>
+            <div class="champ">
+              <dt>Lieu de naissance</dt>
+              <dd>{{ p.lieuNaissance || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Nationalité</dt>
+              <dd>
+                @if (p.nationaliteLibelle || p.nationalite) {
+                  <span class="badge-nationalite">{{ p.nationaliteLibelle || p.nationalite }}</span>
+                } @else { — }
+              </dd>
+            </div>
+            @if (p.nip) {
+              <div class="champ">
+                <dt>NIP</dt>
+                <dd>
+                  <button type="button" class="badge-nip"
+                          (click)="copier(p.nip, 'NIP CNIB copié')"
+                          matTooltip="Copier le NIP">
+                    {{ p.nip }}
+                  </button>
+                </dd>
+              </div>
+            }
+            <div class="champ">
+              <dt>Situation matrimoniale</dt>
+              <dd>{{ libelleSituation(p.situationMatrimoniale) }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Nom du conjoint</dt>
+              <dd>{{ p.nomConjoint || '—' }}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ─── CARTE Informations professionnelles ─── -->
+      <section class="carte carte--profession">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Briefcase']" [size]="16" class="carte__icone"></lucide-icon>
+            Informations professionnelles
+          </h3>
+          <button type="button" class="btn-modifier-section"
+                  (click)="modifierProfession.emit()"
+                  matTooltip="Modifier les informations">
+            <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Profession / Fonction</dt>
+              <dd>{{ p.profession || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Matricule Fonction Publique</dt>
+              <dd class="mono">{{ p.matriculeFonctionPublique || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Grade / Catégorie</dt>
+              <dd>{{ p.gradeCategorie || '—' }}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ─── CARTE Coordonnées + Encart enregistrement ─── -->
+      <section class="carte carte--coordonnees">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['MapPin']" [size]="16" class="carte__icone"></lucide-icon>
+            Coordonnées
+          </h3>
+          <button type="button" class="btn-modifier-section"
+                  (click)="modifierCoordonnees.emit()"
+                  matTooltip="Modifier les coordonnées">
+            <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Adresse</dt>
+              <dd>{{ p.adresse || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Téléphone</dt>
+              <dd>{{ p.telephone || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Email</dt>
+              <dd>—</dd>
+            </div>
+          </dl>
+
+          <!-- Encart informations d'enregistrement -->
+          <div class="encart-enregistrement">
+            <div class="encart-enregistrement__header">
+              <lucide-icon [name]="icons['Info']" [size]="13"></lucide-icon>
+              <span>Informations d'enregistrement</span>
+            </div>
+            <dl class="encart-enregistrement__champs">
+              <div class="champ champ--mini">
+                <dt>Enregistrée par</dt>
+                <dd>{{ creePar() }}</dd>
+              </div>
+              @if (dateCreation()) {
+                <div class="champ champ--mini">
+                  <dt>Date d'enregistrement</dt>
+                  <dd>{{ dateCreation() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}</dd>
+                </div>
+              }
+              @if (dateModification()) {
+                <div class="champ champ--mini">
+                  <dt>Dernière modification</dt>
+                  <dd>{{ dateModification() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- LIGNE 2 : Photo / Alias / Pièce d'identité                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="fiche-grille">
+
+      <!-- ─── CARTE Photo ─── -->
+      <section class="carte carte--photo">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Camera']" [size]="16" class="carte__icone"></lucide-icon>
+            Photo
+          </h3>
+          <div class="carte__actions-header">
+            @if (photoUrl()) {
+              <button type="button" class="btn-icone-mini"
+                      (click)="voirPhoto.emit()"
+                      matTooltip="Voir en grand">
+                <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon>
+              </button>
+              <button type="button" class="btn-icone-mini"
+                      (click)="telechargerPhoto.emit()"
+                      matTooltip="Télécharger">
+                <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+              </button>
+            }
+            <button type="button" class="btn-modifier-section"
+                    (click)="changerPhoto.emit()"
+                    matTooltip="Changer la photo">
+              <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
+            </button>
+          </div>
+        </header>
+
+        <div class="carte__corps">
+          @if (photoUrl()) {
+            <div class="photo-detail">
+              <div class="photo-detail__apercu">
+                <img [src]="photoUrl()!" alt="Photo" />
+              </div>
+              @if (photoMetadonnees(); as meta) {
+                <dl class="photo-detail__metas">
+                  @if (meta.nomOriginal) {
+                    <div class="champ champ--mini">
+                      <dt>Nom original</dt>
+                      <dd class="tronque">{{ meta.nomOriginal }}</dd>
+                    </div>
+                  }
+                  @if (meta.typeMime) {
+                    <div class="champ champ--mini">
+                      <dt>Type MIME</dt>
+                      <dd class="mono">{{ meta.typeMime }}</dd>
+                    </div>
+                  }
+                  @if (meta.tailleKo) {
+                    <div class="champ champ--mini">
+                      <dt>Taille</dt>
+                      <dd>{{ meta.tailleKo | number:'1.1-1':'fr' }} KB</dd>
+                    </div>
+                  }
+                  @if (meta.dateAjout) {
+                    <div class="champ champ--mini">
+                      <dt>Ajoutée le</dt>
+                      <dd>{{ meta.dateAjout | date:'dd/MM/yyyy à HH:mm':'':'fr' }}</dd>
+                    </div>
+                  }
+                </dl>
+              }
+            </div>
+          } @else {
+            <div class="etat-vide-photo">
+              <lucide-icon [name]="icons['Camera']" [size]="32"></lucide-icon>
+              <p>Aucune photo</p>
+              <button type="button" class="btn-ajouter-mini" (click)="changerPhoto.emit()">
+                <lucide-icon [name]="icons['Plus']" [size]="12"></lucide-icon>
+                <span>Ajouter une photo</span>
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- ─── CARTE Alias connus ─── -->
+      <section class="carte carte--alias">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['User']" [size]="16" class="carte__icone"></lucide-icon>
+            Alias connus
+            <span class="carte__compteur">({{ alias().length }})</span>
+          </h3>
+          <button type="button" class="btn-ajouter-mini" (click)="ajouterAlias.emit()">
+            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+            <span>Ajouter un alias</span>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          @if (alias().length > 0) {
+            <ul class="liste-alias">
+              @for (a of alias(); track a.id; let i = $index) {
+                <li class="alias-item">
+                  <div class="alias-item__contenu">
+                    <div class="alias-item__ligne-nom">
+                      <span class="alias-item__nom">{{ a.nomAlias }}</span>
+                      @if (i === 0) {
+                        <span class="badge-mini badge-mini--principal">
+                          <lucide-icon [name]="icons['CheckCircle2']" [size]="10"></lucide-icon>
+                          Principal
+                        </span>
+                      }
+                    </div>
+                    @if (a.dateCreation) {
+                      <span class="alias-item__date">
+                        Ajouté le {{ a.dateCreation | date:'dd/MM/yyyy à HH:mm':'':'fr' }}
+                      </span>
+                    }
+                  </div>
+                  <button type="button" class="btn-menu-item"
+                          [matMenuTriggerFor]="menuAlias"
+                          matTooltip="Actions">
+                    <lucide-icon [name]="icons['MoreVertical']" [size]="14"></lucide-icon>
+                  </button>
+                  <mat-menu #menuAlias="matMenu" xPosition="before">
+                    <button mat-menu-item (click)="modifierAlias.emit(a.id)">
+                      <lucide-icon [name]="icons['Pencil']" [size]="14"></lucide-icon>
+                      <span>Modifier</span>
+                    </button>
+                    <button mat-menu-item (click)="supprimerAlias.emit(a.id)">
+                      <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="etat-vide">Aucun alias enregistré</p>
+          }
+        </div>
+
+        @if (alias().length > 0) {
+          <footer class="carte__footer">
+            <button type="button" class="lien-voir-tous" (click)="voirTousAlias.emit()">
+              <span>Voir tous les alias</span>
+              <lucide-icon [name]="icons['ArrowRight']" [size]="14"></lucide-icon>
+            </button>
+          </footer>
+        }
+      </section>
+
+      <!-- ─── CARTE Pièce d'identité ─── -->
+      <section class="carte carte--piece">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['IdCard']" [size]="16" class="carte__icone"></lucide-icon>
+            Pièce d'identité
+            <span class="carte__compteur">({{ piecesIdentite().length }})</span>
+          </h3>
+          <button type="button" class="btn-ajouter-mini" (click)="ajouterPiece.emit()">
+            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+            <span>Ajouter</span>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          @if (piecesIdentite().length > 0) {
+            @for (piece of piecesIdentite().slice(0, 1); track piece.id) {
+              <dl class="liste-champs">
+                <div class="champ">
+                  <dt>Type de pièce</dt>
+                  <dd>{{ (piece.typePieceLibelle || piece.typePiece) || '—' }}</dd>
+                </div>
+                <div class="champ">
+                  <dt>Numéro</dt>
+                  <dd class="mono">{{ piece.numero || '—' }}</dd>
+                </div>
+                <div class="champ">
+                  <dt>Date de délivrance</dt>
+                  <dd>
+                    @if (piece.dateDelivrance) {
+                      {{ piece.dateDelivrance | date:'dd/MM/yyyy':'':'fr' }}
+                    } @else { — }
+                  </dd>
+                </div>
+                <div class="champ">
+                  <dt>Date d'expiration</dt>
+                  <dd>
+                    @if (piece.dateExpiration) {
+                      {{ piece.dateExpiration | date:'dd/MM/yyyy':'':'fr' }}
+                    } @else { — }
+                  </dd>
+                </div>
+              </dl>
+            }
+          } @else {
+            <p class="etat-vide">Aucune pièce enregistrée</p>
+          }
+        </div>
+
+        @if (piecesIdentite().length > 0) {
+          <footer class="carte__footer">
+            <button type="button" class="lien-voir-tous" (click)="voirToutesPieces.emit()">
+              <span>Voir toutes les pièces</span>
+              <lucide-icon [name]="icons['ArrowRight']" [size]="14"></lucide-icon>
+            </button>
+          </footer>
+        }
+      </section>
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- PERSONNE MORALE                                                          -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  @if (personneMorale(); as m) {
+    <div class="fiche-grille">
+      <!-- Ligne 1 morale : Identification / Activité / Représentant -->
+      <section class="carte">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Briefcase']" [size]="16" class="carte__icone"></lucide-icon>
+            Identification
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Dénomination sociale</dt>
+              <dd>{{ m.denominationSociale }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Sigle</dt>
+              <dd>{{ m.sigle || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Forme juridique</dt>
+              <dd>{{ m.formeJuridique }}</dd>
+            </div>
+            <div class="champ">
+              <dt>RCCM</dt>
+              <dd class="mono">{{ m.rccm || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>IFU</dt>
+              <dd class="mono">{{ m.ifu || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Statut</dt>
+              <dd>{{ m.statut || '—' }}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="carte">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['MapPin']" [size]="16" class="carte__icone"></lucide-icon>
+            Activité &amp; siège
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Secteur d'activité</dt>
+              <dd>{{ m.secteurActivite }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Siège social</dt>
+              <dd>{{ m.siegeSocial }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Capital social</dt>
+              <dd>
+                @if (m.capitalSocial) {
+                  {{ m.capitalSocial | number:'1.0-0':'fr' }} XOF
+                } @else { — }
+              </dd>
+            </div>
+            <div class="champ">
+              <dt>Date de création</dt>
+              <dd>
+                @if (m.dateCreationEntreprise) {
+                  {{ m.dateCreationEntreprise | date:'dd/MM/yyyy':'':'fr' }}
+                } @else { — }
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="carte">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['User']" [size]="16" class="carte__icone"></lucide-icon>
+            Contact &amp; représentant
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <dl class="liste-champs">
+            <div class="champ">
+              <dt>Téléphone</dt>
+              <dd>{{ m.telephone || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Email</dt>
+              <dd>{{ m.email || '—' }}</dd>
+            </div>
+            <div class="champ">
+              <dt>Représentant légal</dt>
+              <dd>{{ m.representantLegalNomComplet || '—' }}</dd>
+            </div>
+          </dl>
+
+          <div class="encart-enregistrement">
+            <div class="encart-enregistrement__header">
+              <lucide-icon [name]="icons['Info']" [size]="13"></lucide-icon>
+              <span>Informations d'enregistrement</span>
+            </div>
+            <dl class="encart-enregistrement__champs">
+              <div class="champ champ--mini">
+                <dt>Enregistrée par</dt>
+                <dd>{{ creePar() }}</dd>
+              </div>
+              @if (dateCreation()) {
+                <div class="champ champ--mini">
+                  <dt>Date d'enregistrement</dt>
+                  <dd>{{ dateCreation() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Ligne 2 morale : Logo / Alias -->
+    <div class="fiche-grille fiche-grille--2col">
+      <section class="carte carte--photo">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Camera']" [size]="16" class="carte__icone"></lucide-icon>
+            Logo
+          </h3>
+        </header>
+        <div class="carte__corps">
+          @if (photoUrl()) {
+            <div class="photo-detail">
+              <div class="photo-detail__apercu photo-detail__apercu--logo">
+                <img [src]="photoUrl()!" alt="Logo" />
+              </div>
+            </div>
+          } @else {
+            <div class="etat-vide-photo">
+              <lucide-icon [name]="icons['Camera']" [size]="32"></lucide-icon>
+              <p>Aucun logo</p>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="carte carte--alias">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Tag']" [size]="16" class="carte__icone"></lucide-icon>
+            Autres dénominations
+            <span class="carte__compteur">({{ alias().length }})</span>
+          </h3>
+          <button type="button" class="btn-ajouter-mini" (click)="ajouterAlias.emit()">
+            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+            <span>Ajouter</span>
+          </button>
+        </header>
+
+        <div class="carte__corps">
+          @if (alias().length > 0) {
+            <ul class="liste-alias">
+              @for (a of alias(); track a.id) {
+                <li class="alias-item">
+                  <div class="alias-item__contenu">
+                    <span class="alias-item__nom">{{ a.nomAlias }}</span>
+                    @if (a.commentaire) {
+                      <span class="alias-item__date">{{ a.commentaire }}</span>
+                    }
+                  </div>
+                  <button type="button" class="btn-menu-item"
+                          [matMenuTriggerFor]="menuAliasMorale">
+                    <lucide-icon [name]="icons['MoreVertical']" [size]="14"></lucide-icon>
+                  </button>
+                  <mat-menu #menuAliasMorale="matMenu" xPosition="before">
+                    <button mat-menu-item (click)="supprimerAlias.emit(a.id)">
+                      <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+                      <span>Supprimer</span>
+                    </button>
+                  </mat-menu>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="etat-vide">Aucune dénomination alternative</p>
+          }
+        </div>
+      </section>
+    </div>
+  }
+
+</div>

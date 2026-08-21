@@ -1,0 +1,382 @@
+<div class="dialog-form">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-form__header">
+    <div class="dialog-form__titre-bloc">
+      <lucide-icon [name]="icons['UserCog']" [size]="20" class="dialog-form__icone"></lucide-icon>
+      <div>
+        <h1>Modifier la personne physique</h1>
+        <p>{{ data.nomNaissance }} {{ data.prenoms }}</p>
+      </div>
+    </div>
+    <button type="button" class="btn-close" (click)="annuler()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <!-- ═══════ Corps ═══════ -->
+  <div class="dialog-form__corps">
+
+    <!-- ══════ Section Photo ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['Camera']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Photo</h2>
+      </div>
+
+      <div class="bloc-photo">
+        <div class="bloc-photo__apercu">
+          @if (aPhoto()) {
+            <img [src]="urlPhoto()" alt="Photo">
+          } @else {
+            <lucide-icon [name]="icons['User']" [size]="42"></lucide-icon>
+          }
+        </div>
+        <div class="bloc-photo__actions">
+          <label class="btn-fichier">
+            <lucide-icon [name]="icons['Camera']" [size]="14"></lucide-icon>
+            <span>{{ aPhoto() ? 'Changer la photo' : 'Ajouter une photo' }}</span>
+            <input type="file" accept="image/*" hidden (change)="choisirPhoto($event)">
+          </label>
+          @if (aPhoto()) {
+            <button type="button" class="btn-retirer-photo" (click)="supprimerPhoto()">
+              <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+              <span>Retirer</span>
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <form [formGroup]="formulaire">
+
+      <!-- ══════ Section 1 : Identité ══════ -->
+      <section class="etape">
+        <div class="etape__header">
+          <lucide-icon [name]="icons['User']" [size]="18" class="etape__icone"></lucide-icon>
+          <h2 class="etape__titre">Identité</h2>
+        </div>
+
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Nom de naissance <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="nomNaissance" placeholder="Ex : OUEDRAOGO">
+              @if (formulaire.controls.nomNaissance.invalid && formulaire.controls.nomNaissance.touched) {
+                <mat-error>Nom obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Nom d'usage</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="nomUsage" placeholder="Nom marital si différent">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">
+              Prénom(s) <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="prenoms" placeholder="Ex : Ahmed Boureima">
+              @if (formulaire.controls.prenoms.invalid && formulaire.controls.prenoms.touched) {
+                <mat-error>Prénom(s) obligatoire(s)</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <!-- Champ NIP (placé après le prénom) -->
+          <div class="champ-groupe champ-groupe--full">
+            <app-champ-nip
+              formControlName="nip"
+              [exclureId]="data.id">
+            </app-champ-nip>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Sexe <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="sexe">
+                <mat-option value="M">Masculin</mat-option>
+                <mat-option value="F">Féminin</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Date de naissance</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="picker" formControlName="dateNaissance"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Lieu de naissance</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="lieuNaissance" placeholder="Ville, pays">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Nationalité <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="nationaliteId" placeholder="Sélectionner une nationalité">
+                @if (chargementNationalites()) {
+                  <mat-option disabled>Chargement…</mat-option>
+                } @else {
+                  @for (nat of nationalites(); track nat.id) {
+                    <mat-option [value]="nat.id">{{ nat.libelle }}</mat-option>
+                  }
+                }
+              </mat-select>
+              @if (formulaire.controls.nationaliteId.invalid && formulaire.controls.nationaliteId.touched) {
+                <mat-error>Nationalité obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Situation matrimoniale</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="situationMatrimoniale">
+                <mat-option value="">Non renseignée</mat-option>
+                <mat-option value="CELIBATAIRE">Célibataire</mat-option>
+                <mat-option value="MARIE">Marié(e)</mat-option>
+                <mat-option value="DIVORCE">Divorcé(e)</mat-option>
+                <mat-option value="VEUF">Veuf(ve)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          @if (estMarie()) {
+            <div class="champ-groupe champ-groupe--full">
+              <label class="champ-label">Nom du conjoint</label>
+              <mat-form-field appearance="outline" class="champ-full">
+                <input matInput formControlName="nomConjoint" placeholder="Nom du conjoint">
+              </mat-form-field>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- ══════ Section 2 : Profession & coordonnées ══════ -->
+      <section class="etape">
+        <div class="etape__header">
+          <lucide-icon [name]="icons['Briefcase']" [size]="18" class="etape__icone"></lucide-icon>
+          <h2 class="etape__titre">Profession &amp; coordonnées</h2>
+        </div>
+
+        <div class="grille-2">
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Profession</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="profession" placeholder="Ex : Comptable">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Matricule Fonction Publique</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="matriculeFonctionPublique"
+                     placeholder="Si agent public">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Grade / Catégorie</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="gradeCategorie" placeholder="Ex : A1, B2">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Adresse</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="adresse"
+                     placeholder="Adresse postale ou domicile">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Téléphone</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="telephone" placeholder="+226 XX XX XX XX">
+            </mat-form-field>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <!-- ══════ Section 3 : Pièces d'identité ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['IdCard']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Pièces d'identité</h2>
+      </div>
+
+      @if (piecesListe().length > 0) {
+        <div class="liste-existante">
+          @for (piece of piecesListe(); track piece.id) {
+            <div class="ligne-existante">
+              <div class="ligne-existante__contenu">
+                <span class="ligne-existante__type">{{ libelleTypePiece(piece) }}</span>
+                <span class="ligne-existante__sep">·</span>
+                <span class="ligne-existante__numero">{{ piece.numero }}</span>
+              </div>
+              <button type="button" class="btn-supprimer-ligne" (click)="supprimerPiece(piece.id)"
+                      aria-label="Supprimer">
+                <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <form [formGroup]="formPieceCourante">
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Type <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="typePieceId" placeholder="Sélectionner un type">
+                @if (chargementTypesPiece()) {
+                  <mat-option disabled>Chargement…</mat-option>
+                } @else {
+                  @for (type of typesPieceIdentite(); track type.id) {
+                    <mat-option [value]="type.id">{{ type.libelle }}</mat-option>
+                  }
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Numéro <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="numero" placeholder="Ex : B12345678">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Date de délivrance</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="pickerDelivrance" formControlName="dateDelivrance"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="pickerDelivrance"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDelivrance></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Date d'expiration</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="pickerExpiration" formControlName="dateExpiration"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="pickerExpiration"></mat-datepicker-toggle>
+              <mat-datepicker #pickerExpiration></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="bloc-ajout-actions">
+          <button type="button" class="btn-ajouter-ligne"
+                  [disabled]="formPieceCourante.invalid"
+                  (click)="ajouterPiece()">
+            <span>+ Ajouter cette pièce</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ══════ Section 4 : Alias ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['Tag']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Alias / pseudonymes</h2>
+      </div>
+
+      @if (aliasListe().length > 0) {
+        <div class="liste-existante">
+          @for (alias of aliasListe(); track alias.id) {
+            <div class="ligne-existante">
+              <div class="ligne-existante__contenu">
+                <span class="ligne-existante__type">{{ alias.nomAlias }}</span>
+                @if (alias.commentaire) {
+                  <span class="ligne-existante__sep">·</span>
+                  <span class="ligne-existante__commentaire">{{ alias.commentaire }}</span>
+                }
+              </div>
+              <button type="button" class="btn-supprimer-ligne" (click)="supprimerAlias(alias.id)"
+                      aria-label="Supprimer">
+                <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <form [formGroup]="formAliasCourant">
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Nom d'alias <span class="requis"></span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="nomAlias" placeholder="Ex : Le comptable">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Commentaire</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="commentaire" placeholder="Contexte, source…">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="bloc-ajout-actions">
+          <button type="button" class="btn-ajouter-ligne"
+                  [disabled]="formAliasCourant.invalid"
+                  (click)="ajouterAlias()">
+            <span>+ Ajouter cet alias</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Note info -->
+    <div class="note-info">
+      <lucide-icon [name]="icons['Info']" [size]="14"></lucide-icon>
+      <p>
+        Les modifications d'identité sont enregistrées à la validation.
+        Les ajouts et suppressions de pièces, alias et photo sont appliqués immédiatement.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="dialog-form__footer">
+    <button type="button" class="btn-secondaire" (click)="annuler()">Annuler</button>
+    <button type="button" class="btn-principal"
+            [disabled]="formulaire.invalid"
+            (click)="soumettre()">
+      <lucide-icon [name]="icons['Save']" [size]="14"></lucide-icon>
+      <span>Enregistrer les modifications</span>
+    </button>
+  </footer>
+</div>

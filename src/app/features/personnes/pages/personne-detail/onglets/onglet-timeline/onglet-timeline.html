@@ -1,0 +1,61 @@
+<div class="timeline-panel">
+
+  @if (evenements().length === 0) {
+    <app-empty-state
+      titre="Aucun evenement"
+      message="La timeline se remplira au fur et a mesure des activites enregistrees." />
+  } @else {
+
+    <div class="timeline">
+      @for (evt of evenements(); track $index) {
+        <div class="timeline-item">
+          <div class="timeline-item__date">
+            <div class="timeline-item__jour">{{ evt.date }}</div>
+            <div class="timeline-item__heure">{{ evt.heure }}</div>
+          </div>
+
+          <div class="timeline-item__pastille" [attr.data-couleur]="couleurType(evt.type)">
+            <lucide-icon [name]="iconeType(evt.type)" [size]="14"></lucide-icon>
+          </div>
+
+          <div class="timeline-item__contenu">
+            <div class="timeline-item__ligne">
+              <div class="timeline-item__titre">{{ evt.titre }}</div>
+              @if (evt.badge) {
+                <span class="timeline-item__badge" [attr.data-couleur]="couleurType(evt.type)">{{ evt.badge }}</span>
+              }
+            </div>
+            <div class="timeline-item__description">{{ evt.description }}</div>
+            @if (evt.auteur) {
+              <div class="timeline-item__auteur">Par {{ evt.auteur }}</div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Resume en bas -->
+    <div class="resume-bas">
+      <div class="resume-bas__titre">Resultats croises</div>
+      <div class="resume-bas__grille">
+        <div class="resume-item">
+          <div class="resume-item__valeur">{{ resume().evenements }}</div>
+          <div class="resume-item__label">Evenements</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item__valeur">{{ resume().documents }}</div>
+          <div class="resume-item__label">Documents</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item__valeur">{{ resume().infractions }}</div>
+          <div class="resume-item__label">Infractions</div>
+        </div>
+        <div class="resume-item">
+          <div class="resume-item__valeur">{{ resume().validees }}</div>
+          <div class="resume-item__label">Validees</div>
+        </div>
+      </div>
+    </div>
+
+  }
+</div>

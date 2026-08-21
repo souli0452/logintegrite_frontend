@@ -1,0 +1,119 @@
+:host {
+  --ascelc-rouge:      #E30613;
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-jaune:      #FFDD00;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-500: #78716C;
+
+  display: block;
+}
+
+.detail-dossier {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--neutre-50);
+  min-height: 100vh;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SKELETON LOADER
+// ═══════════════════════════════════════════════════════════════════════════
+.skeleton-hero {
+  padding: 2rem;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.skeleton-ligne {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--neutre-100), var(--neutre-200), var(--neutre-100));
+  background-size: 200% 100%;
+  animation: skeletonWave 1.4s ease-in-out infinite;
+
+  &--titre { height: 32px; width: 60%; }
+  &--sous  { width: 40%; }
+}
+
+@keyframes skeletonWave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ONGLETS
+// ═══════════════════════════════════════════════════════════════════════════
+.onglets-section {
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detail-tabs {
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid var(--neutre-200);
+      background: linear-gradient(180deg, var(--ascelc-blanc), var(--neutre-50));
+    }
+
+    .mat-mdc-tab {
+      min-width: 180px;
+
+      .mdc-tab__content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+
+    .mdc-tab__text-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      color: var(--neutre-500);
+    }
+
+    .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+      color: var(--ascelc-noir);
+    }
+
+    .mdc-tab-indicator__content--underline {
+      border-color: var(--ascelc-vert) !important;
+      border-top-width: 3px !important;
+    }
+  }
+}
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 0.35rem;
+  background: rgba(0, 150, 64, 0.12);
+  color: var(--ascelc-vert-fonce);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-left: 0.15rem;
+}
+
+.onglet-contenu {
+  padding: 1.5rem;
+}

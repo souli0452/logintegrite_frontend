@@ -1,0 +1,192 @@
+.timeline-panel {
+  padding: var(--spacing-lg);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 220px;
+
+  // Ligne verticale continue
+  &::before {
+    content: '';
+    position: absolute;
+    left: 200px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--asce-green), var(--border-default));
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: var(--spacing-lg);
+
+  &__date {
+    position: absolute;
+    left: -220px;
+    top: 0;
+    width: 160px;
+    text-align: right;
+  }
+
+  &__jour {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  &__heure {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__pastille {
+    position: absolute;
+    left: -30px;
+    top: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 4px var(--bg-surface);
+    z-index: 1;
+
+    &[data-couleur='vert'] { background: #10B981; color: white; }
+    &[data-couleur='bleu'] { background: #3B82F6; color: white; }
+    &[data-couleur='orange'] { background: #F59E0B; color: white; }
+    &[data-couleur='violet'] { background: #8B5CF6; color: white; }
+    &[data-couleur='jaune'] { background: #EAB308; color: white; }
+    &[data-couleur='gris'] { background: #64748B; color: white; }
+  }
+
+  &__contenu {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.15s, box-shadow 0.15s;
+
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  &__ligne {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  &__titre {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9375rem;
+  }
+
+  &__description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  &__auteur {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: var(--spacing-xs);
+    font-style: italic;
+  }
+
+  &__badge {
+    font-size: 0.6875rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+    text-transform: capitalize;
+    white-space: nowrap;
+
+    &[data-couleur='vert'] { background: #D1FAE5; color: #059669; }
+    &[data-couleur='bleu'] { background: #DBEAFE; color: #2563EB; }
+    &[data-couleur='orange'] { background: #FEF3C7; color: #D97706; }
+    &[data-couleur='violet'] { background: #EDE9FE; color: #7C3AED; }
+    &[data-couleur='jaune'] { background: #FEF9C3; color: #A16207; }
+    &[data-couleur='gris'] { background: #F1F5F9; color: #475569; }
+  }
+}
+
+/* Version mobile : date au-dessus de la carte */
+@media (max-width: 768px) {
+  .timeline {
+    padding-left: 50px;
+
+    &::before {
+      left: 30px;
+    }
+  }
+
+  .timeline-item {
+    &__date {
+      position: static;
+      text-align: left;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    &__pastille {
+      left: -35px;
+    }
+  }
+}
+
+/* Resume en bas */
+.resume-bas {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+
+  &__titre {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+  }
+
+  &__grille {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+.resume-item {
+  text-align: center;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-page);
+
+  &__valeur {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--asce-green);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}

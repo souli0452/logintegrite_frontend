@@ -1,0 +1,43 @@
+/* S'assure que le composant racine prend tout l'écran */
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+.layout-global {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f4f6f8; /* Tu peux remplacer par ta variable CSS globale */
+
+  /* Styles de la barre latérale */
+  .layout-sidebar {
+    width: 260px; /* Largeur par défaut */
+    flex-shrink: 0;
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    transition: width 0.3s ease-in-out;
+    z-index: 10;
+  }
+
+  /* Styles de la zone de contenu */
+  .layout-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; 
+    height: 100vh;
+    overflow-y: auto; /* Le scroll se fait uniquement ici */
+    padding: 2rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Comportement lorsque le signal "pliee()" renvoie true */
+  &.is-pliee {
+    .layout-sidebar {
+      width: 80px; /* Largeur réduite pour ne garder que les icônes */
+    }
+  }
+}

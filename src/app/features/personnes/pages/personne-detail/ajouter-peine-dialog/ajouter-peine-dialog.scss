@@ -1,0 +1,103 @@
+$asce-vert: #009640;
+$asce-vert-fonce: #007a33;
+$asce-vert-clair: #e6f5ec;
+$asce-noir: #1D1D1B;
+$asce-blanc: #FFFFFF;
+$gris-700: #4a4a48;
+$gris-500: #7a7a78;
+$gris-300: #d4d4d2;
+$gris-200: #e5e5e3;
+$gris-100: #f2f2f0;
+$gris-50: #f8f8f6;
+
+.peine-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  min-width: 480px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid $gris-200;
+  }
+
+  &__titre-zone { display: flex; gap: 12px; align-items: flex-start; }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    background: $asce-vert-clair;
+    color: $asce-vert;
+    border-radius: 8px;
+  }
+
+  &__titre { margin: 0; font-size: 16px; font-weight: 600; color: $asce-noir; }
+  &__sous-titre { margin: 3px 0 0 0; font-size: 12px; color: $gris-500; }
+
+  &__close {
+    background: transparent; border: none; color: $gris-500;
+    cursor: pointer; padding: 6px; border-radius: 4px;
+    &:hover { background: $gris-100; color: $asce-noir; }
+  }
+
+  &__body {
+    padding: 18px 22px 4px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    ::ng-deep .mat-mdc-form-field { width: 100%; }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 22px;
+    border-top: 1px solid $gris-200;
+    background: $gris-50;
+  }
+}
+
+.grille-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-secondaire {
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px solid $gris-300;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  &:hover:not(:disabled) { background: $gris-100; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-primaire {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $asce-blanc;
+  background: $asce-vert;
+  border: 1px solid $asce-vert;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  &:hover:not(:disabled) { background: $asce-vert-fonce; border-color: $asce-vert-fonce; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  ::ng-deep .mat-mdc-progress-spinner circle { stroke: $asce-blanc; }
+}

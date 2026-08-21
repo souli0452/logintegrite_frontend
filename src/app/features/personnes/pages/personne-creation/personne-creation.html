@@ -1,0 +1,597 @@
+<div class="workflow-page">
+
+  <!-- En-tête -->
+  <div class="workflow-header">
+    <div class="workflow-header__titre">
+      <lucide-icon [name]="icons['UserPlus']" [size]="20"></lucide-icon>
+      <div>
+        <h1>Nouvelle personne</h1>
+        <p>Créez une fiche pour une personne physique ou morale.</p>
+      </div>
+    </div>
+    <button class="btn-retour-header" routerLink="/personnes">
+      <lucide-icon [name]="icons['ArrowLeft']" [size]="14"></lucide-icon>
+      <span>Retour à la liste</span>
+    </button>
+  </div>
+
+  <!-- Sélecteur de type -->
+  <div class="type-selector">
+    <button type="button" class="type-option"
+            [class.type-option--actif]="type() === 'PHYSIQUE'"
+            (click)="changerType('PHYSIQUE')">
+      <lucide-icon [name]="icons['User']" [size]="18"></lucide-icon>
+      <span>Personne physique</span>
+    </button>
+    <button type="button" class="type-option"
+            [class.type-option--actif]="type() === 'MORALE'"
+            (click)="changerType('MORALE')">
+      <lucide-icon [name]="icons['Building2']" [size]="18"></lucide-icon>
+      <span>Personne morale</span>
+    </button>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    @for (etape of etapesCourantes(); track $index) {
+      <div class="stepper__item"
+           [class.stepper__item--actif]="etapeActive() === $index"
+           [class.stepper__item--fait]="etapeActive() > $index"
+           (click)="allerEtape($index)">
+        <div class="stepper__cercle">
+          @if (etapeActive() > $index) {
+            <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+          } @else {
+            {{ $index + 1 }}
+          }
+        </div>
+        <span class="stepper__label">{{ etape }}</span>
+      </div>
+      @if ($index < etapesCourantes().length - 1) {
+        <div class="stepper__ligne" [class.stepper__ligne--fait]="etapeActive() > $index"></div>
+      }
+    }
+  </div>
+
+  <!-- Corps : photo/aide à gauche + contenu à droite -->
+  <div class="workflow-corps">
+
+    <!-- Colonne gauche -->
+    <aside class="col-gauche">
+      <div class="bloc-photo">
+        <h3 class="bloc-photo__titre">{{ type() === 'PHYSIQUE' ? 'Photo' : 'Logo' }}</h3>
+        <div class="bloc-photo__apercu">
+          @if (photoApercu()) {
+            <img [src]="photoApercu()" alt="Aperçu">
+          } @else {
+            <lucide-icon [name]="icons[type() === 'PHYSIQUE' ? 'User' : 'Building2']" [size]="32"></lucide-icon>
+          }
+        </div>
+        <div class="bloc-photo__actions">
+          <label class="btn-fichier">
+            <lucide-icon [name]="icons['Camera']" [size]="14"></lucide-icon>
+            <span>{{ type() === 'PHYSIQUE' ? 'Choisir une photo' : 'Choisir un logo' }}</span>
+            <input type="file" accept="image/*" hidden (change)="choisirPhoto($event)">
+          </label>
+          @if (photoApercu()) {
+            <button type="button" class="btn-retirer" (click)="retirerPhoto()">Retirer</button>
+          }
+        </div>
+      </div>
+
+      <div class="carte-info">
+        <div class="carte-info__entete">
+          <lucide-icon [name]="icons['Info']" [size]="14"></lucide-icon>
+          <span>Aide</span>
+        </div>
+        <p>Les champs marqués <span class="requis">*</span> sont obligatoires.</p>
+        <p>Photo, pièces et alias sont facultatifs à la création.</p>
+        <p>Après création, vous pourrez ajouter dossiers et implications.</p>
+      </div>
+    </aside>
+
+    <!-- Colonne droite : contenu de l'étape -->
+    <div class="workflow-contenu">
+
+      @if (type() === 'PHYSIQUE') {
+        <form [formGroup]="formulairePhysique">
+
+          <!-- ÉTAPE 1 PHYSIQUE : Informations identitaires -->
+          @if (etapeActive() === 0) {
+            <div class="etape">
+              <div class="etape__header">
+                <lucide-icon [name]="icons['User']" [size]="18" class="etape__icone"></lucide-icon>
+                <h2 class="etape__titre">Informations identitaires</h2>
+              </div>
+
+              <div class="etape-form">
+              <div class="champ-groupe champ-groupe--full">
+  <app-champ-nip formControlName="nip"></app-champ-nip>
+</div>
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Nom de famille <span class="requis">*</span></label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="nomNaissance">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Nom d'usage</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="nomUsage">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Prénoms <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="prenoms">
+                  </mat-form-field>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Sexe <span class="requis">*</span></label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <mat-select formControlName="sexe">
+                        <mat-option value="M">Masculin</mat-option>
+                        <mat-option value="F">Féminin</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Nationalité <span class="requis">*</span></label>
+                    <mat-form-field appearance="outline" class="champ-full">
+  <mat-select formControlName="nationaliteId"
+              placeholder="Sélectionner une nationalité">
+    @if (chargementNationalites()) {
+      <mat-option disabled>Chargement…</mat-option>
+    } @else {
+      @for (nat of nationalites(); track nat.id) {
+        <mat-option [value]="nat.id">{{ nat.libelle }}</mat-option>
+      }
+    }
+  </mat-select>
+</mat-form-field>
+
+                  </div>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Date de naissance</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput [matDatepicker]="pickerNaissance" formControlName="dateNaissance">
+                      <mat-datepicker-toggle matIconSuffix [for]="pickerNaissance"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerNaissance></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Lieu de naissance</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="lieuNaissance">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Situation matrimoniale</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <mat-select formControlName="situationMatrimoniale">
+                        <mat-option value="">Non renseignée</mat-option>
+                        <mat-option value="CELIBATAIRE">Célibataire</mat-option>
+                        <mat-option value="MARIE">Marié(e)</mat-option>
+                        <mat-option value="DIVORCE">Divorcé(e)</mat-option>
+                        <mat-option value="VEUF">Veuf(ve)</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Nom du conjoint</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="nomConjoint"
+                             [placeholder]="estMarie() ? '' : 'Disponible si marié(e)'">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ÉTAPE 2 PHYSIQUE : Informations administratives -->
+          @if (etapeActive() === 1) {
+            <div class="etape">
+              <div class="etape__header">
+                <lucide-icon [name]="icons['Briefcase']" [size]="18" class="etape__icone"></lucide-icon>
+                <h2 class="etape__titre">Informations administratives</h2>
+              </div>
+
+              <div class="etape-form">
+                <div class="champ-groupe">
+                  <label class="champ-label">Profession</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="profession">
+                  </mat-form-field>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Matricule fonction publique</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="matriculeFonctionPublique">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Grade / Catégorie</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="gradeCategorie">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Adresse</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="adresse">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Téléphone</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="telephone">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ÉTAPE 3 PHYSIQUE : Documents d'identification -->
+          @if (etapeActive() === 2) {
+            <div class="etape">
+              <div class="etape__header">
+                <lucide-icon [name]="icons['FileText']" [size]="18" class="etape__icone"></lucide-icon>
+                <h2 class="etape__titre">Documents d'identification</h2>
+              </div>
+
+              <!-- Pièces d'identité -->
+<div class="bloc-ajout">
+  <h3 class="bloc-ajout__titre">Pièces d'identité</h3>
+
+  <form [formGroup]="formPieceCourante" class="etape-form">
+    <div class="grille-2">
+      <div class="champ-groupe">
+        <label class="champ-label">Type <span class="requis">*</span></label>
+        <mat-form-field appearance="outline" class="champ-full">
+          <mat-select formControlName="typePieceId" placeholder="Sélectionner un type">
+            @if (chargementTypesPiece()) {
+              <mat-option disabled>Chargement…</mat-option>
+            } @else {
+              @for (type of typesPieceIdentite(); track type.id) {
+                <mat-option [value]="type.id">{{ type.libelle }}</mat-option>
+              }
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="champ-groupe">
+        <label class="champ-label">Numéro <span class="requis">*</span></label>
+        <mat-form-field appearance="outline" class="champ-full">
+          <input matInput formControlName="numero">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grille-2">
+      <div class="champ-groupe">
+        <label class="champ-label">Date de délivrance</label>
+        <mat-form-field appearance="outline" class="champ-full">
+          <input matInput [matDatepicker]="pickerDelivrance" formControlName="dateDelivrance">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerDelivrance"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDelivrance></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="champ-groupe">
+        <label class="champ-label">Date d'expiration</label>
+        <mat-form-field appearance="outline" class="champ-full">
+          <input matInput [matDatepicker]="pickerExpiration" formControlName="dateExpiration">
+          <mat-datepicker-toggle matIconSuffix [for]="pickerExpiration"></mat-datepicker-toggle>
+          <mat-datepicker #pickerExpiration></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <button type="button" class="btn-ajouter-fait"
+          (click)="ajouterPiece()" [disabled]="formPieceCourante.invalid">
+    <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+    <span>Ajouter cette pièce</span>
+  </button>
+
+  @if (piecesAccumulees().length > 0) {
+    <div class="liste-accumulee">
+      @for (piece of piecesAccumulees(); track $index) {
+        <div class="ligne-accumulee">
+          <span>{{ libelleTypePiece(piece.typePieceId) }} · {{ piece.numero }}</span>
+          <button type="button" class="btn-supprimer-fait" (click)="retirerPiece($index)">
+            <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>
+              <!-- Alias -->
+              <div class="bloc-ajout">
+                <h3 class="bloc-ajout__titre">Alias / pseudonymes</h3>
+
+                <form [formGroup]="formAliasCourant" class="etape-form">
+                  <div class="grille-2">
+                    <div class="champ-groupe">
+                      <label class="champ-label">Nom d'alias <span class="requis"></span></label>
+                      <mat-form-field appearance="outline" class="champ-full">
+                        <input matInput formControlName="nomAlias">
+                      </mat-form-field>
+                    </div>
+                    <div class="champ-groupe">
+                      <label class="champ-label">Commentaire</label>
+                      <mat-form-field appearance="outline" class="champ-full">
+                        <input matInput formControlName="commentaire">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+
+                <button type="button" class="btn-ajouter-fait"
+                        (click)="ajouterAlias()" [disabled]="formAliasCourant.invalid">
+                  <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                  <span>Ajouter cet alias</span>
+                </button>
+
+                @if (aliasAccumules().length > 0) {
+                  <div class="liste-accumulee">
+                    @for (alias of aliasAccumules(); track $index) {
+                      <div class="ligne-accumulee">
+                        <span>{{ alias.nomAlias }}</span>
+                        <button type="button" class="btn-supprimer-fait" (click)="retirerAlias($index)">
+                          <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+        </form>
+
+      } @else {
+
+        <form [formGroup]="formulaireMorale">
+
+          <!-- ÉTAPE 1 MORALE : Identification & activité -->
+          @if (etapeActive() === 0) {
+            <div class="etape">
+              <div class="etape__header">
+                <lucide-icon [name]="icons['Building2']" [size]="18" class="etape__icone"></lucide-icon>
+                <h2 class="etape__titre">Identification & activité</h2>
+              </div>
+
+              <div class="etape-form">
+                <div class="champ-groupe">
+                  <label class="champ-label">Dénomination sociale <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="denominationSociale">
+                  </mat-form-field>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Sigle</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="sigle">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Forme juridique <span class="requis">*</span></label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="formeJuridique" placeholder="SA, SARL, EI...">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">RCCM</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="rccm">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">IFU</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="ifu">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Secteur d'activité <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="secteurActivite">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Siège social <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="siegeSocial">
+                  </mat-form-field>
+                </div>
+
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Capital social (XOF)</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput type="number" formControlName="capitalSocial">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Date de création</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput [matDatepicker]="pickerCreation" formControlName="dateCreationEntreprise">
+                      <mat-datepicker-toggle matIconSuffix [for]="pickerCreation"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerCreation></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Statut</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="statut">
+                      <mat-option value="ACTIVE">Active</mat-option>
+                      <mat-option value="DISSOUTE">Dissoute</mat-option>
+                      <mat-option value="RADIEE">Radiée</mat-option>
+                      <mat-option value="EN_LIQUIDATION">En liquidation</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ÉTAPE 2 MORALE : Contact, représentant & alias -->
+          @if (etapeActive() === 1) {
+            <div class="etape">
+              <div class="etape__header">
+                <lucide-icon [name]="icons['Phone']" [size]="18" class="etape__icone"></lucide-icon>
+                <h2 class="etape__titre">Contact, représentant & alias</h2>
+              </div>
+
+              <div class="etape-form">
+                <div class="grille-2">
+                  <div class="champ-groupe">
+                    <label class="champ-label">Téléphone</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="telephone">
+                    </mat-form-field>
+                  </div>
+                  <div class="champ-groupe">
+                    <label class="champ-label">Email</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput type="email" formControlName="email">
+                      @if (formulaireMorale.controls.email.hasError('email')) {
+                        <mat-error>Email invalide</mat-error>
+                      }
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Représentant légal (optionnel)</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput
+                           [formControl]="rechercheRepresentant"
+                           [matAutocomplete]="autoRepresentant"
+                           (input)="chercherRepresentant(rechercheRepresentant.value ?? '')"
+                           placeholder="Rechercher une personne physique...">
+                    <mat-autocomplete #autoRepresentant="matAutocomplete"
+                                       [displayWith]="displayRepresentant"
+                                       (optionSelected)="choisirRepresentant($event.option.value)">
+                      @for (option of optionsRepresentant(); track option.id) {
+                        <mat-option [value]="option">{{ option.nomAffichage }}</mat-option>
+                      }
+                    </mat-autocomplete>
+                    @if (representantChoisi()) {
+                      <button matSuffix mat-icon-button type="button" (click)="retirerRepresentant()">✕</button>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Alias -->
+              <div class="bloc-ajout">
+                <h3 class="bloc-ajout__titre">Alias / autres dénominations</h3>
+
+                <form [formGroup]="formAliasCourant" class="etape-form">
+                  <div class="grille-2">
+                    <div class="champ-groupe">
+                      <label class="champ-label">Nom d'alias <span class="requis">*</span></label>
+                      <mat-form-field appearance="outline" class="champ-full">
+                        <input matInput formControlName="nomAlias">
+                      </mat-form-field>
+                    </div>
+                    <div class="champ-groupe">
+                      <label class="champ-label">Commentaire</label>
+                      <mat-form-field appearance="outline" class="champ-full">
+                        <input matInput formControlName="commentaire">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+
+                <button type="button" class="btn-ajouter-fait"
+                        (click)="ajouterAlias()" [disabled]="formAliasCourant.invalid">
+                  <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                  <span>Ajouter cet alias</span>
+                </button>
+
+                @if (aliasAccumules().length > 0) {
+                  <div class="liste-accumulee">
+                    @for (alias of aliasAccumules(); track $index) {
+                      <div class="ligne-accumulee">
+                        <span>{{ alias.nomAlias }}</span>
+                        <button type="button" class="btn-supprimer-fait" (click)="retirerAlias($index)">
+                          <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+        </form>
+      }
+    </div>
+  </div>
+
+  <!-- Footer fixe -->
+  <div class="workflow-footer">
+    <button type="button" class="btn-retour"
+            (click)="etapePrecedente()"
+            [disabled]="etapeActive() === 0 || enregistrement()">
+      <lucide-icon [name]="icons['ArrowLeft']" [size]="16"></lucide-icon>
+      <span>Retour</span>
+    </button>
+
+    <div class="footer-actions-droite">
+      @if (etapeActive() < etapesCourantes().length - 1) {
+        <button type="button" class="btn-suivant"
+                (click)="etapeSuivante()"
+                [disabled]="enregistrement()">
+          <span>Suivant : {{ etapesCourantes()[etapeActive() + 1] }}</span>
+          <lucide-icon [name]="icons['ArrowRight']" [size]="16"></lucide-icon>
+        </button>
+      } @else {
+        <button type="button" class="btn-enregistrer"
+                (click)="enregistrer()"
+                [disabled]="formulaireInvalide || enregistrement()">
+          @if (enregistrement()) {
+            <mat-spinner diameter="18"></mat-spinner>
+            <span>Enregistrement...</span>
+          } @else {
+            <lucide-icon [name]="icons['Save']" [size]="16"></lucide-icon>
+            <span>Enregistrer</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+<div class="carte-kpi">
+  <div class="carte-kpi__libelle">{{ libelle() }}</div>
+  <div class="carte-kpi__valeur">{{ valeur() | number:'1.0-0':'fr' }}</div>
+  @if (delta() !== null) {
+    <div class="carte-kpi__delta">
+      {{ delta()! > 0 ? '+' : '' }}{{ delta() }}% {{ comparaison() }}
+    </div>
+  }
+</div>

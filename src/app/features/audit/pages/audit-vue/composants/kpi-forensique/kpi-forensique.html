@@ -1,0 +1,167 @@
+<div class="kpi-grille">
+
+  <!-- ═══════════ CARTE 1 : Actions du jour ═══════════ -->
+  <article class="kpi-carte kpi-carte--actions">
+    <header class="kpi-carte__entete">
+      <div class="kpi-carte__icone">
+        <lucide-icon [name]="icons['Activity']" [size]="20"></lucide-icon>
+      </div>
+      <div class="kpi-carte__meta">
+        <span class="kpi-carte__label">Actions aujourd'hui</span>
+        @if (kpi(); as k) {
+          <div [class]="'kpi-trend kpi-trend--' + trendActions()">
+            @if (trendActions() === 'up') {
+              <lucide-icon [name]="icons['TrendingUp']" [size]="12"></lucide-icon>
+            } @else if (trendActions() === 'down') {
+              <lucide-icon [name]="icons['TrendingDown']" [size]="12"></lucide-icon>
+            } @else {
+              <lucide-icon [name]="icons['Minus']" [size]="12"></lucide-icon>
+            }
+            <span>
+              {{ (k.deltaActionsVsHier > 0 ? '+' : '') }}{{ k.deltaActionsVsHier | number:'1.0-0':'fr' }}
+              vs hier
+            </span>
+          </div>
+        }
+      </div>
+    </header>
+
+    <div class="kpi-carte__valeur">
+      @if (chargement()) {
+        <span class="kpi-skeleton"></span>
+      } @else {
+        {{ (kpi()?.actionsAujourdhuiTotal ?? 0) | number:'1.0-0':'fr' }}
+      }
+    </div>
+
+    @if (kpi(); as k) {
+      <footer class="kpi-carte__ventilation">
+        <div class="ventilation-item" matTooltip="Créations">
+          <lucide-icon [name]="icons['Plus']" [size]="12" class="ico-creation"></lucide-icon>
+          <span>{{ k.actionsAujourdhuiCreation | number:'1.0-0':'fr' }}</span>
+        </div>
+        <div class="ventilation-item" matTooltip="Modifications">
+          <lucide-icon [name]="icons['Pencil']" [size]="12" class="ico-modif"></lucide-icon>
+          <span>{{ k.actionsAujourdhuiModification | number:'1.0-0':'fr' }}</span>
+        </div>
+        <div class="ventilation-item" matTooltip="Suppressions">
+          <lucide-icon [name]="icons['Trash2']" [size]="12" class="ico-suppr"></lucide-icon>
+          <span>{{ k.actionsAujourdhuiSuppression | number:'1.0-0':'fr' }}</span>
+        </div>
+      </footer>
+    }
+  </article>
+
+  <!-- ═══════════ CARTE 2 : Consultations 24h ═══════════ -->
+  <article class="kpi-carte kpi-carte--consultations">
+    <header class="kpi-carte__entete">
+      <div class="kpi-carte__icone">
+        <lucide-icon [name]="icons['Eye']" [size]="20"></lucide-icon>
+      </div>
+      <div class="kpi-carte__meta">
+        <span class="kpi-carte__label">Consultations 24h</span>
+        @if (kpi()?.deltaConsultationsPct !== null && kpi()?.deltaConsultationsPct !== undefined) {
+          <div [class]="'kpi-trend kpi-trend--' + trendConsultations()">
+            @if (trendConsultations() === 'up') {
+              <lucide-icon [name]="icons['TrendingUp']" [size]="12"></lucide-icon>
+            } @else if (trendConsultations() === 'down') {
+              <lucide-icon [name]="icons['TrendingDown']" [size]="12"></lucide-icon>
+            } @else {
+              <lucide-icon [name]="icons['Minus']" [size]="12"></lucide-icon>
+            }
+            <span>
+              {{ (kpi()!.deltaConsultationsPct! > 0 ? '+' : '') }}{{ kpi()!.deltaConsultationsPct! | number:'1.1-1':'fr' }}%
+            </span>
+          </div>
+        }
+      </div>
+    </header>
+
+    <div class="kpi-carte__valeur">
+      @if (chargement()) {
+        <span class="kpi-skeleton"></span>
+      } @else {
+        {{ (kpi()?.consultations24h ?? 0) | number:'1.0-0':'fr' }}
+      }
+    </div>
+
+    <footer class="kpi-carte__ventilation">
+      <div class="kpi-carte__hint">
+        {{ (kpi()?.consultations24hPrecedentes ?? 0) | number:'1.0-0':'fr' }} sur les 24h précédentes
+      </div>
+    </footer>
+  </article>
+
+  <!-- ═══════════ CARTE 3 : Utilisateurs actifs ═══════════ -->
+  <article class="kpi-carte kpi-carte--users">
+    <header class="kpi-carte__entete">
+      <div class="kpi-carte__icone">
+        <lucide-icon [name]="icons['Users']" [size]="20"></lucide-icon>
+      </div>
+      <div class="kpi-carte__meta">
+        <span class="kpi-carte__label">Utilisateurs actifs</span>
+        <div class="kpi-trend kpi-trend--neutre">
+          <span>sur 24h</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="kpi-carte__valeur">
+      @if (chargement()) {
+        <span class="kpi-skeleton"></span>
+      } @else {
+        {{ (kpi()?.utilisateursActifs24h ?? 0) | number:'1.0-0':'fr' }}
+      }
+    </div>
+
+    <footer class="kpi-carte__ventilation">
+      <div class="kpi-carte__hint">
+        {{ (kpi()?.utilisateursActifs7j ?? 0) | number:'1.0-0':'fr' }} distincts sur 7 jours
+      </div>
+    </footer>
+  </article>
+
+  <!-- ═══════════ CARTE 4 : Alertes de sécurité ═══════════ -->
+  <article [class]="'kpi-carte kpi-carte--alertes kpi-carte--niveau-' + niveauAlerte()">
+    <header class="kpi-carte__entete">
+      <div class="kpi-carte__icone">
+        <lucide-icon [name]="icons['AlertTriangle']" [size]="20"></lucide-icon>
+      </div>
+      <div class="kpi-carte__meta">
+        <span class="kpi-carte__label">Alertes sécurité</span>
+        <div [class]="'kpi-alerte-badge kpi-alerte-badge--' + niveauAlerte()">
+          <span>
+            @switch (niveauAlerte()) {
+              @case ('ok')     { RAS }
+              @case ('faible') { faible }
+              @case ('moyen')  { à surveiller }
+              @case ('eleve')  { critique }
+            }
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <div class="kpi-carte__valeur">
+      @if (chargement()) {
+        <span class="kpi-skeleton"></span>
+      } @else {
+        {{ (kpi()?.alertesOuvertes ?? 0) | number:'1.0-0':'fr' }}
+      }
+    </div>
+
+    @if (kpi(); as k) {
+      <footer class="kpi-carte__ventilation">
+        <div class="ventilation-item" matTooltip="Actions hors heures ouvrables (7h-18h en semaine)">
+          <lucide-icon [name]="icons['MoonStar']" [size]="12" class="ico-alerte"></lucide-icon>
+          <span>{{ k.actionsHorsHoraire24h | number:'1.0-0':'fr' }} hors horaire</span>
+        </div>
+        <div class="ventilation-item" matTooltip="Utilisateurs avec ≥ 2 IPs distinctes en 24h">
+          <lucide-icon [name]="icons['Globe']" [size]="12" class="ico-alerte"></lucide-icon>
+          <span>{{ k.ipsMultiples24h | number:'1.0-0':'fr' }} IPs mult.</span>
+        </div>
+      </footer>
+    }
+  </article>
+
+</div>

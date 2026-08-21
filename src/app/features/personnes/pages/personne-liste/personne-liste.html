@@ -1,0 +1,260 @@
+<div class="personnes-container">
+
+  <!-- En-tete -->
+  <div class="en-tete-section">
+    <div class="en-tete-section__gauche">
+      <h1 class="titre-page">Identification des personnes</h1>
+      <p class="sous-titre">{{ totalElements() }} personne(s) enregistree(s) au total.</p>
+    </div>
+
+    <div class="actions-groupe">
+      <button class="btn-principal" routerLink="/personnes/nouveau">
+        <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+        <span>Nouvelle personne</span>
+      </button>
+    </div>
+  </div>
+
+  @if (chargement()) {
+    <div class="loader-zone">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (personnes().length === 0 && filtreAncrage() === 'TOUS' && filtreType() === 'TOUS' && termeRecherche() === '') {
+    <app-empty-state
+      titre="Aucune personne enregistrée"
+      message="Commencez par créer une personne physique ou morale."
+      [icone]="icons['Users']">
+      <button class="btn-principal" routerLink="/personnes/nouveau">
+        Enregistrer la première
+      </button>
+    </app-empty-state>
+  } @else {
+
+    <!-- Filtre principal : contexte d'ancrage -->
+    <div class="barre-ancrage">
+      <span class="barre-ancrage__label">Contexte</span>
+      <div class="filtres-chips">
+        <button type="button"
+                class="filtre-chip filtre-chip--ancrage"
+                [class.filtre-chip--actif]="filtreAncrage() === 'TOUS'"
+                (click)="changerFiltreAncrage('TOUS')">
+          Toutes
+        </button>
+        <button type="button"
+                class="filtre-chip filtre-chip--ancrage filtre-chip--instruction"
+                [class.filtre-chip--actif]="filtreAncrage() === 'EN_INSTRUCTION'"
+                (click)="changerFiltreAncrage('EN_INSTRUCTION')">
+          <lucide-icon [name]="icons['FileText']" [size]="14"></lucide-icon>
+          En instruction
+        </button>
+        <button type="button"
+                class="filtre-chip filtre-chip--ancrage filtre-chip--officiel"
+                [class.filtre-chip--actif]="filtreAncrage() === 'REGISTRE_OFFICIEL'"
+                (click)="changerFiltreAncrage('REGISTRE_OFFICIEL')">
+          <lucide-icon [name]="icons['FolderOpen']" [size]="14"></lucide-icon>
+          Registre officiel
+        </button>
+      </div>
+    </div>
+
+    <!-- Barre recherche + filtres type -->
+    <div class="barre-outils">
+      <div class="recherche-wrapper">
+        <lucide-icon [name]="icons['Search']" [size]="16" class="icone-recherche"></lucide-icon>
+        <input
+          type="text"
+          [value]="termeRecherche()"
+          (input)="changerRecherche($any($event.target).value)"
+          placeholder="Rechercher par nom ou denomination..."
+          class="champ-recherche">
+      </div>
+
+      <div class="filtres-chips">
+        <button type="button"
+                class="filtre-chip"
+                [class.filtre-chip--actif]="filtreType() === 'TOUS'"
+                (click)="changerFiltreType('TOUS')">
+          Toutes
+        </button>
+        <button type="button"
+                class="filtre-chip"
+                [class.filtre-chip--actif]="filtreType() === 'PHYSIQUE'"
+                (click)="changerFiltreType('PHYSIQUE')">
+          <lucide-icon [name]="icons['User']" [size]="14"></lucide-icon>
+          Physiques
+        </button>
+        <button type="button"
+                class="filtre-chip"
+                [class.filtre-chip--actif]="filtreType() === 'MORALE'"
+                (click)="changerFiltreType('MORALE')">
+          <lucide-icon [name]="icons['Building2']" [size]="14"></lucide-icon>
+          Morales
+        </button>
+      </div>
+    </div>
+
+    @if (personnes().length === 0) {
+      <div class="filtre-vide">
+        Aucune personne ne correspond aux filtres actuels.
+      </div>
+    } @else {
+
+      <!-- Tableau epure : 5 colonnes -->
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="personnes()" multiTemplateDataRows class="table-personnes">
+
+          <!-- Colonne Personne : avatar + nom + identifiant -->
+          <ng-container matColumnDef="personne">
+            <th mat-header-cell *matHeaderCellDef>Personne</th>
+            <td mat-cell *matCellDef="let p" class="col-personne">
+              <div class="cellule-personne">
+                <div class="avatar-cercle"
+                     [class.avatar-cercle--pp]="p.typePersonne === 'PHYSIQUE'"
+                     [class.avatar-cercle--pm]="p.typePersonne === 'MORALE'">
+                  <lucide-icon [name]="p.typePersonne === 'PHYSIQUE' ? icons['User'] : icons['Building2']" [size]="16"></lucide-icon>
+                </div>
+                <div class="cellule-personne__texte">
+                  <div class="cellule-personne__nom">{{ p.nomAffichage }}</div>
+                  <div class="cellule-personne__meta">
+                    <span class="identifiant-mono">{{ identifiantMetier(p) }}</span>
+                    <span class="type-libelle">{{ libelleTypePersonne(p.typePersonne) }}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Colonne Statut d'ancrage -->
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let p">
+              <span class="badge-ancrage"
+                    [class.badge-ancrage--instruction]="p.statutAncrage === 'EN_INSTRUCTION'"
+                    [class.badge-ancrage--officiel]="p.statutAncrage === 'REGISTRE_OFFICIEL'">
+                {{ libelleStatutAncrage(p) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Colonne Dossiers valides (indicateur cle) -->
+          <ng-container matColumnDef="dossiers">
+            <th mat-header-cell *matHeaderCellDef class="col-centered">Dossiers validés</th>
+            <td mat-cell *matCellDef="let p" class="col-centered">
+              @if (p.nombreDossiersValides > 0) {
+                <span class="compteur-valide">{{ p.nombreDossiersValides }}</span>
+              } @else {
+                <span class="compteur-vide">—</span>
+              }
+            </td>
+          </ng-container>
+
+          <!-- Colonne Inscription -->
+          <ng-container matColumnDef="inscription">
+            <th mat-header-cell *matHeaderCellDef>Enregistrée le</th>
+            <td mat-cell *matCellDef="let p" class="cellule-date">
+              {{ p.dateCreation | date:'dd/MM/yyyy':'':'fr' }}
+            </td>
+          </ng-container>
+
+          <!-- Colonne Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="col-actions">Actions</th>
+            <td mat-cell *matCellDef="let p" class="col-actions">
+              <div class="actions-cellule">
+                <button class="btn-icone" title="Voir la fiche" (click)="voir(p, $event)">
+                  <lucide-icon [name]="icons['Eye']" [size]="16"></lucide-icon>
+                </button>
+                <button class="btn-icone" title="Éditer" (click)="editer(p, $event)">
+                  <lucide-icon [name]="icons['Pencil']" [size]="16"></lucide-icon>
+                </button>
+                <button class="btn-icone btn-icone--danger" title="Supprimer" (click)="supprimer(p, $event)">
+                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Panneau expandable enrichi -->
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let p" [attr.colspan]="colonnesAffichees.length">
+              <div class="detail-panel" [@detailExpand]="estDeveloppee(p) ? 'expanded' : 'collapsed'">
+                @if (estDeveloppee(p)) {
+                  <div class="detail-content">
+                    @if (chargementDetail()) {
+                      <div class="detail-loading">
+                        <mat-spinner diameter="20"></mat-spinner>
+                        <span>Chargement du détail...</span>
+                      </div>
+                    } @else if (detailDeveloppe(); as d) {
+                      <div class="detail-stats">
+                        <div class="stat-item">
+                          <lucide-icon [name]="icons['FolderOpen']" [size]="16"></lucide-icon>
+                          <div class="stat-item__texte">
+                            <span class="stat-item__valeur">{{ d.dossiers.length }}</span>
+                            <span class="stat-item__label">dossier(s)</span>
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <lucide-icon [name]="icons['FileText']" [size]="16"></lucide-icon>
+                          <div class="stat-item__texte">
+                            <span class="stat-item__valeur">{{ d.faits.length }}</span>
+                            <span class="stat-item__label">fait(s) reproché(s)</span>
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
+                          <div class="stat-item__texte">
+                            <span class="stat-item__valeur">{{ d.implications.length }}</span>
+                            <span class="stat-item__label">implication(s)</span>
+                          </div>
+                        </div>
+                        <div class="stat-item">
+                          <lucide-icon [name]="icons['Scale']" [size]="16"></lucide-icon>
+                          <div class="stat-item__texte">
+                            <span class="stat-item__valeur">{{ p.nombreDossiersValides }}</span>
+                            <span class="stat-item__label">dossier(s) validé(s)</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button class="btn-lien" (click)="voir(p, $event)">
+                        <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon>
+                        <span>Ouvrir la fiche complète</span>
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="colonnesAffichees"></tr>
+          <tr mat-row
+              *matRowDef="let row; columns: colonnesAffichees;"
+              class="ligne-personne"
+              [class.ligne-personne--expanded]="estDeveloppee(row)"
+              (click)="basculerDetail(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="ligne-detail"></tr>
+
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-footer">
+        <div class="pagination-info">
+          Affichage {{ debutAffichage() }} - {{ finAffichage() }} sur {{ totalElements() }}
+        </div>
+
+        <mat-paginator
+          [length]="totalElements()"
+          [pageSize]="taillePage()"
+          [pageIndex]="pageCourante()"
+          [pageSizeOptions]="[10, 25, 50]"
+          (page)="changerPage($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    }
+  }
+
+</div>

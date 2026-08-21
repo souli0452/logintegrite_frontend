@@ -1,0 +1,410 @@
+$asce-vert:        #009640;
+$asce-vert-fonce:  #007a33;
+$asce-vert-clair:  #e6f5ec;
+$asce-rouge:       #E30613;
+$asce-rouge-clair: #fce8ea;
+$asce-jaune:       #FFDD00;
+$asce-noir:        #1D1D1B;
+$asce-blanc:       #FFFFFF;
+
+$gris-700: #4a4a48;
+$gris-500: #7a7a78;
+$gris-300: #d4d4d2;
+$gris-200: #e5e5e3;
+$gris-100: #f2f2f0;
+$gris-50:  #f8f8f6;
+
+$ombre-carte: 0 1px 3px rgba($asce-noir, 0.06);
+$ombre-hover: 0 4px 12px rgba($asce-noir, 0.10);
+$radius: 6px;
+$transition: 200ms ease;
+
+.admin-page {
+  padding: 20px 32px 40px;
+  background: $gris-50;
+  min-height: 100%;
+}
+
+// EN-TETE
+.admin-header {
+  margin-bottom: 20px;
+
+  &__ligne {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__titre-zone {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__icone-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: $asce-vert-clair;
+    color: $asce-vert;
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: $asce-noir;
+    letter-spacing: -0.02em;
+  }
+
+  &__sous-titre {
+    margin: 2px 0 0 0;
+    font-size: 13px;
+    color: $gris-500;
+  }
+}
+
+.btn-principal {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $asce-blanc;
+  background: $asce-vert;
+  border: 1px solid $asce-vert;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+
+  &:hover {
+    background: $asce-vert-fonce;
+    border-color: $asce-vert-fonce;
+  }
+}
+
+// STATS
+.stats-mini {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-mini {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 10px 16px;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+
+  &__valeur {
+    font-size: 20px;
+    font-weight: 700;
+    color: $asce-noir;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: $gris-500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  &--actif .stat-mini__valeur   { color: $asce-vert; }
+  &--inactif .stat-mini__valeur { color: $asce-rouge; }
+}
+
+// FILTRES
+.admin-filtres {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filtres-chips { display: flex; gap: 6px; }
+
+.filtre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $gris-700;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: inherit;
+
+  lucide-icon { color: $gris-500; }
+
+  &:hover { background: $gris-50; border-color: $gris-300; color: $asce-noir; }
+
+  &--actif {
+    background: $asce-vert;
+    border-color: $asce-vert;
+    color: $asce-blanc;
+    lucide-icon { color: $asce-blanc; }
+  }
+}
+
+.recherche-wrapper {
+  position: relative;
+  min-width: 280px;
+
+  .icone-recherche {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $gris-500;
+    pointer-events: none;
+  }
+}
+
+.champ-recherche {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  font-size: 13px;
+  color: $asce-noir;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  outline: none;
+  font-family: inherit;
+  transition: all $transition;
+
+  &::placeholder { color: $gris-500; }
+
+  &:focus {
+    border-color: $asce-vert;
+    box-shadow: 0 0 0 3px rgba($asce-vert, 0.12);
+  }
+}
+
+// LOADER / EMPTY
+.loader-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  ::ng-deep .mat-mdc-progress-spinner circle { stroke: $asce-vert; }
+}
+
+.empty-etat {
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  padding: 64px 32px;
+  text-align: center;
+  max-width: 500px;
+  margin: 40px auto;
+
+  &__icone {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background: $asce-vert-clair;
+    color: $asce-vert;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  &__titre { margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: $asce-noir; }
+  &__message { margin: 0; font-size: 14px; color: $gris-700; }
+}
+
+.filtre-vide {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: $gris-500;
+  background: $asce-blanc;
+  border: 1px dashed $gris-300;
+  border-radius: $radius;
+}
+
+// TABLE UTILISATEURS
+.table-utilisateurs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ligne-utilisateur {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 60px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: $asce-blanc;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  transition: all $transition;
+  box-shadow: $ombre-carte;
+
+  &:hover {
+    border-color: rgba($asce-vert, 0.4);
+    box-shadow: $ombre-hover;
+  }
+
+  &--inactif {
+    opacity: 0.65;
+    background: $gris-50;
+  }
+
+  &__profil {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  &__roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  &__statut {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $gris-700;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: $asce-blanc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.identite {
+  min-width: 0;
+  flex: 1;
+
+  &__nom {
+    font-size: 14px;
+    font-weight: 600;
+    color: $asce-noir;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__email {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: $gris-500;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    lucide-icon { color: $gris-500; flex-shrink: 0; }
+  }
+}
+
+// BADGE ROLE
+.badge-role {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+
+  &--admin      { background: $asce-rouge-clair; color: $asce-rouge; }
+  &--validateur { background: rgba($asce-jaune, 0.25); color: #8a7500; }
+  &--agent      { background: $asce-vert-clair; color: $asce-vert-fonce; }
+  &--consultant { background: rgba(74, 74, 72, 0.12); color: $gris-700; }
+  &--default    { background: $gris-100; color: $gris-700; }
+  &--vide       { background: transparent; border: 1px dashed $gris-300; color: $gris-500; font-style: italic; }
+}
+
+// PASTILLE STATUT
+.pastille-statut {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &--actif   { background: $asce-vert; box-shadow: 0 0 0 2px rgba($asce-vert, 0.15); }
+  &--inactif { background: $gris-500; }
+}
+
+// BOUTON ACTIONS
+.btn-actions {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $gris-200;
+  border-radius: $radius;
+  cursor: pointer;
+  color: $gris-700;
+  transition: all $transition;
+
+  &:hover {
+    background: $gris-100;
+    border-color: $gris-300;
+    color: $asce-noir;
+  }
+}
+
+::ng-deep .menu-item-danger {
+  color: $asce-rouge !important;
+  lucide-icon { color: $asce-rouge !important; }
+}
+
+// RESPONSIVE
+@media (max-width: 900px) {
+  .admin-page { padding: 16px 20px 32px; }
+
+  .ligne-utilisateur {
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+
+    &__roles, &__statut { grid-column: 1 / -1; }
+  }
+
+  .recherche-wrapper { min-width: 100%; }
+}

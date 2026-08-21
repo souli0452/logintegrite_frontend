@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>{{ data.edition ? 'Modifier' : 'Nouveau' }} {{ data.titre }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulaire" class="form-hierarchie">
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Niveau *</mat-label>
+      <mat-select formControlName="niveau">
+        @for (n of data.niveaux; track n.valeur) {
+          <mat-option [value]="n.valeur">{{ n.libelle }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Libelle *</mat-label>
+      <input matInput formControlName="libelle">
+      @if (formulaire.controls.libelle.invalid && formulaire.controls.libelle.touched) {
+        <mat-error>Libelle obligatoire</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Parent (optionnel)</mat-label>
+      <mat-select formControlName="parentId">
+        <mat-option value="">Aucun (racine)</mat-option>
+        @for (p of data.parentsPossibles; track p.id) {
+          <mat-option [value]="p.id">{{ p.libelle }} ({{ p.niveau }})</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="annuler()">Annuler</button>
+  <button mat-flat-button color="primary" [disabled]="formulaire.invalid" (click)="soumettre()">
+    Enregistrer
+  </button>
+</mat-dialog-actions>

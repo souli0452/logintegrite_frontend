@@ -1,0 +1,309 @@
+<div class="dialog-form">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-form__header">
+    <div class="dialog-form__titre-bloc">
+      <lucide-icon [name]="icons['Building2']" [size]="28" class="dialog-form__icone"></lucide-icon>
+      <div>
+        <h1>Modifier la personne morale</h1>
+        <p>{{ data.denominationSociale }}</p>
+      </div>
+    </div>
+    <button type="button" class="btn-close" (click)="annuler()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <!-- ═══════ Corps ═══════ -->
+  <div class="dialog-form__corps">
+
+    <!-- ══════ Section Logo ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['Camera']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Logo</h2>
+      </div>
+
+      <div class="bloc-photo">
+        <div class="bloc-photo__apercu">
+          @if (aPhoto()) {
+            <img [src]="urlPhoto()" alt="Logo">
+          } @else {
+            <lucide-icon [name]="icons['Building2']" [size]="42"></lucide-icon>
+          }
+        </div>
+        <div class="bloc-photo__actions">
+          <label class="btn-fichier">
+            <lucide-icon [name]="icons['Camera']" [size]="14"></lucide-icon>
+            <span>{{ aPhoto() ? 'Changer le logo' : 'Ajouter un logo' }}</span>
+            <input type="file" accept="image/*" hidden (change)="choisirPhoto($event)">
+          </label>
+          @if (aPhoto()) {
+            <button type="button" class="btn-retirer-photo" (click)="supprimerPhoto()">
+              <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+              <span>Retirer</span>
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <form [formGroup]="formulaire">
+
+      <!-- ══════ Section 1 : Identification & activité ══════ -->
+      <section class="etape">
+        <div class="etape__header">
+          <lucide-icon [name]="icons['Briefcase']" [size]="18" class="etape__icone"></lucide-icon>
+          <h2 class="etape__titre">Identification &amp; activité</h2>
+        </div>
+
+        <div class="grille-2">
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">
+              Dénomination sociale <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="denominationSociale"
+                     placeholder="Ex : Société Générale du Burkina">
+              @if (formulaire.controls.denominationSociale.invalid && formulaire.controls.denominationSociale.touched) {
+                <mat-error>Dénomination obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Sigle</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="sigle" placeholder="Ex : SGB">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Forme juridique <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="formeJuridique"
+                     placeholder="Ex : SA, SARL, SAS">
+              @if (formulaire.controls.formeJuridique.invalid && formulaire.controls.formeJuridique.touched) {
+                <mat-error>Forme juridique obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">RCCM</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="rccm"
+                     placeholder="Registre du Commerce">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">IFU</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="ifu"
+                     placeholder="Identifiant Fiscal Unique">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">
+              Secteur d'activité <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="secteurActivite"
+                     placeholder="Ex : BTP, banque, télécoms">
+              @if (formulaire.controls.secteurActivite.invalid && formulaire.controls.secteurActivite.touched) {
+                <mat-error>Secteur obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">
+              Siège social <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="siegeSocial"
+                     placeholder="Adresse complète du siège">
+              @if (formulaire.controls.siegeSocial.invalid && formulaire.controls.siegeSocial.touched) {
+                <mat-error>Siège obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Capital social (F CFA)</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput type="number" formControlName="capitalSocial"
+                     placeholder="Ex : 10000000">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Date de création</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="pickerCreation"
+                     formControlName="dateCreationEntreprise"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="pickerCreation"></mat-datepicker-toggle>
+              <mat-datepicker #pickerCreation></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Statut</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="statut">
+                <mat-option value="ACTIVE">Active</mat-option>
+                <mat-option value="DISSOUTE">Dissoute</mat-option>
+                <mat-option value="RADIEE">Radiée</mat-option>
+                <mat-option value="EN_LIQUIDATION">En liquidation</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════ Section 2 : Contact & représentant ══════ -->
+      <section class="etape">
+        <div class="etape__header">
+          <lucide-icon [name]="icons['Phone']" [size]="18" class="etape__icone"></lucide-icon>
+          <h2 class="etape__titre">Contact &amp; représentant légal</h2>
+        </div>
+
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">Téléphone</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="telephone" placeholder="+226 XX XX XX XX">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Email</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput type="email" formControlName="email"
+                     placeholder="contact@entreprise.com">
+              @if (formulaire.controls.email.hasError('email')) {
+                <mat-error>Email invalide</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Représentant légal</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput
+                     [formControl]="rechercheRepresentant"
+                     [matAutocomplete]="autoRepresentant"
+                     (input)="chercherRepresentant(rechercheRepresentant.value ?? '')"
+                     placeholder="Rechercher une personne physique…">
+              @if (representantChoisi()) {
+                <button matSuffix type="button" class="btn-retirer-representant"
+                        (click)="retirerRepresentant()"
+                        aria-label="Retirer le représentant">
+                  <lucide-icon [name]="icons['X']" [size]="14"></lucide-icon>
+                </button>
+              }
+            </mat-form-field>
+            <mat-autocomplete #autoRepresentant="matAutocomplete"
+                              [displayWith]="displayRepresentant"
+                              (optionSelected)="choisirRepresentant($event.option.value)">
+              @for (option of optionsRepresentant(); track option.id) {
+                <mat-option [value]="option">
+                  <div class="option-representant">
+                    <div class="option-representant__avatar">
+                      <lucide-icon [name]="icons['User']" [size]="14"></lucide-icon>
+                    </div>
+                    <span>{{ option.nomAffichage }}</span>
+                  </div>
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <!-- ══════ Section 3 : Alias ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['Tag']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Alias / autres dénominations</h2>
+      </div>
+
+      @if (aliasListe().length > 0) {
+        <div class="liste-existante">
+          @for (alias of aliasListe(); track alias.id) {
+            <div class="ligne-existante">
+              <div class="ligne-existante__contenu">
+                <span class="ligne-existante__type">{{ alias.nomAlias }}</span>
+                @if (alias.commentaire) {
+                  <span class="ligne-existante__sep">·</span>
+                  <span class="ligne-existante__commentaire">{{ alias.commentaire }}</span>
+                }
+              </div>
+              <button type="button" class="btn-supprimer-ligne" (click)="supprimerAlias(alias.id)"
+                      aria-label="Supprimer">
+                <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <form [formGroup]="formAliasCourant">
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Nom d'alias <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="nomAlias"
+                     placeholder="Ex : L'ancien nom">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Commentaire</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="commentaire"
+                     placeholder="Contexte, source…">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="bloc-ajout-actions">
+          <button type="button" class="btn-ajouter-ligne"
+                  [disabled]="formAliasCourant.invalid"
+                  (click)="ajouterAlias()">
+            <span>+ Ajouter cet alias</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Note info -->
+    <div class="note-info">
+      <lucide-icon [name]="icons['Info']" [size]="14"></lucide-icon>
+      <p>
+        Les modifications d'identification sont enregistrées à la validation.
+        Les ajouts et suppressions d'alias et de logo sont appliqués immédiatement.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="dialog-form__footer">
+    <button type="button" class="btn-secondaire" (click)="annuler()">Annuler</button>
+    <button type="button" class="btn-principal"
+            [disabled]="formulaire.invalid"
+            (click)="soumettre()">
+      <lucide-icon [name]="icons['Save']" [size]="14"></lucide-icon>
+      <span>Enregistrer les modifications</span>
+    </button>
+  </footer>
+</div>

@@ -1,0 +1,180 @@
+<div class="admin-page">
+
+  <!-- EN-TETE -->
+  <header class="admin-header">
+    <div class="admin-header__ligne">
+      <div class="admin-header__titre-zone">
+        <div class="admin-header__icone-wrap">
+          <lucide-icon [name]="icons['Users']" [size]="22"></lucide-icon>
+        </div>
+        <div>
+          <h1 class="admin-header__titre">Administration des utilisateurs</h1>
+          <p class="admin-header__sous-titre">Gestion des comptes, rôles et activations</p>
+        </div>
+      </div>
+
+      <button class="btn-principal" (click)="ouvrirDialogCreation()">
+        <lucide-icon [name]="icons['UserPlus']" [size]="16"></lucide-icon>
+        <span>Créer un utilisateur</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats-mini">
+    <div class="stat-mini">
+      <span class="stat-mini__valeur">{{ totalUtilisateurs() }}</span>
+      <span class="stat-mini__label">Total</span>
+    </div>
+    <div class="stat-mini stat-mini--actif">
+      <span class="stat-mini__valeur">{{ totalActifs() }}</span>
+      <span class="stat-mini__label">Actifs</span>
+    </div>
+    <div class="stat-mini stat-mini--inactif">
+      <span class="stat-mini__valeur">{{ totalInactifs() }}</span>
+      <span class="stat-mini__label">Inactifs</span>
+    </div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="admin-filtres">
+    <div class="filtres-chips">
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreStatut() === 'TOUS'"
+              (click)="changerFiltre('TOUS')">Tous</button>
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreStatut() === 'ACTIFS'"
+              (click)="changerFiltre('ACTIFS')">
+        <lucide-icon [name]="icons['UserCheck']" [size]="14"></lucide-icon> Actifs
+      </button>
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreStatut() === 'INACTIFS'"
+              (click)="changerFiltre('INACTIFS')">
+        <lucide-icon [name]="icons['UserX']" [size]="14"></lucide-icon> Inactifs
+      </button>
+    </div>
+
+    <div class="recherche-wrapper">
+      <lucide-icon [name]="icons['Search']" [size]="14" class="icone-recherche"></lucide-icon>
+      <input type="text"
+             class="champ-recherche"
+             [formControl]="rechercheControl"
+             placeholder="Rechercher par nom, prénom ou email...">
+    </div>
+  </div>
+
+  <!-- CONTENU -->
+  @if (chargement()) {
+    <div class="loader-zone"><mat-spinner diameter="42"></mat-spinner></div>
+  } @else if (utilisateurs().length === 0) {
+    <div class="empty-etat">
+      <div class="empty-etat__icone"><lucide-icon [name]="icons['Users']" [size]="48"></lucide-icon></div>
+      <h2 class="empty-etat__titre">Aucun utilisateur enregistré</h2>
+      <p class="empty-etat__message">Créez le premier utilisateur en cliquant sur "Créer un utilisateur".</p>
+    </div>
+  } @else {
+
+    <div class="table-utilisateurs">
+      @if (utilisateursFiltres().length === 0) {
+        <div class="filtre-vide">Aucun utilisateur ne correspond aux filtres.</div>
+      } @else {
+        @for (u of utilisateursFiltres(); track u.id) {
+          <article class="ligne-utilisateur"
+                   [class.ligne-utilisateur--inactif]="!u.actif">
+
+            <!-- Avatar + Identite -->
+            <div class="ligne-utilisateur__profil">
+              <div class="avatar" [style.background-color]="couleurAvatar(u)">
+                {{ initiales(u) }}
+              </div>
+              <div class="identite">
+                <div class="identite__nom">{{ u.prenom }} {{ u.nom }}</div>
+                <div class="identite__email">
+                  <lucide-icon [name]="icons['Mail']" [size]="12"></lucide-icon>
+                  <span>{{ u.email }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Roles -->
+            <div class="ligne-utilisateur__roles">
+              @if (u.roles.length === 0) {
+                <span class="badge-role badge-role--vide">Aucun rôle</span>
+              } @else {
+                @for (r of u.roles; track r.id) {
+                  <span class="badge-role"
+                        [class]="'badge-role--' + couleurBadgeRole(r.code)">
+                    {{ r.libelle }}
+                  </span>
+                }
+              }
+            </div>
+
+            <!-- Statut -->
+            <div class="ligne-utilisateur__statut">
+              <span class="pastille-statut"
+                    [class.pastille-statut--actif]="u.actif"
+                    [class.pastille-statut--inactif]="!u.actif"></span>
+              <span>{{ u.actif ? 'Actif' : 'Inactif' }}</span>
+            </div>
+
+            <!-- Actions -->
+            <div class="ligne-utilisateur__actions">
+              <button class="btn-actions" [matMenuTriggerFor]="menu">
+                <lucide-icon [name]="icons['MoreVertical']" [size]="16"></lucide-icon>
+              </button>
+
+              <mat-menu #menu="matMenu" xPosition="before">
+                <!-- Attribuer un rôle -->
+                @if (rolesNonAttribues(u).length > 0) {
+                  <button mat-menu-item [matMenuTriggerFor]="menuAttribuer">
+                    <lucide-icon [name]="icons['Shield']" [size]="14"></lucide-icon>
+                    <span>Attribuer un rôle</span>
+                  </button>
+                }
+
+                <!-- Retirer un rôle -->
+                @if (u.roles.length > 0) {
+                  <button mat-menu-item [matMenuTriggerFor]="menuRetirer">
+                    <lucide-icon [name]="icons['ShieldOff']" [size]="14"></lucide-icon>
+                    <span>Retirer un rôle</span>
+                  </button>
+                }
+
+                <!-- Activation -->
+                <button mat-menu-item (click)="basculerActivation(u)">
+                  <lucide-icon [name]="u.actif ? icons['UserX'] : icons['UserCheck']" [size]="14"></lucide-icon>
+                  <span>{{ u.actif ? 'Désactiver' : 'Activer' }}</span>
+                </button>
+
+                <!-- Suppression -->
+                <button mat-menu-item class="menu-item-danger" (click)="supprimer(u)">
+                  <lucide-icon [name]="icons['Trash2']" [size]="14"></lucide-icon>
+                  <span>Supprimer</span>
+                </button>
+              </mat-menu>
+
+              <mat-menu #menuAttribuer="matMenu">
+                @for (role of rolesNonAttribues(u); track role.id) {
+                  <button mat-menu-item (click)="attribuerRole(u, role)">
+                    <span>{{ role.libelle }}</span>
+                  </button>
+                }
+              </mat-menu>
+
+              <mat-menu #menuRetirer="matMenu">
+                @for (role of u.roles; track role.id) {
+                  <button mat-menu-item (click)="retirerRole(u, role)">
+                    <span>{{ role.libelle }}</span>
+                  </button>
+                }
+              </mat-menu>
+            </div>
+
+          </article>
+        }
+      }
+    </div>
+  }
+
+</div>

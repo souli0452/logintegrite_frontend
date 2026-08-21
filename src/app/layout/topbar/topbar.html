@@ -1,0 +1,29 @@
+<mat-toolbar class="topbar">
+  <div class="topbar__search">
+    <lucide-icon [name]="icons['Search']" [size]="18" class="topbar__search-icon"></lucide-icon>
+    <input type="text"
+           placeholder="Rechercher un dossier, une personne..."
+           class="topbar__search-input">
+  </div>
+  <span class="topbar__spacer"></span>
+
+  <button mat-icon-button class="topbar__bell" [matBadge]="'3'" matBadgeColor="warn" matBadgeSize="small">
+    <lucide-icon [name]="icons['Bell']" [size]="20"></lucide-icon>
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="userMenu" class="topbar__user">
+    <div class="topbar__user-avatar">
+      <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
+    </div>
+    <div class="topbar__user-info">
+      <div class="topbar__user-name">{{ auth.username() ?? '...' }}</div>
+      <span class="role-badge" [ngClass]="roleAffiche().classe">{{ roleAffiche().libelle }}</span>
+    </div>
+  </button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item (click)="auth.logout()">
+      <lucide-icon [name]="icons['LogOut']" [size]="16"></lucide-icon>
+      <span>Deconnexion</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

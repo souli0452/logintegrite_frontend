@@ -1,0 +1,11 @@
+.form-hierarchie {
+  min-width: 500px;
+  padding-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.pleine-largeur {
+  width: 100%;
+}

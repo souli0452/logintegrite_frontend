@@ -1,0 +1,77 @@
+<div class="onglet-panel">
+  <div class="filtres">
+    <mat-form-field appearance="outline" class="filtres__champ">
+      <mat-label>Filtrer par entite</mat-label>
+      <mat-select [value]="filtreEntite()" (selectionChange)="changerFiltreEntite($event.value)">
+        @for (e of entitesDisponibles; track e) {
+          <mat-option [value]="e">{{ e || 'Toutes les entites' }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (chargement()) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (entries().length === 0) {
+    <app-empty-state
+      titre="Aucune modification"
+      message="Aucune trace d'audit ne correspond a vos criteres." />
+  } @else {
+    <table mat-table [dataSource]="entries()" class="audit-table">
+      <ng-container matColumnDef="dateAction">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let e" class="cellule-date">
+          {{ e.dateAction | date:'dd/MM/yyyy HH:mm:ss' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let e">
+          <app-status-badge [libelle]="e.action" [type]="typeAction(e.action)" />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="entite">
+        <th mat-header-cell *matHeaderCellDef>Entite</th>
+        <td mat-cell *matCellDef="let e" class="cellule-strong">
+          {{ e.entiteCible }}
+          <div class="cellule-souligne">{{ e.entiteCibleId | slice:0:8 }}...</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="utilisateur">
+        <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
+        <td mat-cell *matCellDef="let e">
+          {{ e.utilisateurNomComplet ?? e.utilisateurId }}
+          @if (e.adresseIp) {
+            <div class="cellule-souligne">{{ e.adresseIp }}</div>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hash">
+        <th mat-header-cell *matHeaderCellDef>Hash</th>
+        <td mat-cell *matCellDef="let e" class="cellule-hash">
+          <span [matTooltip]="e.hashActuel">
+            <lucide-icon [name]="icons['Hash']" [size]="12"></lucide-icon>
+            {{ hashCourt(e.hashActuel) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colonnesAffichees"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnesAffichees;"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="taillePage()"
+      [pageIndex]="pageCourante()"
+      [pageSizeOptions]="[20, 50, 100, 200]"
+      (page)="changerPage($event)">
+    </mat-paginator>
+  }
+</div>

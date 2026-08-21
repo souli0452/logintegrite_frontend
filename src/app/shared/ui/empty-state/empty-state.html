@@ -1,0 +1,10 @@
+<div class="empty-state">
+  <lucide-icon [name]="icone()" [size]="48" class="empty-state__icon"></lucide-icon>
+  <h3 class="empty-state__title">{{ titre() }}</h3>
+  @if (message()) {
+    <p class="empty-state__message">{{ message() }}</p>
+  }
+  <div class="empty-state__actions">
+    <ng-content></ng-content>
+  </div>
+</div>

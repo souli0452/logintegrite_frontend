@@ -1,0 +1,91 @@
+<div class="detail-dossier">
+
+  @if (chargement()) {
+    <!-- Skeleton pendant chargement -->
+    <div class="skeleton-hero">
+      <div class="skeleton-ligne skeleton-ligne--titre"></div>
+      <div class="skeleton-ligne skeleton-ligne--sous"></div>
+      <div class="skeleton-ligne"></div>
+    </div>
+  } @else if (dossier(); as d) {
+
+    <!-- ═══════ HERO ═══════ -->
+    <app-hero-dossier
+      [dossier]="d"
+      [telechargementEnCours]="telechargementEnCours()"
+      (retour)="retourListe()"
+      (imprimer)="telechargerPdf()"
+      (cloturer)="cloturer()"
+      (modifier)="modifierDossier()"
+      (supprimer)="supprimerDossier()">
+    </app-hero-dossier>
+
+    <!-- ═══════ BARRE KPI ═══════ -->
+    <app-kpi-bar-dossier
+      [nbPersonnes]="implications().length"
+      [nbFaits]="faits().length"
+      [faits]="faits()"
+      [nbDocuments]="nbDocuments()"
+      (naviguer)="onNaviguerVersOnglet($event)">
+    </app-kpi-bar-dossier>
+
+    <!-- ═══════ ONGLETS ═══════ -->
+    <section class="onglets-section">
+      <mat-tab-group class="detail-tabs"
+                     mat-stretch-tabs="false"
+                     [selectedIndex]="ongletActif()"
+                     (selectedIndexChange)="onOngletChange($event)"
+                     animationDuration="200ms">
+
+        <!-- ─── Onglet 1 : Personnes impliquées ─── -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
+            <span>Personnes impliquées</span>
+            <span class="tab-badge">{{ implications().length }}</span>
+          </ng-template>
+          <div class="onglet-contenu">
+            <app-onglet-dossier-implications
+              [dossierId]="d.id"
+              [numeroDossier]="d.numeroDossier"
+              [dossierIntitule]="d.intitule"
+              [implications]="implications()"
+              [dossierOuvert]="dossierOuvert()"
+              (implicationSupprimee)="surImplicationSupprimee($event)"
+              (personneAjoutee)="rechargerImplications()" />
+          </div>
+        </mat-tab>
+
+        <!-- ─── Onglet 2 : Faits reprochés ─── -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <lucide-icon [name]="icons['FileText']" [size]="16"></lucide-icon>
+            <span>Faits reprochés</span>
+            <span class="tab-badge">{{ faits().length }}</span>
+          </ng-template>
+          <div class="onglet-contenu">
+            <app-onglet-dossier-faits [faits]="faits()" />
+          </div>
+        </mat-tab>
+
+        <!-- ─── Onglet 3 : Documents ─── -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <lucide-icon [name]="icons['Paperclip']" [size]="16"></lucide-icon>
+            <span>Documents</span>
+            @if (nbDocuments() > 0) {
+              <span class="tab-badge">{{ nbDocuments() }}</span>
+            }
+          </ng-template>
+          <div class="onglet-contenu">
+            <app-onglet-dossier-documents
+              [dossierId]="d.id"
+              [dossierIntitule]="d.intitule ?? d.numeroDossier ?? 'Dossier'" />
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </section>
+
+  }
+</div>

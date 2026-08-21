@@ -1,0 +1,54 @@
+.onglet-panel {
+  padding: var(--spacing-lg);
+}
+
+.filtres {
+  margin-bottom: var(--spacing-md);
+
+  &__champ {
+    width: 280px;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.audit-table {
+  width: 100%;
+}
+
+.cellule-date {
+  font-family: 'Menlo', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.cellule-strong {
+  font-weight: 500;
+}
+
+.cellule-souligne {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: 'Menlo', 'Courier New', monospace;
+  margin-top: 2px;
+}
+
+.cellule-hash {
+  font-family: 'Menlo', 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    cursor: help;
+  }
+}

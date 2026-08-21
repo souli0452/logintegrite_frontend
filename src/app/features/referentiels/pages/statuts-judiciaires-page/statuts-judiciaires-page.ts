@@ -1,0 +1,20 @@
+import { Component, inject } from '@angular/core';
+import { ReferentielSimpleListe } from '../referentiel-simple-liste/referentiel-simple-liste';
+import { StatutJudiciaireService } from '../../services/statut-judiciaire.service';
+
+@Component({
+  selector: 'app-statuts-judiciaires-page',
+  standalone: true,
+  imports: [ReferentielSimpleListe],
+  template: `
+    <app-referentiel-simple-liste
+      titrePage="Statuts judiciaires"
+      sousTitrePage="Etats possibles d'une affaire judiciaire."
+      libelleSingulier="statut judiciaire"
+      [service]="service"
+      [avecActif]="true" />
+  `
+})
+export class StatutsJudiciairesPage {
+  readonly service = inject(StatutJudiciaireService);
+}

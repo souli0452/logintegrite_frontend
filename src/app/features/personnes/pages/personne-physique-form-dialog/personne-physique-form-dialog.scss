@@ -1,0 +1,412 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dialog-form {
+  width: 100%;
+  max-width: 1000px; /* Élégie de 900px à 1000px pour plus de confort */
+  min-width: 100%;   /* Remplace les 760px figés pour éviter le scroll horizontal */
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+
+  @media (max-width: 800px) {
+    max-height: 100vh;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-default);
+    flex-shrink: 0;
+  }
+
+  &__titre-bloc {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    min-width: 0;
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    p {
+      margin: 4px 0 0;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+    }
+  }
+
+  &__icone {
+    color: var(--asce-green);
+    flex-shrink: 0;
+  }
+
+  &__corps {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    background: var(--bg-page, #FAFAF9);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--border-default);
+    background: var(--bg-surface);
+    flex-shrink: 0;
+  }
+}
+
+.btn-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--bg-page, #FAFAF9);
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+}
+
+// ─── Sections ─────────────────────────────────────────────────────────────
+.etape {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  &__icone {
+    color: var(--asce-green);
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+// ─── Bloc photo ────────────────────────────────────────────────────────────
+.bloc-photo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+
+  &__apercu {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--asce-green-light, #e6f4ea);
+    border: 3px solid var(--asce-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--asce-green-dark, #005a2b);
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+}
+
+.btn-fichier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--asce-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--asce-green-dark, #005a2b);
+  }
+}
+
+.btn-retirer-photo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--asce-red);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: rgba(227, 6, 19, 0.05);
+    border-color: var(--asce-red);
+  }
+}
+
+// ─── Grille et champs ──────────────────────────────────────────────────────
+.grille-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.champ-groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.champ-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.requis {
+  color: var(--asce-red);
+  margin-left: 2px;
+}
+
+.champ-full {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0;
+  }
+}
+
+// ─── Liste des lignes existantes (pièces / alias) ──────────────────────────
+.liste-existante {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--bg-page, #FAFAF9);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+}
+
+.ligne-existante {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: 8px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: var(--asce-green);
+  }
+
+  &__contenu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+  }
+
+  &__type {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__sep {
+    color: var(--text-muted);
+  }
+
+  &__numero {
+    font-family: 'Menlo', 'Courier New', monospace;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
+  &__commentaire {
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+}
+
+.btn-supprimer-ligne {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  color: var(--asce-red);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(227, 6, 19, 0.08);
+    border-color: var(--asce-red);
+  }
+}
+
+// ─── Bouton d'ajout de ligne ────────────────────────────────────────────────
+.bloc-ajout-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-sm);
+}
+
+.btn-ajouter-ligne {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--asce-green);
+  border: 1px dashed var(--asce-green);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--asce-green-light, #e6f4ea);
+    border-style: solid;
+  }
+
+  &:disabled {
+    color: var(--text-muted);
+    border-color: var(--border-default);
+    cursor: not-allowed;
+  }
+}
+
+// ─── Note info ────────────────────────────────────────────────────────────
+.note-info {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: #1D4ED8;
+
+  lucide-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #1D4ED8;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// ─── Boutons du footer ─────────────────────────────────────────────────────
+.btn-secondaire {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+    background: var(--bg-page, #FAFAF9);
+  }
+}
+
+.btn-principal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--asce-green);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    background: var(--asce-green-dark, #005a2b);
+  }
+
+  &:disabled {
+    background: var(--border-default);
+    color: var(--text-muted);
+    cursor: not-allowed;
+  }
+}

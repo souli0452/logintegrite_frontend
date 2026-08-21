@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ edition ? 'Modifier le type' : 'Nouveau type d\'infraction' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulaire" class="form-complexe">
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Categorie parente *</mat-label>
+      <mat-select formControlName="categorieInfractionId">
+        @for (c of categories(); track c.id) {
+          <mat-option [value]="c.id">{{ c.libelle }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Libelle *</mat-label>
+      <input matInput formControlName="libelle">
+      @if (formulaire.controls.libelle.invalid && formulaire.controls.libelle.touched) {
+        <mat-error>Libelle obligatoire</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="actif" class="toggle-actif">
+      Actif (visible dans les selecteurs)
+    </mat-slide-toggle>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="annuler()">Annuler</button>
+  <button mat-flat-button color="primary" [disabled]="formulaire.invalid" (click)="soumettre()">
+    Enregistrer
+  </button>
+</mat-dialog-actions>

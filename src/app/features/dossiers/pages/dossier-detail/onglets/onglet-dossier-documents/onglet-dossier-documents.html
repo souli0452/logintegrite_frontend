@@ -1,0 +1,82 @@
+<div class="onglet-panel">
+
+  <!-- Bandeau haut avec titre et bouton -->
+  <div class="onglet-header">
+    <div class="onglet-header__gauche">
+      <h3 class="onglet-header__titre">Documents du dossier</h3>
+      <p class="onglet-header__sous">
+        @if (documents().length === 0) {
+          Aucun document enregistre pour ce dossier.
+        } @else {
+          {{ documents().length }} document(s) enregistre(s) et scelle(s).
+        }
+      </p>
+    </div>
+    <button type="button" class="btn-ajouter" (click)="ouvrirDialogueUpload()">
+      <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+      <span>Ajouter des documents</span>
+    </button>
+  </div>
+
+  <!-- Contenu -->
+  @if (chargement()) {
+    <div class="loader-zone">
+      <mat-spinner diameter="32"></mat-spinner>
+    </div>
+  } @else if (documents().length === 0) {
+    <app-empty-state
+      titre="Aucun document"
+      message="Ajoutez des documents (rapports, PV, contrats, factures) pour enrichir ce dossier. Les documents sont scelles cryptographiquement.">
+      <button type="button" class="btn-ajouter" (click)="ouvrirDialogueUpload()">
+        <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+        <span>Ajouter le premier document</span>
+      </button>
+    </app-empty-state>
+  } @else {
+    <div class="table-wrapper">
+      <table class="table-documents">
+        <thead>
+          <tr>
+            <th>Nom du fichier</th>
+            <th>Type</th>
+            <th class="col-taille">Taille</th>
+            <th>Date</th>
+            <th class="col-hash">Integrite</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (doc of documents(); track doc.id) {
+            <tr>
+              <td class="cellule-nom">
+                <lucide-icon [name]="icons['FileText']" [size]="16" class="cellule-nom__icone"></lucide-icon>
+                <span>{{ doc.nomOriginal }}</span>
+              </td>
+              <td>
+                <span class="badge-type">{{ doc.typeDocumentLibelle || '-' }}</span>
+              </td>
+              <td class="col-taille">{{ tailleFormattee(doc.tailleOctets) }}</td>
+              <td class="cellule-date">{{ doc.dateUpload | date:'dd/MM/yyyy HH:mm':'':'fr' }}</td>
+              <td class="col-hash">
+                <div class="hash-badge"
+                     [matTooltip]="'SHA-256 : ' + doc.hashIntegrite">
+                  <lucide-icon [name]="icons['ShieldCheck']" [size]="14"></lucide-icon>
+                  <span class="hash-badge__valeur">{{ hashCourt(doc.hashIntegrite) }}</span>
+                </div>
+              </td>
+              <td class="col-actions">
+                <button type="button"
+                        class="btn-icone"
+                        (click)="telecharger(doc)"
+                        title="Telecharger le document">
+                  <lucide-icon [name]="icons['Download']" [size]="16"></lucide-icon>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

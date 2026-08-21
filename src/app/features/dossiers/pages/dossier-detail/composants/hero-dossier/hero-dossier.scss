@@ -1,0 +1,396 @@
+:host {
+  display: block;
+
+  --ascelc-rouge:      #E30613;
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-jaune:      #FFDD00;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-300: #D6D3D1;
+  --neutre-400: #A8A29E;
+  --neutre-500: #78716C;
+  --neutre-600: #57534E;
+  --neutre-700: #44403C;
+
+  --jaune-fonce: #7A6600;
+  --mono-font: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+}
+
+.hero {
+  position: relative;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(29, 29, 27, 0.06);
+
+  &--clos {
+    filter: saturate(0.85);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SCEAU SUPÉRIEUR VERT
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__sceau {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1.25rem;
+  background: linear-gradient(90deg, var(--ascelc-vert) 0%, var(--ascelc-vert-fonce) 100%);
+  color: var(--ascelc-blanc);
+  font-size: 0.78rem;
+
+  &-gauche { justify-self: start; }
+  &-centre {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  &-droite {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    &-gauche, &-centre, &-droite { justify-self: stretch; }
+    &-centre { justify-content: flex-start; font-size: 0.72rem; }
+    &-droite { justify-content: flex-end; }
+  }
+}
+
+.sceau-institut {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.sceau-libelle {
+  color: rgba(255,255,255,0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.sceau-sep { color: rgba(255,255,255,0.4); }
+
+.sceau-numero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  color: var(--ascelc-blanc);
+  font-family: var(--mono-font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+  }
+}
+
+.sceau-date {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.btn-retour, .btn-menu, .btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 30px;
+  padding: 0 0.75rem;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  color: var(--ascelc-blanc);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover:not(:disabled) {
+    background: var(--ascelc-blanc);
+    color: var(--ascelc-vert-fonce);
+    border-color: var(--ascelc-blanc);
+  }
+
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CORPS 2 COLONNES
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__corps {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+  padding: 1.75rem 1.75rem 1.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+}
+
+// ─── Col 1 : identité ─────────────────────────────────────────────────────
+.identite {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  min-width: 0;
+
+  &__entete {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 3px solid var(--ascelc-vert);
+  }
+
+  &__badge-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    align-self: flex-start;
+    padding: 0.25rem 0.65rem;
+    background: rgba(0, 150, 64, 0.1);
+    color: var(--ascelc-vert-fonce);
+    border: 1px solid rgba(0, 150, 64, 0.25);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--ascelc-noir);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    word-break: break-word;
+
+    @media (max-width: 700px) { font-size: 1.4rem; }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.2rem;
+    align-items: center;
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--neutre-600);
+      font-weight: 500;
+
+      strong {
+        color: var(--ascelc-noir);
+        font-weight: 700;
+      }
+
+      lucide-icon { color: var(--ascelc-vert); }
+    }
+  }
+}
+
+.contexte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem 1rem;
+  background: var(--neutre-50);
+  border: 1px solid var(--neutre-200);
+  border-left: 3px solid var(--ascelc-vert);
+  border-radius: 8px;
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--neutre-500);
+    font-weight: 700;
+
+    lucide-icon { color: var(--ascelc-vert); }
+  }
+
+  &__texte {
+    margin: 0;
+    font-size: 0.87rem;
+    color: var(--ascelc-noir);
+    line-height: 1.55;
+  }
+
+  &--vide {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    border-left-color: var(--neutre-300);
+    color: var(--neutre-500);
+    font-size: 0.82rem;
+
+    em { font-style: italic; }
+    lucide-icon { color: var(--neutre-400); }
+  }
+}
+
+// ─── Col 2 : vitrine statut ────────────────────────────────────────────────
+.statut-vitrine {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.15rem;
+  background: var(--ascelc-blanc);
+  border: 2px solid var(--neutre-200);
+  border-radius: 10px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .hero--ouvert &::before { background: var(--ascelc-vert); }
+  .hero--clos &::before   { background: var(--neutre-500); }
+
+  .hero--ouvert & { border-color: rgba(0, 150, 64, 0.3); }
+  .hero--clos &   { border-color: var(--neutre-300); }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--neutre-600);
+    font-weight: 700;
+    padding-left: 0.35rem;
+
+    lucide-icon { color: var(--neutre-500); }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+
+    .hero--ouvert & {
+      background: var(--ascelc-vert);
+      color: var(--ascelc-blanc);
+      box-shadow: 0 3px 10px rgba(0, 150, 64, 0.25);
+    }
+    .hero--clos & {
+      background: var(--neutre-500);
+      color: var(--ascelc-blanc);
+      box-shadow: 0 3px 10px rgba(120, 113, 108, 0.25);
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 0;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--neutre-200);
+  }
+
+  &__ligne {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0.5rem;
+    align-items: center;
+
+    dt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin: 0;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--neutre-500);
+      font-weight: 600;
+
+      lucide-icon { color: var(--ascelc-vert); }
+    }
+
+    dd {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--ascelc-noir);
+      font-weight: 500;
+    }
+  }
+
+  &__note {
+    font-size: 0.75rem;
+    color: var(--neutre-600);
+    line-height: 1.5;
+    padding: 0.6rem 0.75rem;
+    background: rgba(0, 150, 64, 0.06);
+    border-radius: 6px;
+    border-left: 3px solid var(--ascelc-vert);
+
+    &--clos {
+      background: var(--neutre-100);
+      border-left-color: var(--neutre-500);
+
+      strong { color: var(--ascelc-noir); }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILET DU BAS — signature ASCE-LC (drapeau national)
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__filet {
+  height: 5px;
+  background: linear-gradient(90deg,
+    var(--ascelc-vert) 0%,
+    var(--ascelc-vert) 50%,
+    var(--ascelc-rouge) 50%,
+    var(--ascelc-rouge) 100%);
+}
+
+::ng-deep .menu-danger {
+  color: var(--ascelc-rouge) !important;
+  lucide-icon { color: var(--ascelc-rouge) !important; }
+}

@@ -1,0 +1,60 @@
+// 🆕 Bouton retour vers le hub
+.btn-retour-hub {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  margin-bottom: var(--spacing-md);
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    background: var(--bg-page, #FAFAF9);
+    border-color: var(--asce-green);
+    color: var(--asce-green-dark, #005a2b);
+
+    lucide-icon {
+      transform: translateX(-2px);
+    }
+  }
+
+  lucide-icon {
+    transition: transform 0.15s;
+  }
+}
+
+.liste-loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.liste-table {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+
+  table {
+    width: 100%;
+  }
+}
+
+.cellule-strong {
+  font-weight: 500;
+}
+
+.cellule-right {
+  text-align: right;
+}
+
+.icone-danger {
+  color: var(--status-danger);
+}

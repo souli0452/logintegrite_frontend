@@ -1,0 +1,110 @@
+.onglet-panel {
+  padding: var(--spacing-lg);
+}
+
+.onglet-table {
+  width: 100%;
+}
+
+.cellule-strong {
+  font-weight: 500;
+
+  a {
+    color: var(--asce-green);
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.cellule-right {
+  text-align: right;
+}
+
+.icone-danger {
+  color: var(--status-danger);
+}
+
+// ─── 🆕 Header d'onglet avec bouton d'ajout ─────────────────────────────────
+.onglet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid var(--neutre-200, #e7e5e4);
+  margin-bottom: 1rem;
+
+  &__gauche {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__titre {
+    margin: 0 0 0.2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ascelc-noir, #1D1D1B);
+  }
+
+  &__count {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--neutre-500, #78716C);
+  }
+}
+
+.btn-ajouter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(135deg, var(--ascelc-vert, #009640), var(--ascelc-vert-fonce, #007A34));
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms;
+  box-shadow: 0 2px 8px rgba(0, 150, 64, 0.2);
+  white-space: nowrap;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 150, 64, 0.3);
+  }
+
+  &--principal {
+    padding: 0.7rem 1.35rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+}
+
+// ─── État vide amélioré ─────────────────────────────────────────────────────
+.etat-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--neutre-500, #78716C);
+
+  lucide-icon { color: var(--ascelc-vert, #009640); opacity: 0.5; }
+
+  &__titre {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ascelc-noir, #1D1D1B);
+  }
+
+  &__msg {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    max-width: 340px;
+    line-height: 1.5;
+  }
+}

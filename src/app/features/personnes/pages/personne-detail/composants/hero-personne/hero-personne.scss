@@ -1,0 +1,522 @@
+:host {
+  display: block;
+
+  --ascelc-rouge:      #E30613;
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-jaune:      #FFDD00;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-300: #D6D3D1;
+  --neutre-400: #A8A29E;
+  --neutre-500: #78716C;
+  --neutre-600: #57534E;
+  --neutre-700: #44403C;
+
+  --mono-font: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// HERO — carte principale
+// ═══════════════════════════════════════════════════════════════════════════
+.hero {
+  position: relative;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(29, 29, 27, 0.04);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SCEAU VERT SUPÉRIEUR — compact
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__sceau {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.55rem 1.25rem;
+  background: linear-gradient(90deg, var(--ascelc-vert) 0%, var(--ascelc-vert-fonce) 100%);
+  color: var(--ascelc-blanc);
+  font-size: 0.75rem;
+
+  &-gauche { justify-self: start; }
+  &-centre {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  &-droite { justify-self: end; }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    &-gauche, &-centre, &-droite { justify-self: stretch; }
+    &-centre { justify-content: flex-start; font-size: 0.7rem; }
+    &-droite { justify-content: flex-end; }
+  }
+}
+
+.sceau-institut {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.sceau-libelle {
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+.sceau-sep { color: rgba(255, 255, 255, 0.4); }
+.sceau-numero {
+  font-family: var(--mono-font);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+// ─── Boutons du sceau ──────────────────────────────────────────────────────
+.btn-retour, .btn-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 26px;
+  padding: 0 0.65rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  color: var(--ascelc-blanc);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover {
+    background: var(--ascelc-blanc);
+    color: var(--ascelc-vert-fonce);
+    border-color: var(--ascelc-blanc);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CORPS PRINCIPAL — 3 zones (portrait / identité / statut)
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__corps {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem 1.75rem;
+  align-items: start;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: auto 1fr;
+
+    .statut-vitrine {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+
+    .portrait-col {
+      justify-self: center;
+    }
+  }
+}
+
+// ─── COL 1 : Portrait ─────────────────────────────────────────────────────
+.portrait-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.portrait {
+  width: 130px;
+  height: 130px;
+  border-radius: 12px;
+  background: rgba(0, 150, 64, 0.06);
+  border: 3px solid var(--ascelc-vert);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0, 150, 64, 0.15);
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__vide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ascelc-vert);
+    opacity: 0.6;
+  }
+}
+
+.portrait-type {
+  padding: 0.25rem 0.75rem;
+  background: var(--ascelc-vert);
+  color: var(--ascelc-blanc);
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 150, 64, 0.25);
+
+  &--morale {
+    background: linear-gradient(135deg, var(--ascelc-vert-fonce), #005A25);
+  }
+}
+
+// ─── COL 2 : Identité ─────────────────────────────────────────────────────
+.identite {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+
+  &__titre-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--neutre-200);
+  }
+
+  &__nom {
+    margin: 0;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--ascelc-noir);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+
+    @media (max-width: 700px) { font-size: 1.4rem; }
+  }
+
+  &__badge-valide {
+    color: var(--ascelc-vert);
+    flex-shrink: 0;
+  }
+
+  &__id {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    padding: 0.2rem 0.55rem;
+    background: transparent;
+    border: 1px dashed var(--neutre-300);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 150ms;
+    font-size: 0.72rem;
+
+    &:hover {
+      border-color: var(--ascelc-vert);
+      background: rgba(0, 150, 64, 0.04);
+    }
+
+    &-label {
+      color: var(--neutre-500);
+      font-weight: 600;
+    }
+
+    &-value {
+      font-family: var(--mono-font);
+      font-size: 0.68rem;
+      color: var(--ascelc-noir);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    lucide-icon {
+      color: var(--neutre-400);
+    }
+  }
+}
+
+// ─── Grille de métadonnées 3 colonnes ─────────────────────────────────────
+.meta-grille {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem 1.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+
+  &__icone {
+    color: var(--ascelc-vert);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  &__contenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 0.7rem;
+    color: var(--neutre-500);
+    font-weight: 500;
+  }
+
+  &__valeur {
+    font-size: 0.87rem;
+    color: var(--ascelc-noir);
+    font-weight: 600;
+    line-height: 1.35;
+
+    &.mono {
+      font-family: var(--mono-font);
+      font-size: 0.8rem;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  &__age {
+    color: var(--neutre-500);
+    font-weight: 400;
+    font-size: 0.8rem;
+  }
+}
+
+// ─── COL 3 : Vitrine statut judiciaire ────────────────────────────────────
+.statut-vitrine {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.15rem;
+  min-width: 260px;
+  max-width: 320px;
+  background: var(--neutre-50);
+  border: 1px solid var(--neutre-200);
+  border-radius: 10px;
+
+  @media (max-width: 1100px) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--neutre-600);
+    font-weight: 700;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--neutre-200);
+
+    > span { flex: 1; }
+
+    lucide-icon:not(.btn-modifier-statut lucide-icon) {
+      color: var(--neutre-500);
+    }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-align: center;
+
+    .hero--variant-positif & {
+      background: var(--ascelc-vert);
+      color: var(--ascelc-blanc);
+      box-shadow: 0 3px 10px rgba(0, 150, 64, 0.25);
+    }
+    .hero--variant-critique & {
+      background: var(--ascelc-rouge);
+      color: var(--ascelc-blanc);
+      box-shadow: 0 3px 10px rgba(227, 6, 19, 0.25);
+    }
+    .hero--variant-attention & {
+      background: #F59E0B;
+      color: var(--ascelc-blanc);
+      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25);
+    }
+    .hero--variant-neutre & {
+      background: var(--neutre-200);
+      color: var(--neutre-700);
+    }
+
+    &--vide {
+      background: transparent !important;
+      color: var(--neutre-500) !important;
+      border: 2px dashed var(--neutre-300);
+      box-shadow: none !important;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0;
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  &__ligne {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 0.35rem;
+    align-items: baseline;
+
+    dt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin: 0;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--neutre-500);
+      font-weight: 600;
+
+      lucide-icon { color: var(--neutre-400); }
+    }
+
+    dd {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--ascelc-noir);
+      font-weight: 500;
+
+      &.mono {
+        font-family: var(--mono-font);
+        font-size: 0.73rem;
+      }
+    }
+  }
+
+  &__note {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--neutre-500);
+    line-height: 1.5;
+    font-style: italic;
+    padding-top: 0.4rem;
+    border-top: 1px dashed var(--neutre-200);
+  }
+}
+
+// ─── Bouton "modifier statut" ─────────────────────────────────────────────
+.btn-modifier-statut {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 1px solid var(--neutre-300);
+  border-radius: 4px;
+  color: var(--neutre-500);
+  cursor: pointer;
+  transition: all 150ms;
+  padding: 0;
+
+  &:hover {
+    background: var(--ascelc-vert);
+    color: var(--ascelc-blanc);
+    border-color: var(--ascelc-vert);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FILET DU BAS — drapeau ASCE-LC
+// ═══════════════════════════════════════════════════════════════════════════
+.hero__filet {
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--ascelc-vert) 0%,
+    var(--ascelc-vert) 50%,
+    var(--ascelc-rouge) 50%,
+    var(--ascelc-rouge) 100%);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Séparateur du menu Material
+// ═══════════════════════════════════════════════════════════════════════════
+.menu-separator {
+  height: 1px;
+  background: var(--neutre-200);
+  margin: 0.35rem 0;
+}
+
+// ─── Wrapper des badges IDs (ID Personne + NIP) ──────────────────────────
+.identite__badges-ids {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+// ─── Variante NIP (fond légèrement teinté pour distinguer) ──────────────
+.identite__id--nip {
+  border-color: rgba(0, 150, 64, 0.3);
+  background: rgba(0, 150, 64, 0.04);
+
+  .identite__id-label {
+    color: var(--ascelc-vert-fonce);
+  }
+
+  .identite__id-value {
+    color: var(--ascelc-vert-fonce);
+    font-weight: 700;
+  }
+
+  &:hover {
+    background: rgba(0, 150, 64, 0.08);
+    border-color: var(--ascelc-vert);
+  }
+}

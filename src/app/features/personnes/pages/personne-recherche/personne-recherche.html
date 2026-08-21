@@ -1,0 +1,239 @@
+<app-page-header
+  titre="Recherche avancée"
+  sousTitre="Croiser les critères pour identifier les personnes impliquées.">
+</app-page-header>
+
+<div class="recherche-container">
+  
+  <!-- COLONNE GAUCHE : SIDEBAR FILTRES EN ACCORDÉON -->
+  <aside class="sidebar-filtres">
+    <div class="sidebar-filtres__header">
+      <h3 class="sidebar-filtres__titre">Filtres de recherche</h3>
+    </div>
+
+    <form [formGroup]="formulaire" (ngSubmit)="rechercher(0)" class="sidebar-filtres__form">
+      
+      <mat-accordion multi class="filtres-accordion">
+
+        <!-- 1. IDENTITÉ (Ouvert par défaut) -->
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Identité</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="panel-content">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom ou dénomination</mat-label>
+              <input matInput formControlName="nomOuDenomination">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Type de personne</mat-label>
+              <mat-select formControlName="typePersonne">
+                <mat-option value="">Tous</mat-option>
+                <mat-option value="PHYSIQUE">Physique</mat-option>
+                <mat-option value="MORALE">Morale</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nationalité</mat-label>
+              <input matInput formControlName="nationalite">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>N° pièce d'identité</mat-label>
+              <input matInput formControlName="numeroPieceIdentite">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>RCCM</mat-label>
+              <input matInput formControlName="rccm">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>IFU</mat-label>
+              <input matInput formControlName="ifu">
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- 2. CONTEXTE JUDICIAIRE -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Contexte judiciaire</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="panel-content">
+            <mat-form-field appearance="outline">
+              <mat-label>Type d'infraction</mat-label>
+              <mat-select formControlName="typeInfractionId">
+                <mat-option value="">Toutes</mat-option>
+                @for (t of typesInfraction(); track t.id) {
+                  <mat-option [value]="t.id">{{ t.libelle }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Zone géographique</mat-label>
+              <mat-select formControlName="zoneGeographiqueId">
+                <mat-option value="">Toutes</mat-option>
+                @for (z of zones(); track z.id) {
+                  <mat-option [value]="z.id">{{ z.libelle }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Statut judiciaire</mat-label>
+              <mat-select formControlName="statutJudiciaireId">
+                <mat-option value="">Tous</mat-option>
+                @for (s of statutsJudiciaires(); track s.id) {
+                  <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- 3. CONTEXTE PROFESSIONNEL -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Contexte professionnel</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="panel-content">
+            <mat-form-field appearance="outline">
+              <mat-label>Entité d'organisation</mat-label>
+              <mat-select formControlName="entiteOrganisationId">
+                <mat-option value="">Toutes</mat-option>
+                @for (e of entites(); track e.id) {
+                  <mat-option [value]="e.id">{{ e.libelle }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Fonction occupée</mat-label>
+              <input matInput formControlName="fonction">
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- 4. PÉRIODE DES FAITS -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Période des faits</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="panel-content">
+            <mat-form-field appearance="outline">
+              <mat-label>Date de début</mat-label>
+              <input matInput [matDatepicker]="pickerDebut" formControlName="periodeDebut">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDebut></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date de fin</mat-label>
+              <input matInput [matDatepicker]="pickerFin" formControlName="periodeFin">
+              <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFin></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+      <!-- Actions ancrées en bas -->
+      <div class="sidebar-filtres__actions">
+        <button type="button" class="btn-reset" (click)="reinitialiser()">
+          Réinitialiser
+        </button>
+        <button type="submit" class="btn-search" [disabled]="chargement()">
+          <lucide-icon [name]="icons['Search']" [size]="16"></lucide-icon>
+          Rechercher
+        </button>
+      </div>
+
+    </form>
+  </aside>
+
+  <!-- COLONNE DROITE : ZONE DE RÉSULTATS -->
+  <main class="resultats-zone">
+
+    @if (chargement()) {
+      <div class="resultats-loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else if (rechercheEffectuee()) {
+      @if (resultats().length === 0) {
+        <app-empty-state
+          titre="Aucun résultat trouvé"
+          message="Aucune personne ne correspond à vos critères."
+          [icone]="icons['FilterX']" />
+      } @else {
+        <div class="resultats-header">
+          <div class="resultats-count">
+            Résultats trouvés : <strong>{{ totalElements() }}</strong> personne(s)
+          </div>
+        </div>
+
+        <div class="resultats-table-wrapper">
+          <table mat-table [dataSource]="resultats()" class="maquette-table">
+
+            <ng-container matColumnDef="identifiant">
+              <th mat-header-cell *matHeaderCellDef>Identifiant</th>
+              <td mat-cell *matCellDef="let p" class="cellule-identifiant">{{ identifiantMetier(p) }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="nomAffichage">
+              <th mat-header-cell *matHeaderCellDef>Nom complet / Dénomination</th>
+              <td mat-cell *matCellDef="let p" class="cellule-strong">{{ p.nomAffichage }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let p">
+                @if (p.typePersonne === 'PHYSIQUE') {
+                  <span class="badge-type badge-type--pp">Physique</span>
+                } @else {
+                  <span class="badge-type badge-type--pm">Morale</span>
+                }
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="cellule-right">Actions</th>
+              <td mat-cell *matCellDef="let p" class="cellule-right">
+                <button class="btn-icone" matTooltip="Consulter la fiche" (click)="voir(p)">
+                  <lucide-icon [name]="icons['Eye']" [size]="16"></lucide-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colonnesAffichees"></tr>
+            <tr mat-row *matRowDef="let row; columns: colonnesAffichees;" (click)="voir(row)" class="ligne-cliquable"></tr>
+          </table>
+
+          <mat-paginator
+            [length]="totalElements()"
+            [pageSize]="taillePage()"
+            [pageIndex]="pageCourante()"
+            [pageSizeOptions]="[10, 20, 50, 100]"
+            (page)="changerPage($event)"
+            showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      }
+    } @else {
+      <div class="etat-initial">
+        <lucide-icon [name]="icons['Search']" [size]="48" class="icone-neutre"></lucide-icon>
+        <p>Déroulez les sections à gauche pour renseigner vos critères puis lancez la recherche.</p>
+      </div>
+    }
+
+  </main>
+
+</div>

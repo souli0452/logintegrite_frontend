@@ -1,0 +1,124 @@
+.chargement { display: flex; justify-content: center; padding: var(--spacing-xl); }
+
+.page-creation-dossier {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+
+  @media (max-width: 960px) { grid-template-columns: 1fr; }
+}
+
+.carte-info {
+  background: var(--status-success-bg);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+
+  &__entete { font-weight: 600; color: var(--status-success); margin-bottom: var(--spacing-xs); }
+  &__texte { font-size: 0.8125rem; color: var(--text-secondary); margin: 0; }
+}
+
+.carte-personne {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+
+  &__titre { font-weight: 600; margin-bottom: var(--spacing-md); }
+  &__avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--bg-hover); color: var(--text-secondary);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto var(--spacing-md);
+  }
+}
+
+.liste-champs {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8125rem;
+  margin: 0;
+
+  dt { color: var(--text-muted); }
+  dd { margin: 0; color: var(--text-primary); text-align: right; }
+}
+
+.bandeau-succes {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--status-success-bg);
+  color: var(--status-success);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.bouton-modifier { width: 100%; margin-top: var(--spacing-md); }
+
+.panneau-formulaire {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+}
+
+.form-grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 var(--spacing-md);
+  &__full { grid-column: 1 / -1; }
+}
+
+.pleine-largeur { width: 100%; }
+
+.actions-etape {
+  display: flex; justify-content: flex-end; gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 0;
+  &--entre { justify-content: space-between; }
+}
+
+.liste-accumulee { display: flex; flex-direction: column; gap: var(--spacing-xs); margin-top: var(--spacing-sm); }
+.ligne-accumulee {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--spacing-sm); background: var(--bg-hover); border-radius: var(--radius-sm); font-size: 0.8125rem;
+}
+
+.carte-implication {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+
+  &__entete { display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm); }
+}
+
+.badge-origine {
+  font-size: 0.8125rem; font-weight: 500;
+  background: var(--status-success-bg); color: var(--status-success);
+  padding: 4px 10px; border-radius: 999px;
+}
+
+.resultats-recherche {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border-default); border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm); overflow: hidden;
+}
+.resultat-item {
+  text-align: left; padding: var(--spacing-sm); background: var(--bg-surface); border: none;
+  cursor: pointer; font-size: 0.8125rem;
+  &:hover { background: var(--bg-hover); }
+}
+
+.champ-fichier { display: flex; align-items: center; }
+.aide-etape { font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--spacing-sm); }
+
+.recap {
+  background: var(--status-success-bg);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+
+  &__ligne { font-size: 0.875rem; color: var(--text-primary); margin-bottom: var(--spacing-xs); }
+  &__aide { font-size: 0.8125rem; color: var(--text-secondary); margin: var(--spacing-sm) 0 0; }
+}

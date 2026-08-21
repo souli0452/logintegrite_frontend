@@ -1,0 +1,353 @@
+<div class="onglet-dossiers">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MISE EN PAGE 2 COLONNES                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="dossiers-grille">
+
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <!-- COLONNE PRINCIPALE                                                  -->
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <section class="colonne-principale">
+
+      <div class="carte carte--liste">
+
+        <!-- ─── Barre d'outils supérieure ─── -->
+        <header class="toolbar">
+          <div class="toolbar__titre">
+            <lucide-icon [name]="icons['FolderOpen']" [size]="18" class="toolbar__icone"></lucide-icon>
+            <h3>Dossiers associés</h3>
+            @if (nombreTotalFiltres() < totalDossiers()) {
+              <span class="toolbar__badge-filtre">
+                {{ nombreTotalFiltres() }} / {{ totalDossiers() }}
+              </span>
+            }
+          </div>
+
+          <div class="toolbar__actions">
+            <!-- Toggle Vue liste / Vue carte -->
+            <div class="toggle-vue">
+              <button type="button"
+                      class="toggle-vue__bouton"
+                      [class.toggle-vue__bouton--actif]="vue() === 'liste'"
+                      (click)="vue.set('liste')"
+                      matTooltip="Vue liste">
+                <lucide-icon [name]="icons['List']" [size]="14"></lucide-icon>
+                <span>Vue liste</span>
+              </button>
+              <button type="button"
+                      class="toggle-vue__bouton"
+                      [class.toggle-vue__bouton--actif]="vue() === 'carte'"
+                      (click)="vue.set('carte')"
+                      matTooltip="Vue carte">
+                <lucide-icon [name]="icons['LayoutGrid']" [size]="14"></lucide-icon>
+                <span>Vue carte</span>
+              </button>
+            </div>
+
+            <!-- Recherche -->
+            <div class="champ-recherche">
+              <lucide-icon [name]="icons['Search']" [size]="14"></lucide-icon>
+              <input type="text"
+                     [ngModel]="recherche()"
+                     (ngModelChange)="recherche.set($event); pageIndex.set(0)"
+                     placeholder="Rechercher un dossier..." />
+            </div>
+
+            <!-- Bouton Filtrer (optionnel) -->
+            <button type="button"
+                    class="btn-filtrer"
+                    [class.btn-filtrer--actif]="filtreStatut() !== null"
+                    (click)="reinitialiserFiltres()"
+                    matTooltip="Réinitialiser les filtres">
+              <lucide-icon [name]="icons['Filter']" [size]="14"></lucide-icon>
+              <span>{{ filtreStatut() ? 'Filtre actif' : 'Filtrer' }}</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- ─── Corps ─── -->
+        <div class="carte__corps">
+
+          @if (groupesTous().length === 0) {
+            <div class="etat-vide">
+              <lucide-icon [name]="icons['FolderOpen']" [size]="40"></lucide-icon>
+              <h4>Aucun dossier associé</h4>
+              <p>Cette personne n'est actuellement liée à aucun dossier.</p>
+              <button type="button" class="btn-principal" (click)="ouvrirNouvelleImplication()">
+                <lucide-icon [name]="icons['Plus']" [size]="15"></lucide-icon>
+                <span>Nouvelle implication</span>
+              </button>
+            </div>
+          } @else if (groupesFiltres().length === 0) {
+            <div class="etat-vide etat-vide--filtres">
+              <lucide-icon [name]="icons['Search']" [size]="32"></lucide-icon>
+              <h4>Aucun résultat</h4>
+              <p>Aucun dossier ne correspond à votre recherche.</p>
+              <button type="button" class="btn-secondaire" (click)="reinitialiserFiltres()">
+                Réinitialiser les filtres
+              </button>
+            </div>
+          } @else {
+
+            <!-- Tableau (Vue liste) -->
+            @if (vue() === 'liste') {
+              <table class="tableau-dossiers">
+                <thead>
+                  <tr>
+                    <th>N° Dossier</th>
+                    <th>Intitulé</th>
+                    <th>Fonction / Implication</th>
+                    <th>Ouvert le</th>
+                    <th>Statut</th>
+                    <th class="th-numerique">Faits reprochés</th>
+                    <th class="th-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (groupe of groupesPageActive(); track groupe.dossier.id) {
+                    <tr class="ligne-dossier" (click)="ouvrirDossier(groupe.dossier.id)">
+                      <td class="cellule-numero">
+                        <div class="cellule-numero__contenu">
+                          <div class="icone-dossier" [class]="classeIconeDossier(groupe.dossier.statutDossier)">
+                            <lucide-icon [name]="icons['Folder']" [size]="16"></lucide-icon>
+                          </div>
+                          <span class="mono">{{ groupe.dossier.numeroDossier || '—' }}</span>
+                        </div>
+                      </td>
+                      <td class="cellule-intitule">
+                        {{ groupe.dossier.intitule || 'Sans intitulé' }}
+                      </td>
+                      <td class="cellule-fonction">
+                        {{ groupe.implication?.fonctionOccupee || groupe.implication?.roleImplicationLibelle || '—' }}
+                      </td>
+                      <td>
+                        @if (groupe.dossier.dateOuverture) {
+                          {{ groupe.dossier.dateOuverture | date:'dd/MM/yyyy':'':'fr' }}
+                        } @else { — }
+                      </td>
+                      <td>
+                        <span class="badge" [class]="classeStatut(groupe.dossier.statutDossier)">
+                          {{ libelleStatut(groupe.dossier.statutDossier) | uppercase }}
+                        </span>
+                      </td>
+                      <td class="th-numerique">
+                        <span class="compteur-faits">{{ groupe.nombreFaits }}</span>
+                      </td>
+                      <td class="th-actions" (click)="$event.stopPropagation()">
+                        <div class="actions-ligne">
+                          <!-- 🆕 Voir les personnes impliquées (complices) -->
+                          <button type="button"
+                                  class="btn-icone-mini"
+                                  (click)="voirPersonnesDuDossier(groupe)"
+                                  matTooltip="Voir les personnes impliquées">
+                            <lucide-icon [name]="icons['Users']" [size]="14"></lucide-icon>
+                          </button>
+
+                          <!-- 🆕 Voir les faits reprochés du dossier -->
+                          <button type="button"
+                                  class="btn-icone-mini"
+                                  (click)="voirFaitsDuDossier(groupe)"
+                                  matTooltip="Voir les faits reprochés">
+                            <lucide-icon [name]="icons['FileText']" [size]="14"></lucide-icon>
+                          </button>
+
+                          <!-- Ouvrir dans un nouvel onglet (inchangé) -->
+                          <button type="button"
+                                  class="btn-icone-mini"
+                                  (click)="ouvrirDossierNouvelOnglet(groupe.dossier.id)"
+                                  matTooltip="Ouvrir le dossier dans un nouvel onglet">
+                            <lucide-icon [name]="icons['ExternalLink']" [size]="14"></lucide-icon>
+                          </button>
+
+                          <!-- Menu contextuel (inchangé) -->
+                          <button type="button"
+                                  class="btn-icone-mini"
+                                  [matMenuTriggerFor]="menuDossier"
+                                  matTooltip="Actions">
+                            <lucide-icon [name]="icons['MoreVertical']" [size]="14"></lucide-icon>
+                          </button>
+                          <mat-menu #menuDossier="matMenu" xPosition="before">
+                            <button mat-menu-item (click)="ajouterFait(groupe)">
+                              <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                              <span>Ajouter un fait</span>
+                            </button>
+                            @for (fait of groupe.faits; track fait.id) {
+                              @if (peutAjouterPeine(fait)) {
+                                <button mat-menu-item (click)="ajouterPeine(fait, groupe)">
+                                  <lucide-icon [name]="icons['Gavel']" [size]="14"></lucide-icon>
+                                  <span>Ajouter une peine</span>
+                                </button>
+                              }
+                            }
+                          </mat-menu>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+
+            <!-- Vue carte (grille) -->
+            @if (vue() === 'carte') {
+              <div class="grille-cartes">
+                @for (groupe of groupesPageActive(); track groupe.dossier.id) {
+                  <div class="mini-carte-dossier" (click)="ouvrirDossier(groupe.dossier.id)">
+                    <div class="mini-carte-dossier__header">
+                      <div class="icone-dossier" [class]="classeIconeDossier(groupe.dossier.statutDossier)">
+                        <lucide-icon [name]="icons['Folder']" [size]="18"></lucide-icon>
+                      </div>
+                      <span class="badge" [class]="classeStatut(groupe.dossier.statutDossier)">
+                        {{ libelleStatut(groupe.dossier.statutDossier) | uppercase }}
+                      </span>
+                    </div>
+                    <div class="mini-carte-dossier__numero mono">{{ groupe.dossier.numeroDossier }}</div>
+                    <div class="mini-carte-dossier__intitule">{{ groupe.dossier.intitule || 'Sans intitulé' }}</div>
+                    <div class="mini-carte-dossier__meta">
+                      <span>{{ groupe.implication?.fonctionOccupee || '—' }}</span>
+                      <span>·</span>
+                      <span>{{ groupe.nombreFaits }} fait(s)</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+          }
+        </div>
+
+        <!-- ─── Pagination ─── -->
+        @if (nombreTotalFiltres() > pageSize()) {
+          <footer class="carte__footer-pagination">
+            <span class="pagination-info">
+              Affichage de {{ (pageIndex() * pageSize()) + 1 }} à
+              {{ (pageIndex() * pageSize()) + groupesPageActive().length }}
+              sur {{ nombreTotalFiltres() }} dossier{{ nombreTotalFiltres() > 1 ? 's' : '' }}
+            </span>
+            <mat-paginator
+              [length]="nombreTotalFiltres()"
+              [pageSize]="pageSize()"
+              [pageIndex]="pageIndex()"
+              [pageSizeOptions]="[4, 10, 20]"
+              (page)="changerPage($event)"
+              [hidePageSize]="true">
+            </mat-paginator>
+          </footer>
+        } @else if (groupesFiltres().length > 0) {
+          <footer class="carte__footer-pagination">
+            <span class="pagination-info">
+              Affichage de 1 à {{ groupesFiltres().length }} sur {{ groupesFiltres().length }} dossier{{ groupesFiltres().length > 1 ? 's' : '' }}
+            </span>
+          </footer>
+        }
+
+      </div>
+
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <!-- COLONNE LATÉRALE — Résumés                                          -->
+    <!-- ─────────────────────────────────────────────────────────────────── -->
+    <aside class="colonne-laterale">
+
+      <!-- Résumé des dossiers -->
+      <div class="carte carte--resume">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['FolderOpen']" [size]="14" class="carte__icone"></lucide-icon>
+            Résumé des dossiers
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <div class="stat-total">
+            <span class="stat-total__label">Total dossiers</span>
+            <span class="stat-total__valeur">{{ totalDossiers() }}</span>
+          </div>
+          <ul class="liste-stats">
+            @for (stat of resumeStatuts(); track stat.code) {
+              <li class="stat-item"
+                  [class.stat-item--actif]="filtreStatut() === stat.code"
+                  (click)="filtrerParStatut(stat.code)">
+                <span class="puce" [class]="'puce--' + stat.couleur"></span>
+                <span class="stat-item__label">{{ stat.libelle }}</span>
+                <span class="stat-item__valeur">{{ stat.nombre }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- Résumé des faits -->
+      <div class="carte carte--resume">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['FileText']" [size]="14" class="carte__icone"></lucide-icon>
+            Faits reprochés
+            <span class="carte__titre-sous">(tous dossiers)</span>
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <div class="stat-total">
+            <span class="stat-total__label">Total faits reprochés</span>
+            <span class="stat-total__valeur">{{ resumeFaits().total }}</span>
+          </div>
+          <ul class="liste-stats">
+            <li class="stat-item stat-item--statique">
+              <span class="puce puce--vert"></span>
+              <span class="stat-item__label">Validés</span>
+              <span class="stat-item__valeur">{{ resumeFaits().valides }}</span>
+            </li>
+            <li class="stat-item stat-item--statique">
+              <span class="puce puce--ambre"></span>
+              <span class="stat-item__label">En attente</span>
+              <span class="stat-item__valeur">{{ resumeFaits().enAttente }}</span>
+            </li>
+            <li class="stat-item stat-item--statique">
+              <span class="puce puce--rouge"></span>
+              <span class="stat-item__label">Rejetés</span>
+              <span class="stat-item__valeur">{{ resumeFaits().rejetes }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dernière mise à jour -->
+      <div class="carte carte--resume">
+        <header class="carte__header">
+          <h3 class="carte__titre">
+            <lucide-icon [name]="icons['Clock']" [size]="14" class="carte__icone"></lucide-icon>
+            Dernière mise à jour
+          </h3>
+        </header>
+        <div class="carte__corps">
+          <div class="maj-info">
+            <div class="maj-info__ligne">
+              <lucide-icon [name]="icons['User']" [size]="12" class="maj-info__ligne-icone"></lucide-icon>
+              <span class="maj-info__label">Par</span>
+              <span class="maj-info__valeur mono">{{ dernierUtilisateur() }}</span>
+            </div>
+            <div class="maj-info__ligne">
+              <lucide-icon [name]="icons['Clock']" [size]="12" class="maj-info__ligne-icone"></lucide-icon>
+              <span class="maj-info__label">Le</span>
+              <span class="maj-info__valeur">
+                @if (derniereModification()) {
+                  {{ derniereModification() | date:'dd/MM/yyyy à HH:mm':'':'fr' }}
+                } @else { Non renseignée }
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton Nouvelle implication -->
+      <button type="button" class="btn-principal btn-principal--pleine-largeur"
+              (click)="ouvrirNouvelleImplication()">
+        <lucide-icon [name]="icons['Plus']" [size]="15"></lucide-icon>
+        <span>Nouvelle implication</span>
+      </button>
+
+    </aside>
+
+  </div>
+</div>

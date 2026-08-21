@@ -1,0 +1,15 @@
+.form-simple {
+  min-width: 400px;
+  padding-top: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.pleine-largeur {
+  width: 100%;
+}
+
+.toggle-actif {
+  margin-top: var(--spacing-sm);
+}

@@ -1,0 +1,229 @@
+:host {
+  display: block;
+
+  // ═══════ Couleurs officielles ASCE-LC (charte 1.5) ═══════
+  --ascelc-rouge:      #E30613;
+  --ascelc-vert:       #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-jaune:      #FFDD00;
+  --ascelc-noir:       #1D1D1B;
+  --ascelc-blanc:      #FFFFFF;
+
+  // ═══════ Neutres chauds ═══════
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-300: #D6D3D1;
+  --neutre-400: #A8A29E;
+  --neutre-500: #78716C;
+  --neutre-600: #57534E;
+  --neutre-700: #44403C;
+
+  --jaune-fonce: #7A6600;   // pour lisibilité du jaune sur blanc
+  --mono-font: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+}
+
+.kpi-grille {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.25rem;
+
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 600px)  { grid-template-columns: 1fr; }
+}
+
+.kpi-carte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.15rem 1.25rem;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  transition: all 200ms ease;
+  position: relative;
+  overflow: hidden;
+
+  // Bande supérieure identitaire de chaque carte
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    opacity: 0.9;
+  }
+
+  // Couleurs de bande supérieure selon le type / niveau
+  &--actions::before         { background: var(--ascelc-vert); }
+  &--consultations::before  { background: var(--ascelc-vert-fonce); }
+  &--users::before          { background: linear-gradient(90deg, var(--ascelc-vert), var(--ascelc-jaune)); }
+  &--alertes::before        { background: var(--ascelc-jaune); }
+  &--niveau-ok::before      { background: var(--ascelc-vert); }
+  &--niveau-faible::before,
+  &--niveau-moyen::before   { background: var(--ascelc-jaune); }
+  &--niveau-eleve::before   { background: var(--ascelc-rouge); }
+
+  &:hover {
+    border-color: var(--ascelc-vert);
+    box-shadow: 0 6px 16px rgba(0, 150, 64, 0.12);
+    transform: translateY(-2px);
+  }
+
+  &__entete {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    flex-shrink: 0;
+  }
+
+  &--actions .kpi-carte__icone {
+    background: rgba(0, 150, 64, 0.1);
+    color: var(--ascelc-vert);
+  }
+  &--consultations .kpi-carte__icone {
+    background: rgba(0, 122, 52, 0.1);
+    color: var(--ascelc-vert-fonce);
+  }
+  &--users .kpi-carte__icone {
+    background: rgba(0, 150, 64, 0.08);
+    color: var(--ascelc-vert);
+  }
+  &--alertes .kpi-carte__icone {
+    background: rgba(255, 221, 0, 0.22);
+    color: var(--jaune-fonce);
+  }
+  &--niveau-ok .kpi-carte__icone {
+    background: rgba(0, 150, 64, 0.1);
+    color: var(--ascelc-vert);
+  }
+  &--niveau-faible .kpi-carte__icone,
+  &--niveau-moyen .kpi-carte__icone {
+    background: rgba(255, 221, 0, 0.22);
+    color: var(--jaune-fonce);
+  }
+  &--niveau-eleve .kpi-carte__icone {
+    background: rgba(227, 6, 19, 0.12);
+    color: var(--ascelc-rouge);
+  }
+
+  &__meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-end;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--neutre-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: right;
+  }
+
+  &__valeur {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--ascelc-noir);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  &__ventilation {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--neutre-100);
+    flex-wrap: wrap;
+  }
+
+  &__hint {
+    font-size: 0.75rem;
+    color: var(--neutre-500);
+    font-weight: 500;
+  }
+}
+
+// ─── Trend badge (petit) ─────────────────────────────────────────────────────
+.kpi-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &--up     { background: rgba(0, 150, 64, 0.1); color: var(--ascelc-vert); }
+  &--down   { background: rgba(227, 6, 19, 0.1); color: var(--ascelc-rouge); }
+  &--flat, &--neutre {
+    background: rgba(29, 29, 27, 0.06);
+    color: var(--neutre-500);
+  }
+}
+
+// ─── Badge d'alerte (RAS / faible / à surveiller / critique) ─────────────────
+.kpi-alerte-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  &--ok     { background: rgba(0, 150, 64, 0.12);  color: var(--ascelc-vert); }
+  &--faible { background: rgba(255, 221, 0, 0.22); color: var(--jaune-fonce); }
+  &--moyen  { background: rgba(255, 221, 0, 0.4);  color: var(--jaune-fonce); }
+  &--eleve  { background: rgba(227, 6, 19, 0.15);  color: var(--ascelc-rouge); }
+}
+
+// ─── Ventilation (icônes chiffrées) ─────────────────────────────────────────
+.ventilation-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--neutre-700);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  .ico-creation { color: var(--ascelc-vert); }
+  .ico-modif    { color: var(--neutre-700); }
+  .ico-suppr    { color: var(--ascelc-rouge); }
+  .ico-alerte   { color: var(--jaune-fonce); }
+}
+
+// ─── Skeleton loader ────────────────────────────────────────────────────────
+.kpi-skeleton {
+  display: inline-block;
+  width: 80px;
+  height: 32px;
+  background: linear-gradient(90deg, var(--neutre-100) 0%, var(--neutre-200) 50%, var(--neutre-100) 100%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

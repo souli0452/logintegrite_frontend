@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ enEdition ? 'Modifier la categorie' : 'Nouvelle categorie' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulaire" (ngSubmit)="soumettre()" class="form-dialog">
+    <mat-form-field appearance="outline">
+      <mat-label>Libelle</mat-label>
+      <input matInput formControlName="libelle" required>
+      @if (formulaire.controls.libelle.invalid && formulaire.controls.libelle.touched) {
+        <mat-error>Libelle obligatoire</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="annuler()">Annuler</button>
+  <button mat-flat-button color="primary" [disabled]="formulaire.invalid" (click)="soumettre()">
+    Enregistrer
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.edition ? 'Modifier' : 'Nouveau' }} {{ data.titre }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulaire" class="form-simple">
+    <mat-form-field appearance="outline" class="pleine-largeur">
+      <mat-label>Libelle</mat-label>
+      <input matInput formControlName="libelle" required>
+      @if (formulaire.controls.libelle.invalid && formulaire.controls.libelle.touched) {
+        <mat-error>Libelle obligatoire</mat-error>
+      }
+    </mat-form-field>
+
+    @if (data.avecActif) {
+      <mat-slide-toggle formControlName="actif" class="toggle-actif">
+        Actif (visible dans les selecteurs)
+      </mat-slide-toggle>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="annuler()">Annuler</button>
+  <button mat-flat-button color="primary" [disabled]="formulaire.invalid" (click)="soumettre()">
+    Enregistrer
+  </button>
+</mat-dialog-actions>

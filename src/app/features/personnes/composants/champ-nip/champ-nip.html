@@ -1,0 +1,74 @@
+<div class="champ-groupe">
+  <!-- Label externe standardisé -->
+  <label class="champ-label">
+    {{ libelle() }}
+    @if (requis()) {
+      <span class="requis">*</span>
+    }
+  </label>
+
+  <mat-form-field appearance="outline" class="champ-full">
+    <input matInput
+           [formControl]="formCtrl"
+           (input)="normaliserSaisie($event)"
+           (blur)="onBlur()"
+           [placeholder]="placeholder()"
+           maxlength="17"
+           autocomplete="off">
+
+    <!-- Indicateurs d'état en suffixe -->
+    @if (verification() === 'checking') {
+      <mat-spinner matSuffix diameter="18" mode="indeterminate"></mat-spinner>
+    } @else if (verification() === 'disponible') {
+      <lucide-icon matSuffix
+                   [name]="icons['CheckCircle2']"
+                   [size]="18"
+                   class="ico-succes"></lucide-icon>
+    } @else if (verification() === 'doublon') {
+      <lucide-icon matSuffix
+                   [name]="icons['AlertTriangle']"
+                   [size]="18"
+                   class="ico-alerte"></lucide-icon>
+    } @else {
+      <lucide-icon matSuffix
+                   [name]="icons['IdCard']"
+                   [size]="18"
+                   class="ico-neutre"></lucide-icon>
+    }
+
+    <mat-hint>17 caractères — chiffres et lettres majuscules</mat-hint>
+
+    @if (formCtrl.touched && formCtrl.errors?.['minlength']) {
+      <mat-error>Le NIP doit contenir exactement 17 caractères</mat-error>
+    } @else if (formCtrl.touched && formCtrl.errors?.['pattern']) {
+      <mat-error>Uniquement chiffres et lettres majuscules</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Avertissement doublon -->
+  @if (verification() === 'doublon' && personneDoublon()) {
+    <div class="alerte-doublon">
+      <lucide-icon [name]="icons['AlertTriangle']" [size]="16"></lucide-icon>
+      <div class="alerte-doublon__contenu">
+        <p class="alerte-doublon__titre">Ce NIP est déjà utilisé</p>
+        <p class="alerte-doublon__detail">
+          Une fiche existe pour
+          <a [routerLink]="['/personnes', personneDoublon()!.personneExistanteId]"
+             target="_blank"
+             class="alerte-doublon__lien">
+            <strong>{{ personneDoublon()!.personneExistanteNomAffichage }}</strong>
+            <lucide-icon [name]="icons['ExternalLink']" [size]="12"></lucide-icon>
+          </a>
+        </p>
+      </div>
+    </div>
+  }
+
+  <!-- Confirmation de disponibilité -->
+  @if (verification() === 'disponible' && formCtrl.value) {
+    <div class="alerte-disponible">
+      <lucide-icon [name]="icons['CheckCircle2']" [size]="14"></lucide-icon>
+      <span>Ce NIP est disponible</span>
+    </div>
+  }
+</div>

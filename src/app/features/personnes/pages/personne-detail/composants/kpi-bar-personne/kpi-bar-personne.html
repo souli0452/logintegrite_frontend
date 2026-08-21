@@ -1,0 +1,79 @@
+<nav class="kpi-bar" aria-label="Chiffres clés de la personne">
+
+  <!-- ─── 1. Dossier associé ─── -->
+  <button type="button"
+          class="kpi-item kpi-item--dossiers"
+          (click)="naviguer.emit(2)"
+          matTooltip="Voir les dossiers & implications">
+    <div class="kpi-item__icone">
+      <lucide-icon [name]="icons['FolderOpen']" [size]="20"></lucide-icon>
+    </div>
+    <div class="kpi-item__contenu">
+      <span class="kpi-item__valeur">{{ nbDossiers() }}</span>
+      <span class="kpi-item__label">
+        Dossier{{ nbDossiers() > 1 ? 's' : '' }} associé{{ nbDossiers() > 1 ? 's' : '' }}
+      </span>
+    </div>
+  </button>
+
+  <!-- ─── 2. Faits reprochés ─── -->
+  <button type="button"
+          class="kpi-item kpi-item--faits"
+          (click)="naviguer.emit(2)"
+          matTooltip="Voir les faits reprochés">
+    <div class="kpi-item__icone">
+      <lucide-icon [name]="icons['FileText']" [size]="20"></lucide-icon>
+    </div>
+    <div class="kpi-item__contenu">
+      <span class="kpi-item__valeur">{{ nbFaits() }}</span>
+      <span class="kpi-item__label">
+        Fait{{ nbFaits() > 1 ? 's' : '' }} reproché{{ nbFaits() > 1 ? 's' : '' }}
+      </span>
+    </div>
+  </button>
+
+  <!-- ─── 3. Peine prononcée ─── -->
+  <button type="button"
+          class="kpi-item kpi-item--peines"
+          (click)="naviguer.emit(3)"
+          matTooltip="Voir les peines & sanctions">
+    <div class="kpi-item__icone">
+      <lucide-icon [name]="icons['Gavel']" [size]="20"></lucide-icon>
+    </div>
+    <div class="kpi-item__contenu">
+      <span class="kpi-item__valeur">{{ nbPeines() }}</span>
+      <span class="kpi-item__label">
+        Peine{{ nbPeines() > 1 ? 's' : '' }} prononcée{{ nbPeines() > 1 ? 's' : '' }}
+      </span>
+    </div>
+  </button>
+
+  <!-- ─── 4. Document ─── -->
+  <button type="button"
+          class="kpi-item kpi-item--documents"
+          (click)="naviguer.emit(4)"
+          matTooltip="Voir les documents">
+    <div class="kpi-item__icone">
+      <lucide-icon [name]="icons['Paperclip']" [size]="20"></lucide-icon>
+    </div>
+    <div class="kpi-item__contenu">
+      <span class="kpi-item__valeur">{{ nbDocuments() }}</span>
+      <span class="kpi-item__label">
+        Document{{ nbDocuments() > 1 ? 's' : '' }}
+      </span>
+    </div>
+  </button>
+
+  <!-- ─── 5. Dernière mise à jour (non-cliquable) ─── -->
+  <div class="kpi-item kpi-item--maj kpi-item--statique"
+       [matTooltip]="dateComplete()">
+    <div class="kpi-item__icone">
+      <lucide-icon [name]="icons['Clock']" [size]="20"></lucide-icon>
+    </div>
+    <div class="kpi-item__contenu">
+      <span class="kpi-item__valeur kpi-item__valeur--texte">{{ labelDerniereMaj() }}</span>
+      <span class="kpi-item__label">Dernière mise à jour</span>
+    </div>
+  </div>
+
+</nav>

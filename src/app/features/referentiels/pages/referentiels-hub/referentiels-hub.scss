@@ -1,0 +1,71 @@
+.hub-grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .hub-grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hub-carte {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &--active {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      text-decoration: none;
+    }
+  }
+
+  &--inactive {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: var(--status-success-bg);
+    color: var(--status-success);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__titre {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__description {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  &__chevron {
+    color: var(--text-muted);
+  }
+}

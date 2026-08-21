@@ -1,0 +1,199 @@
+<div class="rapports-page">
+
+  <!-- En-tete -->
+  <header class="rapports-header">
+    <div class="rapports-header__titre-zone">
+      <div class="rapports-header__icone-wrap">
+        <lucide-icon [name]="icons['FileText']" [size]="22"></lucide-icon>
+      </div>
+      <div>
+        <h1 class="rapports-header__titre">Rapports</h1>
+        <p class="rapports-header__sous-titre">
+          Générez et téléchargez des rapports officiels de l'ASCE-LC
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section PDF -->
+  <section class="rapports-section">
+    <h2 class="rapports-section__titre">
+      <lucide-icon [name]="icons['FileText']" [size]="16"></lucide-icon>
+      Formats PDF
+    </h2>
+
+    <div class="rapports-grille">
+
+      <!-- Carte : PDF Dossier -->
+      <article class="carte-rapport"
+               [class.carte-rapport--ouverte]="carteActive() === 'PDF_DOSSIER'">
+        <div class="carte-rapport__entete">
+          <div class="carte-rapport__icone carte-rapport__icone--pdf">
+            <lucide-icon [name]="icons['FileText']" [size]="20"></lucide-icon>
+          </div>
+          <div class="carte-rapport__contenu">
+            <h3 class="carte-rapport__titre">Rapport de dossier</h3>
+            <p class="carte-rapport__description">
+              Détail complet d'un dossier avec faits reprochés et personnes impliquées
+            </p>
+          </div>
+          <button class="carte-rapport__toggle" (click)="basculerCarte('PDF_DOSSIER')">
+            <span>Configurer</span>
+            <lucide-icon [name]="icons['ChevronDown']" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        @if (carteActive() === 'PDF_DOSSIER') {
+          <div class="carte-rapport__params">
+            <mat-form-field appearance="outline" class="carte-rapport__champ">
+              <mat-label>Rechercher un dossier</mat-label>
+              <input matInput
+                     [formControl]="rechercheDossier"
+                     [matAutocomplete]="autoDossier"
+                     placeholder="Numéro ou intitulé...">
+              <mat-autocomplete #autoDossier="matAutocomplete"
+                  [displayWith]="afficherDossier"
+                  (optionSelected)="selectionnerDossier($event.option.value)">
+  @for (d of dossiersSuggeres(); track d.id) {
+    <mat-option [value]="d">
+      <strong>{{ d.numeroDossier ?? 'Sans numéro' }}</strong>
+      — {{ d.intitule ?? 'Sans intitulé' }}
+    </mat-option>
+  }
+  @if (dossiersSuggeres().length === 0) {
+    <mat-option disabled>Aucun dossier trouvé</mat-option>
+  }
+</mat-autocomplete>
+            </mat-form-field>
+
+            <button class="btn-generer"
+                    [disabled]="!dossierSelectionne() || enCoursGeneration() === 'PDF_DOSSIER'"
+                    (click)="genererPdfDossier()">
+              @if (enCoursGeneration() === 'PDF_DOSSIER') {
+                <mat-spinner diameter="16"></mat-spinner>
+                <span>Génération...</span>
+              } @else {
+                <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+                <span>Télécharger le PDF</span>
+              }
+            </button>
+          </div>
+        }
+      </article>
+
+      <!-- Carte : PDF Registre officiel -->
+      <article class="carte-rapport">
+        <div class="carte-rapport__entete">
+          <div class="carte-rapport__icone carte-rapport__icone--pdf">
+            <lucide-icon [name]="icons['Shield']" [size]="20"></lucide-icon>
+          </div>
+          <div class="carte-rapport__contenu">
+            <h3 class="carte-rapport__titre">Registre officiel</h3>
+            <p class="carte-rapport__description">
+              Liste complète des personnes ancrées au registre officiel de l'ASCE-LC
+            </p>
+          </div>
+          <button class="btn-generer btn-generer--direct"
+                  [disabled]="enCoursGeneration() === 'PDF_REGISTRE'"
+                  (click)="genererPdfRegistre()">
+            @if (enCoursGeneration() === 'PDF_REGISTRE') {
+              <mat-spinner diameter="16"></mat-spinner>
+              <span>Génération...</span>
+            } @else {
+              <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+              <span>Télécharger</span>
+            }
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Section Excel -->
+  <section class="rapports-section">
+    <h2 class="rapports-section__titre">
+      <lucide-icon [name]="icons['FileSpreadsheet']" [size]="16"></lucide-icon>
+      Exports Excel
+    </h2>
+
+    <div class="rapports-grille">
+
+      <!-- Carte : Excel Personnes -->
+      <article class="carte-rapport"
+               [class.carte-rapport--ouverte]="carteActive() === 'EXCEL_PERSONNES'">
+        <div class="carte-rapport__entete">
+          <div class="carte-rapport__icone carte-rapport__icone--excel">
+            <lucide-icon [name]="icons['FileSpreadsheet']" [size]="20"></lucide-icon>
+          </div>
+          <div class="carte-rapport__contenu">
+            <h3 class="carte-rapport__titre">Personnes recensées</h3>
+            <p class="carte-rapport__description">
+              Export tabulaire des personnes avec filtres par type et nom
+            </p>
+          </div>
+          <button class="carte-rapport__toggle" (click)="basculerCarte('EXCEL_PERSONNES')">
+            <span>Configurer</span>
+            <lucide-icon [name]="icons['ChevronDown']" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        @if (carteActive() === 'EXCEL_PERSONNES') {
+          <div class="carte-rapport__params" [formGroup]="filtresPersonnes">
+            <mat-form-field appearance="outline" class="carte-rapport__champ">
+              <mat-label>Nom ou dénomination</mat-label>
+              <input matInput formControlName="nomOuDenomination"
+                     placeholder="Laisser vide pour tout inclure">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="carte-rapport__champ">
+              <mat-label>Type de personne</mat-label>
+              <mat-select formControlName="typePersonne">
+                <mat-option value="">Toutes</mat-option>
+                <mat-option value="PHYSIQUE">Personnes physiques</mat-option>
+                <mat-option value="MORALE">Personnes morales</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button class="btn-generer"
+                    [disabled]="enCoursGeneration() === 'EXCEL_PERSONNES'"
+                    (click)="genererExcelPersonnes()">
+              @if (enCoursGeneration() === 'EXCEL_PERSONNES') {
+                <mat-spinner diameter="16"></mat-spinner>
+                <span>Génération...</span>
+              } @else {
+                <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+                <span>Télécharger l'Excel</span>
+              }
+            </button>
+          </div>
+        }
+      </article>
+
+      <!-- Carte : Excel Dossiers -->
+      <article class="carte-rapport">
+        <div class="carte-rapport__entete">
+          <div class="carte-rapport__icone carte-rapport__icone--excel">
+            <lucide-icon [name]="icons['ClipboardList']" [size]="20"></lucide-icon>
+          </div>
+          <div class="carte-rapport__contenu">
+            <h3 class="carte-rapport__titre">Liste des dossiers</h3>
+            <p class="carte-rapport__description">
+              Export tabulaire de tous les dossiers avec statistiques (impliqués, faits)
+            </p>
+          </div>
+          <button class="btn-generer btn-generer--direct"
+                  [disabled]="enCoursGeneration() === 'EXCEL_DOSSIERS'"
+                  (click)="genererExcelDossiers()">
+            @if (enCoursGeneration() === 'EXCEL_DOSSIERS') {
+              <mat-spinner diameter="16"></mat-spinner>
+              <span>Génération...</span>
+            } @else {
+              <lucide-icon [name]="icons['Download']" [size]="14"></lucide-icon>
+              <span>Télécharger</span>
+            }
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</div>

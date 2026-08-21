@@ -1,0 +1,280 @@
+<app-page-header
+  titre="Validation des faits reprochés"
+  [sousTitre]="'Suivi complet du circuit de validation'">
+</app-page-header>
+
+@if (chargement()) {
+  <div class="loader-zone"><mat-spinner diameter="40"></mat-spinner></div>
+} @else {
+
+  <mat-tab-group class="onglets-validation"
+                 mat-stretch-tabs="false"
+                 (selectedIndexChange)="changerOnglet($event)">
+
+    <!-- ============ ONGLET EN ATTENTE ============ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <lucide-icon [name]="icons['Shield']" [size]="16"></lucide-icon>
+        <span class="onglet-label">En attente</span>
+        <span class="onglet-compteur">{{ totalFaits() }}</span>
+      </ng-template>
+
+      <div class="onglet-contenu">
+        @if (dossiers().length === 0) {
+          <app-empty-state
+            titre="Aucun fait à valider"
+            message="Tous les faits reproches ont ete traites. Beau travail."
+            [icone]="icons['Shield']" />
+        } @else {
+
+          <!-- Filtres -->
+          <div class="barre-filtres">
+            <mat-form-field appearance="outline" class="barre-filtres__recherche">
+              <mat-label>Rechercher (numero, intitule, personne...)</mat-label>
+              <input matInput
+                     [value]="termeRecherche()"
+                     (input)="changerRecherche($any($event.target).value)"
+                     placeholder="Ex : DOS-2026, OUEDRAOGO...">
+              <lucide-icon matPrefix [name]="icons['Search']" [size]="16" class="prefix-icone"></lucide-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="barre-filtres__tri">
+              <mat-label>Trier par</mat-label>
+              <mat-select [value]="ordreTri()" (selectionChange)="changerTri($event.value)">
+                <mat-option value="RECENT">Dossier le plus recent</mat-option>
+                <mat-option value="ANCIEN">Dossier le plus ancien</mat-option>
+                <mat-option value="PLUS_DE_FAITS">Plus de faits en attente</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Cartes accordeon -->
+          <div class="liste-cartes">
+            @for (dossier of dossiersAffiches(); track dossier.dossierId) {
+              <article class="carte-dossier" [class.carte-dossier--ouverte]="estOuvert(dossier.dossierId)">
+                <header class="carte-dossier__header" (click)="basculerDossier(dossier.dossierId)">
+                  <lucide-icon [name]="estOuvert(dossier.dossierId) ? icons['ChevronDown'] : icons['ChevronRight']"
+                               [size]="18" class="carte-dossier__chevron"></lucide-icon>
+
+                  <div class="carte-dossier__gauche">
+                    <div class="carte-dossier__ligne1">
+                      <span class="carte-dossier__numero">{{ dossier.numeroDossier ?? '(sans numero)' }}</span>
+                      <span class="carte-dossier__intitule">{{ dossier.intitule ?? '(sans intitule)' }}</span>
+                    </div>
+
+                    <div class="carte-dossier__ligne2">
+                      @if (dossier.personneNomAffichage) {
+                        <span class="chip-personne">
+                          <lucide-icon
+                            [name]="dossier.personneTypePersonne === 'PHYSIQUE' ? icons['User'] : icons['Building2']"
+                            [size]="14"></lucide-icon>
+                          <strong>{{ dossier.personneNomAffichage }}</strong>
+                          @if (dossier.personneRoleImplication) {
+                            <span class="chip-personne__role">{{ dossier.personneRoleImplication }}</span>
+                          }
+                        </span>
+                      }
+
+                      <span class="chip-meta">
+                        <lucide-icon [name]="icons['Calendar']" [size]="14"></lucide-icon>
+                        {{ dossier.dateOuverture | date:'dd/MM/yyyy':'':'fr' }}
+                      </span>
+
+                      @if (dossier.sourceSignalementLibelle) {
+                        <span class="chip-meta">
+                          <lucide-icon [name]="icons['FolderOpen']" [size]="14"></lucide-icon>
+                          {{ dossier.sourceSignalementLibelle }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="carte-dossier__droite">
+                    <span class="badge-compteur">{{ dossier.nombreFaitsEnAttente }} fait(s) en attente</span>
+                  </div>
+                </header>
+
+                @if (estOuvert(dossier.dossierId)) {
+                  <div class="carte-dossier__corps">
+                    <div class="actions-groupees">
+                      <button type="button" class="btn-lien" (click)="voirDossier(dossier.dossierId)"
+                              matTooltip="Voir le dossier complet">
+                        <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon>
+                        <span>Voir le dossier</span>
+                      </button>
+
+                      @if (dossier.personneId) {
+                        <button type="button" class="btn-lien" (click)="voirPersonne(dossier.personneId)"
+                                matTooltip="Voir la fiche personne">
+                          <lucide-icon [name]="icons['User']" [size]="14"></lucide-icon>
+                          <span>Voir la personne</span>
+                        </button>
+                      }
+
+                      <div class="actions-groupees__spacer"></div>
+
+                      <button type="button" class="btn-tout-valider" (click)="toutValider(dossier)"
+                              matTooltip="Valider tous les faits en attente de ce dossier">
+                        <lucide-icon [name]="icons['CheckCheck']" [size]="14"></lucide-icon>
+                        <span>Tout valider ({{ dossier.faitsEnAttente.length }})</span>
+                      </button>
+                    </div>
+
+                    <div class="table-wrapper">
+                      <table class="table-faits">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Infraction</th>
+                            <th>Description</th>
+                            <th class="col-montant">Prejudice</th>
+                            <th class="col-actions">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (fait of dossier.faitsEnAttente; track fait.id) {
+                            <tr>
+                              <td class="cellule-date">{{ fait.dateFaits }}</td>
+                              <td class="cellule-infraction">{{ fait.typeInfractionLibelle }}</td>
+                              <td class="cellule-description">{{ fait.description }}</td>
+                              <td class="col-montant">
+                                {{ fait.montantPrejudice | number:'1.0-0':'fr' }} {{ fait.devise }}
+                              </td>
+                              <td class="col-actions">
+                                <button type="button" class="btn-icone btn-icone--valider"
+                                        (click)="validerFait(dossier, fait)" matTooltip="Valider">
+                                  <lucide-icon [name]="icons['Check']" [size]="16"></lucide-icon>
+                                </button>
+                                <button type="button" class="btn-icone btn-icone--rejeter"
+                                        (click)="rejeterFait(dossier, fait)" matTooltip="Rejeter">
+                                  <lucide-icon [name]="icons['X']" [size]="16"></lucide-icon>
+                                </button>
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                }
+              </article>
+            }
+          </div>
+
+          @if (dossiersAffiches().length === 0) {
+            <div class="filtre-vide">Aucun dossier ne correspond aux filtres.</div>
+          }
+        }
+      </div>
+    </mat-tab>
+
+    <!-- ============ ONGLET REJETES ============ -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <lucide-icon [name]="icons['XCircle']" [size]="16"></lucide-icon>
+        <span class="onglet-label">Rejetés</span>
+        <span class="onglet-compteur onglet-compteur--rouge">{{ totalRejetes() }}</span>
+      </ng-template>
+
+      <div class="onglet-contenu">
+        @if (faitsRejetes().length === 0) {
+          <app-empty-state
+            titre="Aucun fait rejeté"
+            message="L'historique des rejets apparaîtra ici dès qu'un validateur rejettera un fait."
+            [icone]="icons['XCircle']" />
+        } @else {
+
+          <div class="barre-filtres">
+            <mat-form-field appearance="outline" class="barre-filtres__recherche">
+              <mat-label>Rechercher (dossier, personne, motif, description...)</mat-label>
+              <input matInput
+                     [value]="termeRechercheRejetes()"
+                     (input)="changerRechercheRejetes($any($event.target).value)"
+                     placeholder="Ex : DOS-2026, OUEDRAOGO, corruption...">
+              <lucide-icon matPrefix [name]="icons['Search']" [size]="16" class="prefix-icone"></lucide-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="liste-rejetes">
+            @for (fait of rejetesAffiches(); track fait.id) {
+              <article class="carte-rejet">
+                <div class="carte-rejet__ruban"></div>
+
+                <!-- En-tête : icone + dossier/personne + bouton -->
+                <div class="carte-rejet__entete">
+                  <div class="carte-rejet__titre-zone">
+                    <div class="carte-rejet__icone">
+                      <lucide-icon [name]="icons['XCircle']" [size]="20"></lucide-icon>
+                    </div>
+                    <div class="carte-rejet__ident">
+                      <div class="carte-rejet__ligne1">
+                        <span class="carte-rejet__numero">{{ fait.numeroDossier ?? '(sans numero)' }}</span>
+                        <span class="carte-rejet__intitule">{{ fait.intitule ?? '(sans intitule)' }}</span>
+                      </div>
+                      <div class="carte-rejet__ligne2">
+                        @if (fait.personneNomAffichage) {
+                          <span class="chip-personne chip-personne--rejet"
+                                (click)="voirPersonneRejete(fait.personneId); $event.stopPropagation()">
+                            <lucide-icon
+                              [name]="fait.personneTypePersonne === 'PHYSIQUE' ? icons['User'] : icons['Building2']"
+                              [size]="12"></lucide-icon>
+                            {{ fait.personneNomAffichage }}
+                          </span>
+                        }
+                        <span class="chip-meta">
+                          <lucide-icon [name]="icons['Calendar']" [size]="12"></lucide-icon>
+                          Rejeté le {{ fait.dateRejet | date:'dd/MM/yyyy à HH:mm':'':'fr' }}
+                        </span>
+                        @if (fait.rejeteParNomComplet) {
+                          <span class="chip-meta">
+                            par <strong>{{ fait.rejeteParNomComplet }}</strong>
+                          </span>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-lien" (click)="voirDossierRejete(fait.dossierId)"
+                          matTooltip="Ouvrir le dossier concerné">
+                    <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon>
+                    <span>Voir le dossier</span>
+                  </button>
+                </div>
+
+                <!-- Corps : détails du fait -->
+                <div class="carte-rejet__fait">
+                  <div class="carte-rejet__fait-header">
+                    <lucide-icon [name]="icons['FileWarning']" [size]="14"></lucide-icon>
+                    <span class="carte-rejet__type">{{ fait.typeInfractionLibelle }}</span>
+                    <span class="carte-rejet__date">
+                      Faits du {{ fait.dateFaits | date:'dd/MM/yyyy':'':'fr' }}
+                    </span>
+                    @if (fait.montantPrejudice) {
+                      <span class="carte-rejet__montant">
+                        {{ fait.montantPrejudice | number:'1.0-0':'fr' }} {{ fait.devise }}
+                      </span>
+                    }
+                  </div>
+                  <p class="carte-rejet__description">{{ fait.description }}</p>
+                </div>
+
+                <!-- Motif de rejet -->
+                <div class="carte-rejet__motif">
+                  <span class="carte-rejet__motif-label">
+                    <lucide-icon [name]="icons['XCircle']" [size]="12"></lucide-icon>
+                    Motif du rejet
+                  </span>
+                  <p class="carte-rejet__motif-texte">{{ fait.motifRejet }}</p>
+                </div>
+              </article>
+            }
+          </div>
+
+          @if (rejetesAffiches().length === 0) {
+            <div class="filtre-vide">Aucun rejet ne correspond aux filtres.</div>
+          }
+        }
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+}

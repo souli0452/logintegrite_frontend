@@ -1,0 +1,224 @@
+.sidebar {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--asce-green);
+  color: white;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 260px;
+  border-right: 2px solid var(--asce-yellow);
+
+  &--pliee {
+    width: 72px;
+
+    .sidebar__brand-text,
+    .sidebar__item-label,
+    .sidebar__group-label,
+    .sidebar__group-chevron {
+      display: none;
+    }
+
+    .sidebar__item,
+    .sidebar__group-header {
+      justify-content: center;
+      padding: 12px;
+      border-left: none;
+    }
+
+    .sidebar__enfants {
+      display: none;
+    }
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: #ffffff; // Fond blanc uniquement pour la zone du logo
+  }
+
+  &__logo-img {
+    height: 85px; /* Logo agrandi */
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    margin: 0 auto; /* Force le centrage */
+
+    &--pliee {
+      height: 44px; /* Logo légèrement plus grand en mode plié */
+    }
+  }
+
+  &__brand-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: var(--asce-yellow);
+      text-decoration: none;
+    }
+
+    &--active {
+      background-color: rgba(255, 221, 0, 0.18);
+      color: white;
+      font-weight: 600;
+      border-left-color: var(--asce-yellow);
+
+      .sidebar__item-icone { color: var(--asce-yellow); }
+    }
+  }
+
+  &__item-icone {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s ease;
+  }
+
+  &__item-label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: var(--asce-yellow);
+    }
+
+    &--ouvert {
+      color: white;
+      .sidebar__group-icone { color: var(--asce-yellow); }
+    }
+  }
+
+  &__group-icone {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &__group-label {
+    flex: 1;
+  }
+
+  &__group-chevron {
+    color: rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__enfants {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0 4px 12px;
+    margin-top: 2px;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    margin-left: 22px;
+  }
+
+  &__item--enfant {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.75);
+    border-left: none;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    &.sidebar__item--active {
+      background-color: transparent;
+      color: var(--asce-yellow);
+      .sidebar__item-icone { color: var(--asce-yellow); }
+    }
+  }
+  
+  /* Entrée principale : traitement visuel distinctif */
+.sidebar__item--principal {
+  background: linear-gradient(90deg, rgba(255, 221, 0, 0.12) 0%, transparent 100%);
+  border-left: 3px solid #FFDD00 !important;
+  font-weight: 600;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  }
+
+  lucide-icon {
+    color: #FFDD00 !important;
+  }
+
+  &:hover {
+    background: linear-gradient(90deg, rgba(255, 221, 0, 0.2) 0%, transparent 100%);
+  }
+
+  &.sidebar__item--active {
+    background: linear-gradient(90deg, rgba(255, 221, 0, 0.25) 0%, transparent 100%);
+
+    lucide-icon {
+      color: #FFDD00 !important;
+    }
+  }
+}
+
+}

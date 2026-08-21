@@ -1,0 +1,122 @@
+<div class="dialog-personnes">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-personnes__header">
+    <div class="dialog-personnes__titre-bloc">
+      <div class="dialog-personnes__icone">
+        <lucide-icon [name]="icons['Users']" [size]="20"></lucide-icon>
+      </div>
+      <div>
+        <h2 class="dialog-personnes__titre">
+          Personnes impliquées
+          @if (!chargement()) {
+            <span class="dialog-personnes__count">({{ nombrePersonnes() }})</span>
+          }
+        </h2>
+        <p class="dialog-personnes__sous-titre">
+          <span class="mono">{{ data.numeroDossier || '' }}</span>
+          @if (data.numeroDossier) { <span class="sep">·</span> }
+          <span>{{ data.dossierIntitule }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="dialog-personnes__actions">
+      <button type="button" class="btn-ajouter-mini"
+              (click)="ajouterPersonne()"
+              title="Ajouter une personne à ce dossier">
+        <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
+        <span>Ajouter une personne</span>
+      </button>
+      <button type="button" class="btn-close" (click)="fermer()" aria-label="Fermer">
+        <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════ Body ═══════ -->
+  <div class="dialog-personnes__body">
+
+    @if (chargement()) {
+      <div class="chargement">
+        <mat-spinner diameter="32"></mat-spinner>
+        <p>Chargement des personnes impliquées…</p>
+      </div>
+    } @else if (erreur()) {
+      <div class="etat-erreur">{{ erreur() }}</div>
+    } @else if (implications().length === 0) {
+      <div class="etat-vide">
+        <lucide-icon [name]="icons['Users']" [size]="32"></lucide-icon>
+        <p>Aucune personne impliquée dans ce dossier.</p>
+        <button type="button" class="btn-principal-vide" (click)="ajouterPersonne()">
+          <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+          <span>Ajouter la première personne</span>
+        </button>
+      </div>
+    } @else {
+
+      <ul class="liste-impliques">
+        @for (imp of implications(); track imp.id) {
+          <li class="ligne-impliquee"
+              [class.ligne-impliquee--courante]="imp.personneId === data.personneCouranteId"
+              [class.ligne-impliquee--clickable]="imp.personneId !== data.personneCouranteId"
+              (click)="ouvrirFiche(imp.personneId)">
+
+            <!-- Avatar (icône neutre — le type de personne n'est pas dans la réponse) -->
+            <div class="ligne-impliquee__avatar">
+              <lucide-icon [name]="icons['User']" [size]="18"></lucide-icon>
+            </div>
+
+            <div class="ligne-impliquee__contenu">
+              <!-- Nom + badge "fiche consultée" -->
+              <div class="ligne-impliquee__nom-bloc">
+                <span class="ligne-impliquee__nom">
+                  {{ imp.personneNomAffichage || 'Personne inconnue' }}
+                </span>
+                @if (imp.personneId === data.personneCouranteId) {
+                  <span class="badge-courante">
+                    <lucide-icon [name]="icons['Star']" [size]="10"></lucide-icon>
+                    fiche consultée
+                  </span>
+                }
+              </div>
+
+              <!-- Meta : rôle + statut judiciaire + date début -->
+              <div class="ligne-impliquee__meta">
+                <span class="chip chip--role">
+                  {{ imp.roleImplicationLibelle || 'Rôle non précisé' }}
+                </span>
+
+                @if (imp.statutJudiciaireLibelle) {
+                  <span class="chip"
+                        [class]="'chip--statut-' + variantStatut(imp.statutJudiciaireLibelle)">
+                    <lucide-icon [name]="icons['Scale']" [size]="10"></lucide-icon>
+                    {{ imp.statutJudiciaireLibelle }}
+                  </span>
+                }
+
+                @if (imp.dateDebut) {
+                  <span class="chip-date">
+                    depuis le {{ imp.dateDebut | date:'dd/MM/yyyy':'':'fr' }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Flèche externe si clickable -->
+            @if (imp.personneId !== data.personneCouranteId) {
+              <lucide-icon [name]="icons['ExternalLink']" [size]="14"
+                           class="ligne-impliquee__lien"></lucide-icon>
+            }
+          </li>
+        }
+      </ul>
+
+    }
+  </div>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="dialog-personnes__footer">
+    <button type="button" class="btn-fermer" (click)="fermer()">Fermer</button>
+  </footer>
+</div>

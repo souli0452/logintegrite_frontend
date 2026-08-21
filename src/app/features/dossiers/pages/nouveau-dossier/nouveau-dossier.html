@@ -1,0 +1,478 @@
+<div class="workflow-page">
+
+  <!-- En-tête -->
+  <div class="workflow-header">
+    <div class="workflow-header__titre">
+      <lucide-icon [name]="icons['FolderOpen']" [size]="20"></lucide-icon>
+      <div>
+        <h1>Nouveau dossier</h1>
+        <p>Remplissez les informations nécessaires pour créer un nouveau dossier.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    @for (etape of etapes; track $index) {
+      <div class="stepper__item"
+           [class.stepper__item--actif]="etapeActive() === $index"
+           [class.stepper__item--fait]="etapeActive() > $index"
+           (click)="allerEtape($index)">
+        <div class="stepper__cercle">
+          @if (etapeActive() > $index) {
+            <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+          } @else {
+            {{ $index + 1 }}
+          }
+        </div>
+        <span class="stepper__label">{{ etape }}</span>
+      </div>
+      @if ($index < etapes.length - 1) {
+        <div class="stepper__ligne" [class.stepper__ligne--fait]="etapeActive() > $index"></div>
+      }
+    }
+  </div>
+
+  <!-- Corps : récap personne à gauche + contenu à droite -->
+  <div class="workflow-corps">
+
+    <!-- Colonne gauche : récap personne -->
+    <aside class="recap-personne">
+      <div class="recap-personne__info">
+        <lucide-icon [name]="icons['FolderOpen']" [size]="14" class="recap-icone"></lucide-icon>
+        <p>Un dossier ne peut être créé que pour une personne existante.</p>
+      </div>
+
+      <h3 class="recap-personne__titre">Résumé de la personne</h3>
+
+      @if (chargementPersonne()) {
+        <div class="recap-loader"><mat-spinner diameter="24"></mat-spinner></div>
+      } @else if (donnees(); as d) {
+        <div class="recap-personne__avatar">
+          <div class="avatar" [class.avatar--pp]="d.resume.typePersonne === 'PHYSIQUE'" [class.avatar--pm]="d.resume.typePersonne === 'MORALE'">
+            <lucide-icon [name]="d.resume.typePersonne === 'PHYSIQUE' ? icons['User'] : icons['Building2']" [size]="28"></lucide-icon>
+          </div>
+        </div>
+
+        <div class="recap-champs">
+          <div class="recap-champ">
+            <span class="recap-champ__label">Type</span>
+            <span class="recap-badge">
+              {{ d.resume.typePersonne === 'PHYSIQUE' ? 'Personne Physique' : 'Personne Morale' }}
+            </span>
+          </div>
+          <div class="recap-champ">
+            <span class="recap-champ__label">Nom complet</span>
+            <span class="recap-champ__valeur">{{ d.resume.nomAffichage }}</span>
+          </div>
+
+          @if (detailPhysique(); as p) {
+            <div class="recap-champ">
+              <span class="recap-champ__label">Sexe</span>
+              <span class="recap-champ__valeur">{{ p.sexe === 'M' ? 'Masculin' : 'Féminin' }}</span>
+            </div>
+            @if (p.dateNaissance) {
+              <div class="recap-champ">
+                <span class="recap-champ__label">Date de naissance</span>
+                <span class="recap-champ__valeur">{{ p.dateNaissance | date:'dd/MM/yyyy' }}</span>
+              </div>
+            }
+            @if (p.nationalite) {
+              <div class="recap-champ">
+                <span class="recap-champ__label">Nationalité</span>
+                <span class="recap-champ__valeur">{{ p.nationalite }}</span>
+              </div>
+            }
+            @if (p.profession) {
+              <div class="recap-champ">
+                <span class="recap-champ__label">Profession</span>
+                <span class="recap-champ__valeur">{{ p.profession }}</span>
+              </div>
+            }
+            @if (p.telephone) {
+              <div class="recap-champ">
+                <span class="recap-champ__label">Téléphone</span>
+                <span class="recap-champ__valeur">{{ p.telephone }}</span>
+              </div>
+            }
+          } @else if (detailMorale(); as m) {
+            <div class="recap-champ">
+              <span class="recap-champ__label">Forme juridique</span>
+              <span class="recap-champ__valeur">{{ m.formeJuridique }}</span>
+            </div>
+            <div class="recap-champ">
+              <span class="recap-champ__label">Secteur</span>
+              <span class="recap-champ__valeur">{{ m.secteurActivite }}</span>
+            </div>
+            @if (m.telephone) {
+              <div class="recap-champ">
+                <span class="recap-champ__label">Téléphone</span>
+                <span class="recap-champ__valeur">{{ m.telephone }}</span>
+              </div>
+            }
+          }
+
+          <div class="recap-champ">
+            <span class="recap-champ__label">N° Identifiant</span>
+            <span class="recap-champ__valeur recap-champ__valeur--mono">{{ identifiantMetier() }}</span>
+          </div>
+        </div>
+
+        <!-- Statut création -->
+        <div class="recap-succes">
+          <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+          <span>Personne chargée avec succès</span>
+        </div>
+
+        <button class="btn-modifier" (click)="retour()">
+          <lucide-icon [name]="icons['ArrowLeft']" [size]="14"></lucide-icon>
+          <span>Retour à la fiche</span>
+        </button>
+      }
+    </aside>
+
+    <!-- Colonne droite : contenu de l'étape -->
+    <div class="workflow-contenu">
+
+      <!-- Étape 1 : Dossier -->
+      @if (etapeActive() === 0) {
+        <div class="etape">
+          <div class="etape__header">
+            <lucide-icon [name]="icons['FolderOpen']" [size]="18" class="etape__icone"></lucide-icon>
+            <h2 class="etape__titre">Informations du dossier</h2>
+          </div>
+
+          <form [formGroup]="formDossier" class="etape-form">
+            <div class="champ-groupe">
+              <label class="champ-label">Numéro du dossier</label>
+              <mat-form-field appearance="outline" class="champ-full">
+                <input matInput formControlName="numeroDossier" placeholder="Saisir le numéro du dossier (si manuel)">
+              </mat-form-field>
+            </div>
+
+            <div class="champ-groupe">
+              <label class="champ-label">Intitulé du dossier <span class="requis">*</span></label>
+              <mat-form-field appearance="outline" class="champ-full">
+                <input matInput formControlName="intitule" placeholder="Saisir l'intitulé ou le nom du dossier">
+                @if (formDossier.controls.intitule.invalid && formDossier.controls.intitule.touched) {
+                  <mat-error>Intitulé obligatoire</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="champ-groupe">
+              <label class="champ-label">Source du signalement <span class="requis">*</span></label>
+              <mat-form-field appearance="outline" class="champ-full">
+                <mat-select formControlName="sourceSignalementId" placeholder="Sélectionner la source du signalement">
+                  @for (s of sources(); track s.id) {
+                    <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
+                  }
+                </mat-select>
+                @if (formDossier.controls.sourceSignalementId.invalid && formDossier.controls.sourceSignalementId.touched) {
+                  <mat-error>Source obligatoire</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="champ-groupe">
+              <label class="champ-label">Résumé des faits / Contexte</label>
+              <mat-form-field appearance="outline" class="champ-full">
+                <textarea matInput formControlName="descriptionContexte"
+                          rows="5"
+                          placeholder="Décrire brièvement les faits à l'origine de ce dossier..."
+                          maxlength="2000"></textarea>
+                <mat-hint align="end">{{ formDossier.value.descriptionContexte?.length || 0 }} / 2000</mat-hint>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Étape 2 : Implication -->
+      @if (etapeActive() === 1) {
+        <div class="etape">
+          <div class="etape__header">
+            <lucide-icon [name]="icons['User']" [size]="18" class="etape__icone"></lucide-icon>
+            <h2 class="etape__titre">Implication dans le dossier</h2>
+          </div>
+
+          <form [formGroup]="formImplication" class="etape-form">
+            <div class="grille-2">
+              <div class="champ-groupe">
+                <label class="champ-label">Rôle <span class="requis">*</span></label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <mat-select formControlName="roleImplicationId" placeholder="Sélectionner le rôle">
+                    @for (r of roles(); track r.id) {
+                      <mat-option [value]="r.id">{{ r.libelle }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (formImplication.controls.roleImplicationId.invalid && formImplication.controls.roleImplicationId.touched) {
+                    <mat-error>Rôle obligatoire</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Fonction occupée</label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <input matInput formControlName="fonctionOccupee" placeholder="Ex : Directeur financier">
+                </mat-form-field>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Entité d'organisation</label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <mat-select formControlName="entiteOrganisationId" placeholder="Sélectionner l'entité">
+                    <mat-option value="">Aucune</mat-option>
+                    @for (e of entites(); track e.id) {
+                      <mat-option [value]="e.id">{{ e.libelle }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Statut judiciaire</label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <mat-select formControlName="statutJudiciaireId" placeholder="Sélectionner le statut">
+                    <mat-option value="">Aucun</mat-option>
+                    @for (s of statutsJudiciaires(); track s.id) {
+                      <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Autorité compétente</label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <input matInput formControlName="autoriteCompetente" placeholder="Ex : TGI de Ouagadougou">
+                </mat-form-field>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Référence affaire</label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <input matInput formControlName="referenceAffaire" placeholder="Ex : TGI-OUG/DOS-2024-0456">
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- Étape 3 : Faits reprochés -->
+      @if (etapeActive() === 2) {
+        <div class="etape">
+          <div class="etape__header">
+            <lucide-icon [name]="icons['FolderOpen']" [size]="18" class="etape__icone"></lucide-icon>
+            <h2 class="etape__titre">Faits reprochés</h2>
+          </div>
+
+          <!-- Formulaire ajout fait -->
+          <div class="bloc-ajout">
+            <h3 class="bloc-ajout__titre">Ajouter un fait</h3>
+            <form [formGroup]="formFait" class="etape-form">
+              <div class="grille-2">
+                <div class="champ-groupe">
+                  <label class="champ-label">Type d'infraction <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="typeInfractionId" placeholder="Sélectionner le type d'infraction">
+                      @for (t of typesInfraction(); track t.id) {
+                        <mat-option [value]="t.id">{{ t.libelle }}</mat-option>
+                      }
+                    </mat-select>
+                    @if (formFait.controls.typeInfractionId.invalid && formFait.controls.typeInfractionId.touched) {
+                      <mat-error>Type obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Zone géographique</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="zoneGeographiqueId" placeholder="Sélectionner la zone">
+                      <mat-option value="">Non précisée</mat-option>
+                      @for (z of zones(); track z.id) {
+                        <mat-option [value]="z.id">{{ z.libelle }}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Montant du préjudice <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput type="number" formControlName="montantPrejudice" placeholder="0">
+                    @if (formFait.controls.montantPrejudice.invalid && formFait.controls.montantPrejudice.touched) {
+                      <mat-error>Montant obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Devise</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="devise">
+                      <mat-option value="XOF">XOF — Franc CFA</mat-option>
+                      <mat-option value="EUR">EUR — Euro</mat-option>
+                      <mat-option value="USD">USD — Dollar</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Date des faits <span class="requis">*</span></label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput [matDatepicker]="pickerFait" formControlName="dateFaits"
+                           placeholder="Sélectionner la date">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerFait"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFait></mat-datepicker>
+                    @if (formFait.controls.dateFaits.invalid && formFait.controls.dateFaits.touched) {
+                      <mat-error>Date obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="champ-groupe">
+                <label class="champ-label">Description du fait <span class="requis">*</span></label>
+                <mat-form-field appearance="outline" class="champ-full">
+                  <textarea matInput formControlName="description"
+                            rows="3"
+                            placeholder="Décrire précisément le fait reproché..."
+                            maxlength="2000"></textarea>
+                  <mat-hint align="end">{{ formFait.value.description?.length || 0 }} / 2000</mat-hint>
+                  @if (formFait.controls.description.invalid && formFait.controls.description.touched) {
+                    <mat-error>Description obligatoire</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <button class="btn-ajouter-fait" type="button" (click)="ajouterFait()">
+                <lucide-icon [name]="icons['Plus']" [size]="14"></lucide-icon>
+                <span>Ajouter ce fait</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Liste des faits ajoutés -->
+          @if (faitsLocaux().length > 0) {
+            <div class="faits-liste">
+              <h3 class="faits-liste__titre">Faits ajoutés ({{ faitsLocaux().length }})</h3>
+              @for (fait of faitsLocaux(); track $index) {
+                <div class="fait-item">
+                  <div class="fait-item__corps">
+                    <div class="fait-item__type">{{ fait.typeInfractionLibelle }}</div>
+                    <div class="fait-item__desc">{{ fait.description }}</div>
+                    <div class="fait-item__meta">
+                      @if (fait.zoneGeographiqueLibelle) {
+                        <span>📍 {{ fait.zoneGeographiqueLibelle }}</span>
+                      }
+                      @if (fait.montantPrejudice) {
+                        <span>💰 {{ fait.montantPrejudice | number:'1.0-0' }} {{ fait.devise }}</span>
+                      }
+                      @if (fait.dateFaits) {
+                        <span>📅 {{ fait.dateFaits }}</span>
+                      }
+                    </div>
+                  </div>
+                  <button class="btn-supprimer-fait" (click)="supprimerFait($index)" title="Supprimer">
+                    <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                  </button>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="faits-vide">
+              <p>Aucun fait ajouté. Ajoutez au moins un fait avant de continuer.</p>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Étape 4 : Récapitulatif -->
+      @if (etapeActive() === 3) {
+        <div class="etape">
+          <div class="etape__header">
+            <lucide-icon [name]="icons['Check']" [size]="18" class="etape__icone"></lucide-icon>
+            <h2 class="etape__titre">Récapitulatif</h2>
+          </div>
+
+          <div class="recap-bloc">
+            <h3 class="recap-bloc__titre">Dossier</h3>
+            <div class="recap-lignes">
+              <div class="recap-ligne"><span>Intitulé</span><strong>{{ formDossier.value.intitule }}</strong></div>
+              @if (formDossier.value.numeroDossier) {
+                <div class="recap-ligne"><span>Numéro</span><strong>{{ formDossier.value.numeroDossier }}</strong></div>
+              }
+              <div class="recap-ligne"><span>Source</span><strong>{{ libelleSource(formDossier.value.sourceSignalementId!) }}</strong></div>
+            </div>
+          </div>
+
+          <div class="recap-bloc">
+            <h3 class="recap-bloc__titre">Implication</h3>
+            <div class="recap-lignes">
+              <div class="recap-ligne"><span>Rôle</span><strong>{{ libelleRole(formImplication.value.roleImplicationId!) }}</strong></div>
+              @if (formImplication.value.fonctionOccupee) {
+                <div class="recap-ligne"><span>Fonction</span><strong>{{ formImplication.value.fonctionOccupee }}</strong></div>
+              }
+              @if (formImplication.value.entiteOrganisationId) {
+                <div class="recap-ligne"><span>Entité</span><strong>{{ libelleEntite(formImplication.value.entiteOrganisationId) }}</strong></div>
+              }
+              @if (formImplication.value.statutJudiciaireId) {
+                <div class="recap-ligne"><span>Statut judiciaire</span><strong>{{ libelleStatut(formImplication.value.statutJudiciaireId) }}</strong></div>
+              }
+              @if (formImplication.value.autoriteCompetente) {
+                <div class="recap-ligne"><span>Autorité compétente</span><strong>{{ formImplication.value.autoriteCompetente }}</strong></div>
+              }
+              @if (formImplication.value.referenceAffaire) {
+                <div class="recap-ligne"><span>Référence affaire</span><strong>{{ formImplication.value.referenceAffaire }}</strong></div>
+              }
+            </div>
+          </div>
+
+          <div class="recap-bloc">
+            <h3 class="recap-bloc__titre">Faits reprochés ({{ faitsLocaux().length }})</h3>
+            @for (fait of faitsLocaux(); track $index) {
+              <div class="fait-item fait-item--recap">
+                <div class="fait-item__corps">
+                  <div class="fait-item__type">{{ fait.typeInfractionLibelle }}</div>
+                  <div class="fait-item__desc">{{ fait.description }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Barre de navigation en bas -->
+  <div class="workflow-footer">
+    <button class="btn-retour" (click)="etapePrecedente()" [disabled]="etapeActive() === 0 || soumission()">
+      <lucide-icon [name]="icons['ArrowLeft']" [size]="16"></lucide-icon>
+      <span>Retour</span>
+    </button>
+
+    <div class="footer-actions-droite">
+      @if (etapeActive() < etapes.length - 1) {
+        <button class="btn-suivant" (click)="etapeSuivante()" [disabled]="soumission()">
+          <span>Suivant : {{ etapes[etapeActive() + 1] }}</span>
+          <lucide-icon [name]="icons['ArrowRight']" [size]="16"></lucide-icon>
+        </button>
+      } @else {
+        <button class="btn-enregistrer" (click)="soumettre()" [disabled]="soumission()">
+          @if (soumission()) {
+            <mat-spinner diameter="18"></mat-spinner>
+            <span>Enregistrement...</span>
+          } @else {
+            <lucide-icon [name]="icons['Save']" [size]="16"></lucide-icon>
+            <span>Enregistrer le dossier</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+</div>

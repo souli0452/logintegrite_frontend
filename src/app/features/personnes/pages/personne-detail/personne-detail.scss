@@ -1,0 +1,464 @@
+:host {
+  --ascelc-rouge:  #E30613;
+  --ascelc-vert:   #009640;
+  --ascelc-jaune:  #FFDD00;
+  --ascelc-noir:   #1D1D1B;
+  --ascelc-blanc:  #FFFFFF;
+
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-300: #D6D3D1;
+  --neutre-500: #78716C;
+  --neutre-700: #44403C;
+  --neutre-800: #292524;
+
+  display: block;
+}
+
+.detail-personne {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--neutre-50);
+  min-height: 100vh;
+  position: relative;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SKELETON LOADER
+// ═══════════════════════════════════════════════════════════════════════════
+.skeleton-hero {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 14px;
+
+  @media (max-width: 700px) { flex-direction: column; align-items: center; }
+}
+
+.skeleton-portrait {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--neutre-100), var(--neutre-200), var(--neutre-100));
+  background-size: 200% 100%;
+  animation: skeletonWave 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.skeleton-lignes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-top: 1rem;
+}
+
+.skeleton-ligne {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--neutre-100), var(--neutre-200), var(--neutre-100));
+  background-size: 200% 100%;
+  animation: skeletonWave 1.4s ease-in-out infinite;
+
+  &--titre { height: 32px; width: 60%; }
+  &--sous  { width: 40%; }
+  &--court { width: 30%; }
+}
+
+@keyframes skeletonWave {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ONGLETS (Vague A : style institutionnel léger — Vague B refera le contenu)
+// ═══════════════════════════════════════════════════════════════════════════
+.detail-tabs {
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 12px;
+  overflow: hidden;
+
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid var(--neutre-200);
+      background: linear-gradient(180deg, var(--ascelc-blanc), var(--neutre-50));
+    }
+    .mat-mdc-tab { min-width: 140px; }
+    .mdc-tab__text-label { font-weight: 600; color: var(--neutre-500); }
+    .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label { color: var(--ascelc-noir); }
+    .mdc-tab-indicator__content--underline {
+      border-color: var(--ascelc-vert) !important;
+      border-top-width: 3px !important;
+    }
+  }
+}
+
+.onglet-contenu {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CARTES DE CONTENU (utilisées dans les onglets)
+// ═══════════════════════════════════════════════════════════════════════════
+.carte {
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 10px;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--neutre-200);
+    background: var(--neutre-50);
+  }
+
+  &__titre {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ascelc-noir);
+  }
+}
+
+.btn-modifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--ascelc-blanc);
+  border: 1px solid var(--neutre-200);
+  border-radius: 6px;
+  color: var(--neutre-700);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms;
+
+  &:hover {
+    border-color: var(--ascelc-vert);
+    color: var(--ascelc-vert);
+  }
+}
+
+.grille-champs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem 1.5rem;
+  padding: 1.25rem;
+
+  @media (max-width: 700px) { grid-template-columns: 1fr; }
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &--pleine { grid-column: 1 / -1; }
+
+  &__label {
+    font-size: 0.72rem;
+    color: var(--neutre-500);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__valeur {
+    font-size: 0.9rem;
+    color: var(--ascelc-noir);
+    font-weight: 500;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TABLEAU DOSSIERS ASSOCIÉS
+// ═══════════════════════════════════════════════════════════════════════════
+.tableau-dossiers {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    padding: 0.75rem 1rem;
+    background: var(--neutre-50);
+    color: var(--neutre-500);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+    border-bottom: 1px solid var(--neutre-200);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--neutre-100);
+    font-size: 0.87rem;
+    color: var(--ascelc-noir);
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background 150ms;
+
+    &:hover { background: var(--neutre-50); }
+    &:last-child td { border-bottom: none; }
+  }
+
+  .col-mono {
+    font-family: var(--mono-font, 'JetBrains Mono', 'Courier New', monospace);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--neutre-700);
+    white-space: nowrap;
+  }
+
+  .col-titre {
+    font-weight: 500;
+    color: var(--ascelc-noir);
+  }
+
+  .col-actions {
+    text-align: right;
+    white-space: nowrap;
+    width: 130px;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BADGES DE STATUT (dossier ouvert / clos)
+// ═══════════════════════════════════════════════════════════════════════════
+.badge-statut {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--neutre-100);
+  color: var(--neutre-500);
+
+  &--ouvert {
+    background: rgba(0, 150, 64, 0.12);
+    color: var(--ascelc-vert);
+  }
+
+  &--clos {
+    background: rgba(29, 29, 27, 0.08);
+    color: var(--neutre-700);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BOUTONS ICÔNES (actions du tableau)
+// ═══════════════════════════════════════════════════════════════════════════
+.btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--neutre-200);
+  border-radius: 6px;
+  color: var(--neutre-500);
+  cursor: pointer;
+  transition: all 150ms;
+  margin-left: 0.35rem;
+
+  &:hover:not(:disabled) {
+    background: var(--ascelc-vert);
+    color: var(--ascelc-blanc);
+    border-color: var(--ascelc-vert);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:first-child { margin-left: 0; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ÉTATS VIDES
+// ═══════════════════════════════════════════════════════════════════════════
+.etat-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  color: var(--neutre-500);
+  text-align: center;
+
+  lucide-icon { color: var(--neutre-400); }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--neutre-600);
+    font-weight: 500;
+  }
+
+  &__sous {
+    font-size: 0.8rem !important;
+    color: var(--neutre-500) !important;
+    font-weight: 400 !important;
+  }
+}
+
+.btn-principal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.25rem;
+  background: linear-gradient(135deg, var(--ascelc-vert), var(--ascelc-vert-fonce, #007A34));
+  color: var(--ascelc-blanc);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.87rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms;
+  box-shadow: 0 2px 8px rgba(0, 150, 64, 0.2);
+  margin-top: 0.5rem;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 150, 64, 0.3);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TIMELINE — Historique des statuts
+// ═══════════════════════════════════════════════════════════════════════════
+.loader-zone {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--ascelc-vert), var(--neutre-200));
+  }
+
+  &__item {
+    position: relative;
+    padding: 0.85rem 1rem;
+    background: var(--ascelc-blanc);
+    border: 1px solid var(--neutre-200);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 180ms;
+
+    &:hover {
+      border-color: var(--ascelc-vert);
+      box-shadow: 0 4px 12px rgba(0, 150, 64, 0.08);
+    }
+  }
+
+  &__marqueur {
+    position: absolute;
+    left: -24px;
+    top: 1.15rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ascelc-vert);
+    border: 3px solid var(--ascelc-blanc);
+    box-shadow: 0 0 0 1px var(--neutre-200);
+  }
+
+  &__contenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  &__ligne1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__action {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ascelc-noir);
+  }
+
+  &__date {
+    font-size: 0.78rem;
+    color: var(--neutre-500);
+    font-family: var(--mono-font, 'JetBrains Mono', 'Courier New', monospace);
+  }
+
+  &__ligne2 {
+    font-size: 0.82rem;
+    color: var(--neutre-600);
+    line-height: 1.4;
+
+    strong {
+      color: var(--ascelc-vert);
+      font-weight: 600;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CHAMP VALEUR MONO (pour matricules, etc.)
+// ═══════════════════════════════════════════════════════════════════════════
+.champ__valeur--mono {
+  font-family: var(--mono-font, 'JetBrains Mono', 'Courier New', monospace);
+  font-size: 0.85rem !important;
+  letter-spacing: 0.02em;
+  color: var(--neutre-700) !important;
+}
+
+
+// Dialogs des personnes/faits du dossier
+::ng-deep .cdk-overlay-pane.dialog-personnes-du-dossier-panel,
+::ng-deep .cdk-overlay-pane.dialog-faits-du-dossier-panel {
+  max-width: 95vw !important;
+
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+
+    .mdc-dialog__surface {
+      padding: 0 !important;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+  }
+}

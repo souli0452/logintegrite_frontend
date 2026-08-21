@@ -1,0 +1,111 @@
+<div class="dialog-creation">
+
+  <header class="dialog-creation__header">
+    <div class="dialog-creation__titre-zone">
+      <div class="dialog-creation__icone">
+        <lucide-icon [name]="icons['UserPlus']" [size]="18"></lucide-icon>
+      </div>
+      <div>
+        <h2 class="dialog-creation__titre">Créer un utilisateur</h2>
+        <p class="dialog-creation__sous-titre">Le compte sera créé dans Keycloak et dans l'application</p>
+      </div>
+    </div>
+    <button class="dialog-creation__close" (click)="annuler()">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <form [formGroup]="formulaire" class="dialog-creation__body" (ngSubmit)="soumettre()">
+
+    <div class="grille-2col">
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="prenom" autocomplete="off">
+        @if (formulaire.controls.prenom.touched && formulaire.controls.prenom.invalid) {
+          <mat-error>Prénom requis (min. 2 caractères)</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="nom" autocomplete="off">
+        @if (formulaire.controls.nom.touched && formulaire.controls.nom.invalid) {
+          <mat-error>Nom requis (min. 2 caractères)</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email professionnel</mat-label>
+      <input matInput type="email" formControlName="email" autocomplete="off"
+             placeholder="prenom.nom@asce-lc.bf">
+      @if (formulaire.controls.email.touched && formulaire.controls.email.invalid) {
+        <mat-error>Email valide requis</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Téléphone (optionnel)</mat-label>
+      <input matInput formControlName="telephone" autocomplete="off"
+             placeholder="70 00 00 00">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rôle initial</mat-label>
+      <mat-select formControlName="roleInitial">
+        @for (r of data.rolesDisponibles; track r.id) {
+          <mat-option [value]="r.code">{{ r.libelle }} ({{ r.code }})</mat-option>
+        }
+      </mat-select>
+      @if (formulaire.controls.roleInitial.touched && formulaire.controls.roleInitial.invalid) {
+        <mat-error>Sélectionnez un rôle initial</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="champ-mdp">
+      <mat-form-field appearance="outline" class="champ-mdp__field">
+        <mat-label>Mot de passe temporaire</mat-label>
+        <input matInput
+               [type]="afficherMotDePasse() ? 'text' : 'password'"
+               formControlName="motDePasseTemporaire"
+               autocomplete="new-password">
+        <button type="button" matSuffix mat-icon-button (click)="basculerVisibiliteMDP()">
+          <lucide-icon [name]="afficherMotDePasse() ? icons['EyeOff'] : icons['Eye']" [size]="16"></lucide-icon>
+        </button>
+        @if (formulaire.controls.motDePasseTemporaire.touched && formulaire.controls.motDePasseTemporaire.invalid) {
+          <mat-error>Mot de passe requis (min. 8 caractères)</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="champ-mdp__actions">
+        <button type="button" class="btn-mini" (click)="genererMotDePasse()">Générer</button>
+        <button type="button" class="btn-mini" (click)="copierMotDePasse()"
+                [disabled]="!formulaire.value.motDePasseTemporaire">Copier</button>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <lucide-icon [name]="icons['Info']" [size]="14"></lucide-icon>
+      <span>L'utilisateur devra changer ce mot de passe lors de sa première connexion.</span>
+    </div>
+
+  </form>
+
+  <footer class="dialog-creation__footer">
+    <button type="button" class="btn-secondaire" [disabled]="enCours()" (click)="annuler()">
+      Annuler
+    </button>
+    <button type="button" class="btn-primaire"
+            [disabled]="formulaire.invalid || enCours()"
+            (click)="soumettre()">
+      @if (enCours()) {
+        <mat-spinner diameter="16"></mat-spinner>
+        <span>Création...</span>
+      } @else {
+        <lucide-icon [name]="icons['UserPlus']" [size]="14"></lucide-icon>
+        <span>Créer l'utilisateur</span>
+      }
+    </button>
+  </footer>
+
+</div>

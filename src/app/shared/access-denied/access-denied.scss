@@ -1,0 +1,26 @@
+.access-denied {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-page);
+
+  &__card {
+    background-color: var(--bg-surface);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    max-width: 400px;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--asce-red);
+  }
+
+  &__message {
+    color: var(--text-secondary);
+  }
+}

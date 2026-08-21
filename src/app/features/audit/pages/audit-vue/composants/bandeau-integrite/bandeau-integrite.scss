@@ -1,0 +1,291 @@
+:host {
+  display: block;
+
+  // ═══════ Couleurs officielles ASCE-LC ═══════
+  --ascelc-rouge:       #E30613;
+  --ascelc-vert:        #009640;
+  --ascelc-vert-fonce: #007A34;
+  --ascelc-jaune:       #FFDD00;
+  --ascelc-noir:        #1D1D1B;
+  --ascelc-blanc:       #FFFFFF;
+
+  // ═══════ Neutres ═══════
+  --neutre-50:  #FAFAF9;
+  --neutre-100: #F5F5F4;
+  --neutre-200: #E7E5E4;
+  --neutre-300: #D6D3D1;
+  --neutre-400: #A8A29E;
+  --neutre-500: #78716C;
+  --neutre-600: #57534E;
+  --neutre-700: #44403C;
+  --neutre-800: #292524;
+
+  --jaune-fonce: #7A6600;
+  --mono-font: 'JetBrains Mono', 'Menlo', 'Courier New', monospace;
+}
+
+.bandeau {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2rem;
+  padding: 1.75rem 2rem;
+  background: linear-gradient(135deg, var(--ascelc-vert) 0%, var(--ascelc-vert-fonce) 100%);
+  border-radius: 14px;
+  color: var(--ascelc-blanc);
+  box-shadow: 0 8px 24px rgba(0, 150, 64, 0.25);
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 15% 50%, rgba(255,255,255,0.1), transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    z-index: 1;
+    transition: background 300ms ease;
+  }
+
+  &--intacte::after      { background: var(--ascelc-blanc); }
+  &--rompue::after       { background: var(--ascelc-rouge); }
+  &--non-verifiee::after { background: var(--ascelc-jaune); }
+
+  &__gauche, &__droite {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__gauche {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  &__droite {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    &__droite { align-items: stretch; }
+  }
+}
+
+// ─── Bloc de statut ─────────────────────────────────────────────────────────
+.statut-bloc {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.statut-icone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--ascelc-blanc);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+
+  .bandeau--rompue & {
+    background: rgba(227, 6, 19, 0.25);
+    border-color: rgba(227, 6, 19, 0.5);
+  }
+
+  .bandeau--non-verifiee & {
+    background: rgba(255, 221, 0, 0.25);
+    color: var(--ascelc-jaune);
+    border-color: rgba(255, 221, 0, 0.5);
+  }
+
+  &__pulse {
+    --pulse-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    inset: -4px;
+    border-radius: 16px;
+    animation: pulseSubtile 2.4s ease-in-out infinite;
+    pointer-events: none;
+
+    .bandeau--intacte & {
+      --pulse-color: rgba(255, 255, 255, 0.7);
+    }
+    .bandeau--rompue & {
+      --pulse-color: rgba(227, 6, 19, 0.6);
+    }
+    .bandeau--non-verifiee & {
+      display: none;
+    }
+  }
+}
+
+@keyframes pulseSubtile {
+  0%   { box-shadow: 0 0 0 0 var(--pulse-color); opacity: 0.7; }
+  70%  { box-shadow: 0 0 0 14px transparent; opacity: 0; }
+  100% { box-shadow: 0 0 0 0 transparent; opacity: 0; }
+}
+
+.statut-texte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statut-libelle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.statut-detail {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.4;
+}
+
+// ─── Dernier hash ───────────────────────────────────────────────────────────
+.dernier-hash {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 600;
+  }
+
+  &__valeur {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.85rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 8px;
+    color: var(--ascelc-blanc);
+    cursor: pointer;
+    transition: all 180ms ease;
+    align-self: flex-start;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-1px);
+    }
+
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &__mono {
+    font-family: var(--mono-font);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+}
+
+// ─── Mini stats à droite ────────────────────────────────────────────────────
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.mini-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+
+  @media (max-width: 900px) { align-items: flex-start; }
+
+  &__valeur {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    color: var(--ascelc-blanc);
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+}
+
+// ─── Bouton "Vérifier l'intégrité" ──────────────────────────────────────────
+.btn-verifier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--ascelc-blanc);
+  color: var(--ascelc-vert-fonce);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 180ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    color: var(--ascelc-vert);
+  }
+
+  &:disabled { opacity: 0.65; cursor: not-allowed; }
+
+  &--intacte {
+    background: var(--ascelc-blanc);
+    color: var(--ascelc-vert-fonce);
+  }
+
+  &--rompue {
+    background: var(--ascelc-rouge);
+    color: var(--ascelc-blanc);
+
+    &:hover:not(:disabled) {
+      background: var(--ascelc-blanc);
+      color: var(--ascelc-rouge);
+    }
+  }
+}
+
+.anim-tourne { animation: tourne 900ms linear infinite; }
+@keyframes tourne { to { transform: rotate(360deg); } }

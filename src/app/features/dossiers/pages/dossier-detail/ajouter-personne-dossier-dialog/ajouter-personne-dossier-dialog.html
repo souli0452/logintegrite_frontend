@@ -1,0 +1,590 @@
+<div class="dialog-form">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-form__header">
+    <div class="dialog-form__titre-bloc">
+      <lucide-icon [name]="icons['UserPlus']" [size]="20" class="dialog-form__icone"></lucide-icon>
+      <div>
+        <h1>Ajouter une personne au dossier</h1>
+        <p>
+          @if (data.numeroDossier) {
+            <span class="mono">{{ data.numeroDossier }}</span>
+            <span class="sep">·</span>
+          }
+          <span>{{ data.dossierIntitule || 'Dossier sans intitulé' }}</span>
+        </p>
+      </div>
+    </div>
+    <button type="button" class="btn-close" (click)="fermer()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <!-- ═══════ Corps ═══════ -->
+  <div class="dialog-form__corps">
+
+    <!-- ══════ Section 1 : Personne concernée ══════ -->
+    <section class="etape">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['User']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Personne concernée</h2>
+      </div>
+
+      <!-- Toggle Rechercher / Créer -->
+      @if (!personneSelectionnee()) {
+        <div class="mode-toggle">
+          <button type="button"
+                  class="mode-toggle__btn"
+                  [class.mode-toggle__btn--actif]="mode() === 'rechercher'"
+                  (click)="changerMode('rechercher')">
+            <lucide-icon [name]="icons['Search']" [size]="16"></lucide-icon>
+            <span>Rechercher une personne existante</span>
+          </button>
+          <button type="button"
+                  class="mode-toggle__btn"
+                  [class.mode-toggle__btn--actif]="mode() === 'creer'"
+                  (click)="changerMode('creer')">
+            <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+            <span>Créer une nouvelle personne</span>
+          </button>
+        </div>
+      }
+
+      <!-- ─── Mode RECHERCHE ─── -->
+      @if (mode() === 'rechercher' && !personneSelectionnee()) {
+        <div class="etape-form">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Rechercher <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput
+                     [formControl]="rechercheCtrl"
+                     [matAutocomplete]="autoPersonne"
+                     placeholder="Saisir un nom ou une dénomination sociale (2 caractères min.)"
+                     autocomplete="off">
+              <mat-hint>La personne doit déjà exister dans le système</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <mat-autocomplete #autoPersonne="matAutocomplete"
+                            [displayWith]="afficherPersonne"
+                            (optionSelected)="onPersonneSelectionnee($event)">
+            @for (personne of (personnesTrouvees$ | async) ?? []; track personne.id) {
+              <mat-option [value]="personne"
+                          [disabled]="personneDejaImpliquee(personne.id)">
+                <div class="option-personne">
+                  <div class="option-personne__avatar"
+                       [class.avatar--pp]="personne.typePersonne === 'PHYSIQUE'"
+                       [class.avatar--pm]="personne.typePersonne === 'MORALE'">
+                    @if (personne.typePersonne === 'MORALE') {
+                      <lucide-icon [name]="icons['Building2']" [size]="16"></lucide-icon>
+                    } @else {
+                      <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
+                    }
+                  </div>
+                  <div class="option-personne__contenu">
+                    <div class="option-personne__nom">{{ personne.nomAffichage }}</div>
+                    <div class="option-personne__meta">
+                      <span>{{ personne.typePersonne === 'PHYSIQUE' ? 'Personne physique' : 'Personne morale' }}</span>
+                      @if (personne.nombreDossiersValides > 0) {
+                        <span>· {{ personne.nombreDossiersValides }} dossier(s) validé(s)</span>
+                      }
+                      @if (personne.statutAncrage === 'REGISTRE_OFFICIEL') {
+                        <span class="badge-officiel">Registre officiel</span>
+                      }
+                    </div>
+                  </div>
+                  @if (personneDejaImpliquee(personne.id)) {
+                    <span class="badge-deja">Déjà impliquée</span>
+                  }
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
+        </div>
+      }
+
+      <!-- ─── Mode CRÉATION ─── -->
+      @if (mode() === 'creer' && !personneSelectionnee()) {
+        <div class="creation-personne">
+
+          <!-- Sub-toggle Physique / Morale -->
+          <div class="type-toggle">
+            <label class="type-toggle__option"
+                   [class.type-toggle__option--actif]="typePersonneCreation() === 'PHYSIQUE'">
+              <input type="radio" name="type"
+                     [checked]="typePersonneCreation() === 'PHYSIQUE'"
+                     (change)="changerTypeCreation('PHYSIQUE')">
+              <lucide-icon [name]="icons['User']" [size]="18"></lucide-icon>
+              <div>
+                <strong>Personne physique</strong>
+                <span>Un individu</span>
+              </div>
+            </label>
+            <label class="type-toggle__option"
+                   [class.type-toggle__option--actif]="typePersonneCreation() === 'MORALE'">
+              <input type="radio" name="type"
+                     [checked]="typePersonneCreation() === 'MORALE'"
+                     (change)="changerTypeCreation('MORALE')">
+              <lucide-icon [name]="icons['Building2']" [size]="18"></lucide-icon>
+              <div>
+                <strong>Personne morale</strong>
+                <span>Entreprise, organisation</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- ─── Formulaire PHYSIQUE ─── -->
+          @if (typePersonneCreation() === 'PHYSIQUE') {
+            <form [formGroup]="formPhysique" class="etape-form">
+              <div class="grille-2">
+                <div class="champ-groupe">
+                  <label class="champ-label">
+                    Nom de naissance <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="nomNaissance" placeholder="Ex : OUEDRAOGO">
+                    @if (formPhysique.controls.nomNaissance.invalid && formPhysique.controls.nomNaissance.touched) {
+                      <mat-error>Nom obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Nom d'usage</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="nomUsage" placeholder="Nom marital si différent">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe champ-groupe--full">
+                  <label class="champ-label">
+                    Prénom(s) <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="prenoms" placeholder="Ex : Ahmed Boureima">
+                    @if (formPhysique.controls.prenoms.invalid && formPhysique.controls.prenoms.touched) {
+                      <mat-error>Prénom(s) obligatoire(s)</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                
+                <div class="champ-groupe champ-groupe--full">
+  <app-champ-nip formControlName="nip"></app-champ-nip>
+</div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">
+                    Sexe <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="sexe">
+                      <mat-option value="M">Masculin</mat-option>
+                      <mat-option value="F">Féminin</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Date de naissance</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput [matDatepicker]="pickerDob" formControlName="dateNaissance"
+                           placeholder="jj/mm/aaaa">
+                    <mat-datepicker-toggle matSuffix [for]="pickerDob"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerDob></mat-datepicker>
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Lieu de naissance</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="lieuNaissance" placeholder="Ville, pays">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+  <label class="champ-label">
+    Nationalité <span class="requis">*</span>
+  </label>
+  <mat-form-field appearance="outline" class="champ-full">
+    <mat-select formControlName="nationaliteId" placeholder="Sélectionner une nationalité">
+      @if (chargementNationalites()) {
+        <mat-option disabled>Chargement…</mat-option>
+      } @else {
+        @for (nat of nationalites(); track nat.id) {
+          <mat-option [value]="nat.id">{{ nat.libelle }}</mat-option>
+        }
+      }
+    </mat-select>
+    @if (formPhysique.controls.nationaliteId.invalid && formPhysique.controls.nationaliteId.touched) {
+      <mat-error>Nationalité obligatoire</mat-error>
+    }
+  </mat-form-field>
+</div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Situation matrimoniale</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <mat-select formControlName="situationMatrimoniale">
+                      <mat-option value="">Non renseigné</mat-option>
+                      <mat-option value="CELIBATAIRE">Célibataire</mat-option>
+                      <mat-option value="MARIE">Marié(e)</mat-option>
+                      <mat-option value="DIVORCE">Divorcé(e)</mat-option>
+                      <mat-option value="VEUF">Veuf / Veuve</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                @if (estMarie()) {
+                  <div class="champ-groupe champ-groupe--full">
+                    <label class="champ-label">Nom du conjoint</label>
+                    <mat-form-field appearance="outline" class="champ-full">
+                      <input matInput formControlName="nomConjoint" placeholder="Nom du conjoint">
+                    </mat-form-field>
+                  </div>
+                }
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Profession</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="profession" placeholder="Ex : Comptable">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Matricule Fonction Publique</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="matriculeFonctionPublique"
+                           placeholder="Si agent public">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Grade / Catégorie</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="gradeCategorie" placeholder="Ex : A1, B2">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Téléphone</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="telephone" placeholder="+226 XX XX XX XX">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe champ-groupe--full">
+                  <label class="champ-label">Adresse</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="adresse"
+                           placeholder="Adresse postale ou domicile">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="bloc-creation-actions">
+                <button type="button" class="btn-annuler-creation" (click)="changerMode('rechercher')">
+                  Annuler la création
+                </button>
+                <button type="button" class="btn-creer"
+                        [disabled]="creationEnCours()"
+                        (click)="creerPersonnePhysique()">
+                  <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+                  <span>{{ creationEnCours() ? 'Création…' : 'Créer et sélectionner' }}</span>
+                </button>
+              </div>
+            </form>
+          }
+
+          <!-- ─── Formulaire MORALE ─── -->
+          @if (typePersonneCreation() === 'MORALE') {
+            <form [formGroup]="formMorale" class="etape-form">
+              <div class="grille-2">
+                <div class="champ-groupe champ-groupe--full">
+                  <label class="champ-label">
+                    Dénomination sociale <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="denominationSociale"
+                           placeholder="Ex : Société Générale du Burkina">
+                    @if (formMorale.controls.denominationSociale.invalid && formMorale.controls.denominationSociale.touched) {
+                      <mat-error>Dénomination obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Sigle</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="sigle" placeholder="Ex : SGB">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">
+                    Forme juridique <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="formeJuridique"
+                           placeholder="Ex : SA, SARL, SAS">
+                    @if (formMorale.controls.formeJuridique.invalid && formMorale.controls.formeJuridique.touched) {
+                      <mat-error>Forme juridique obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">RCCM</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="rccm"
+                           placeholder="Registre du Commerce">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">IFU</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="ifu"
+                           placeholder="Identifiant Fiscal Unique">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe champ-groupe--full">
+                  <label class="champ-label">
+                    Secteur d'activité <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="secteurActivite"
+                           placeholder="Ex : BTP, banque, télécoms">
+                    @if (formMorale.controls.secteurActivite.invalid && formMorale.controls.secteurActivite.touched) {
+                      <mat-error>Secteur obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe champ-groupe--full">
+                  <label class="champ-label">
+                    Siège social <span class="requis">*</span>
+                  </label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="siegeSocial"
+                           placeholder="Adresse complète du siège">
+                    @if (formMorale.controls.siegeSocial.invalid && formMorale.controls.siegeSocial.touched) {
+                      <mat-error>Siège obligatoire</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Capital social (F CFA)</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput type="number" formControlName="capitalSocial"
+                           placeholder="Ex : 10000000">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Date de création</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput [matDatepicker]="pickerCreationEnt"
+                           formControlName="dateCreationEntreprise"
+                           placeholder="jj/mm/aaaa">
+                    <mat-datepicker-toggle matSuffix [for]="pickerCreationEnt"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerCreationEnt></mat-datepicker>
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Téléphone</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput formControlName="telephone"
+                           placeholder="+226 XX XX XX XX">
+                  </mat-form-field>
+                </div>
+
+                <div class="champ-groupe">
+                  <label class="champ-label">Email</label>
+                  <mat-form-field appearance="outline" class="champ-full">
+                    <input matInput type="email" formControlName="email"
+                           placeholder="contact@entreprise.com">
+                    @if (formMorale.controls.email.invalid && formMorale.controls.email.touched) {
+                      <mat-error>Email invalide</mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="bloc-creation-actions">
+                <button type="button" class="btn-annuler-creation" (click)="changerMode('rechercher')">
+                  Annuler la création
+                </button>
+                <button type="button" class="btn-creer"
+                        [disabled]="creationEnCours()"
+                        (click)="creerPersonneMorale()">
+                  <lucide-icon [name]="icons['Check']" [size]="14"></lucide-icon>
+                  <span>{{ creationEnCours() ? 'Création…' : 'Créer et sélectionner' }}</span>
+                </button>
+              </div>
+            </form>
+          }
+
+        </div>
+      }
+
+      <!-- ─── Personne sélectionnée : carte de confirmation ─── -->
+      @if (personneSelectionnee(); as p) {
+        <div class="personne-choisie">
+          <div class="personne-choisie__avatar"
+               [class.avatar--pp]="p.typePersonne === 'PHYSIQUE'"
+               [class.avatar--pm]="p.typePersonne === 'MORALE'">
+            @if (p.typePersonne === 'MORALE') {
+              <lucide-icon [name]="icons['Building2']" [size]="22"></lucide-icon>
+            } @else {
+              <lucide-icon [name]="icons['User']" [size]="22"></lucide-icon>
+            }
+          </div>
+          <div class="personne-choisie__contenu">
+            <div class="personne-choisie__nom">{{ p.nomAffichage }}</div>
+            <div class="personne-choisie__meta">
+              <span class="recap-badge">
+                {{ p.typePersonne === 'PHYSIQUE' ? 'Personne physique' : 'Personne morale' }}
+              </span>
+              @if (p.nombreDossiersValides > 0) {
+                <span class="meta-ligne">
+                  {{ p.nombreDossiersValides }} dossier(s) déjà validé(s)
+                </span>
+              }
+              @if (p.statutAncrage === 'REGISTRE_OFFICIEL') {
+                <span class="badge-officiel">Registre officiel</span>
+              }
+            </div>
+          </div>
+          <button type="button" class="btn-changer" (click)="changerPersonne()">
+            <lucide-icon [name]="icons['Search']" [size]="14"></lucide-icon>
+            <span>Changer</span>
+          </button>
+        </div>
+      }
+    </section>
+
+    <!-- ══════ Section 2 : Rôle dans le dossier ══════ -->
+    <section class="etape" [class.etape--desactivee]="!personneSelectionnee()">
+      <div class="etape__header">
+        <lucide-icon [name]="icons['Scale']" [size]="18" class="etape__icone"></lucide-icon>
+        <h2 class="etape__titre">Rôle dans le dossier</h2>
+      </div>
+
+      <form [formGroup]="form" class="etape-form">
+        <div class="grille-2">
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Rôle <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <mat-select formControlName="roleImplicationId" placeholder="Sélectionner le rôle">
+                @if (chargementRoles()) {
+                  <mat-option disabled>Chargement…</mat-option>
+                } @else {
+                  @for (role of roles(); track role.id) {
+                    <mat-option [value]="role.id">{{ role.libelle }}</mat-option>
+                  }
+                }
+              </mat-select>
+              @if (form.controls.roleImplicationId.invalid && form.controls.roleImplicationId.touched) {
+                <mat-error>Rôle obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Fonction occupée</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput formControlName="fonctionOccupee"
+                     placeholder="Ex : Trésorier Payeur Général">
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Entité au moment des faits</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput
+                     [formControl]="entiteCtrl"
+                     [matAutocomplete]="autoEntite"
+                     placeholder="Ex : Trésorerie de Ouagadougou">
+              <mat-hint>Choisir dans la liste proposée ou saisir en libre</mat-hint>
+            </mat-form-field>
+
+            <mat-autocomplete #autoEntite="matAutocomplete"
+                              [displayWith]="afficherEntite"
+                              (optionSelected)="onEntiteSelectionnee($event)">
+              @for (entite of entitesFiltrees(); track entite.id) {
+                <mat-option [value]="entite">{{ entite.libelle }}</mat-option>
+              }
+            </mat-autocomplete>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">
+              Date de début <span class="requis">*</span>
+            </label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDebut></mat-datepicker>
+              @if (form.controls.dateDebut.invalid && form.controls.dateDebut.touched) {
+                <mat-error>Date obligatoire</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe">
+            <label class="champ-label">Date de fin</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <input matInput [matDatepicker]="pickerFin" formControlName="dateFin"
+                     placeholder="jj/mm/aaaa">
+              <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+              <mat-datepicker #pickerFin></mat-datepicker>
+              <mat-hint>Vide = implication en cours</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="champ-groupe champ-groupe--full">
+            <label class="champ-label">Observations</label>
+            <mat-form-field appearance="outline" class="champ-full">
+              <textarea matInput formControlName="observations" rows="3"
+                        placeholder="Précisions, circonstances, contexte..."
+                        maxlength="1000"></textarea>
+              <mat-hint align="end">{{ form.value.observations?.length || 0 }} / 1000</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ══════ Note info ══════ -->
+    <div class="note-info">
+      <lucide-icon [name]="icons['AlertCircle']" [size]="14"></lucide-icon>
+      <p>
+        L'ajout de cette personne au dossier sera automatiquement tracé dans
+        le journal d'audit. Cette action est réversible.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="dialog-form__footer">
+    <button type="button" class="btn-secondaire" (click)="fermer()"
+            [disabled]="enregistrement()">
+      Annuler
+    </button>
+    <button type="button" class="btn-principal"
+            [disabled]="!personneSelectionnee() || form.invalid || enregistrement()"
+            (click)="enregistrer()">
+      <lucide-icon [name]="icons['Save']" [size]="14"></lucide-icon>
+      <span>{{ enregistrement() ? 'Ajout en cours…' : 'Ajouter au dossier' }}</span>
+    </button>
+  </footer>
+</div>

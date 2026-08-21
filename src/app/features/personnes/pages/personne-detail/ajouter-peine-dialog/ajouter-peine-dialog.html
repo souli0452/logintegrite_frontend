@@ -1,0 +1,90 @@
+<div class="peine-dialog">
+  <header class="peine-dialog__header">
+    <div class="peine-dialog__titre-zone">
+      <div class="peine-dialog__icone">
+        <lucide-icon [name]="icons['Gavel']" [size]="18"></lucide-icon>
+      </div>
+      <div>
+        <h2 class="peine-dialog__titre">Enregistrer une peine</h2>
+        @if (data.contexte) {
+          <p class="peine-dialog__sous-titre">
+            @if (data.contexte.typeInfraction) { {{ data.contexte.typeInfraction }} }
+            @if (data.contexte.numeroDossier) {  · Dossier {{ data.contexte.numeroDossier }} }
+          </p>
+        }
+      </div>
+    </div>
+    <button class="peine-dialog__close" (click)="annuler()">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <form [formGroup]="formulaire" class="peine-dialog__body">
+    <div class="grille-2col">
+      <mat-form-field appearance="outline">
+        <mat-label>Type de peine *</mat-label>
+        <mat-select formControlName="typePeine">
+          @for (t of typesPeine; track t.valeur) {
+            <mat-option [value]="t.valeur">{{ t.libelle }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nature</mat-label>
+        <mat-select formControlName="natureSanction">
+          <mat-option value="">Non précisée</mat-option>
+          @for (n of naturesSanction; track n.valeur) {
+            <mat-option [value]="n.valeur">{{ n.libelle }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Durée</mat-label>
+      <input matInput formControlName="duree" placeholder="Ex : 5 ans, 6 mois avec sursis...">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Montant de l'amende (F CFA)</mat-label>
+      <input matInput type="number" formControlName="montantAmende" min="0">
+    </mat-form-field>
+
+    <div class="grille-2col">
+      <mat-form-field appearance="outline">
+        <mat-label>Date de décision</mat-label>
+        <input matInput [matDatepicker]="pickerDecision" formControlName="dateDecision">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDecision"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDecision></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date d'exécution</mat-label>
+        <input matInput [matDatepicker]="pickerExec" formControlName="dateExecution">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerExec"></mat-datepicker-toggle>
+        <mat-datepicker #pickerExec></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description / motifs</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+  </form>
+
+  <footer class="peine-dialog__footer">
+    <button class="btn-secondaire" [disabled]="enCours()" (click)="annuler()">Annuler</button>
+    <button class="btn-primaire"
+            [disabled]="formulaire.invalid || enCours()"
+            (click)="soumettre()">
+      @if (enCours()) {
+        <mat-spinner diameter="16"></mat-spinner>
+        <span>Enregistrement...</span>
+      } @else {
+        <lucide-icon [name]="icons['Gavel']" [size]="14"></lucide-icon>
+        <span>Enregistrer la peine</span>
+      }
+    </button>
+  </footer>
+</div>

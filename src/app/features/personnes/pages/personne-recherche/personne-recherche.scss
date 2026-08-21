@@ -1,0 +1,299 @@
+:host {
+  --asce-green: #009640;
+  --asce-green-hover: #007a34;
+  --asce-green-light: #e6f4ec;
+  --asce-red: #E30613;
+  --asce-yellow: #FFDD00;
+  --asce-black: #1D1D1B;
+  --asce-white: #FFFFFF;
+  --asce-gray-bg: #f9fafb;
+  --asce-gray-text: #6b7280;
+  --asce-border: #e5e7eb;
+
+  display: block;
+}
+
+.recherche-container {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* SIDEBAR FILTRES */
+.sidebar-filtres {
+  background: var(--asce-white);
+  border: 1px solid var(--asce-border);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &__header {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--asce-border);
+  }
+
+  &__titre {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--asce-black);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--asce-border);
+  }
+}
+
+/* ACCORDÉON / EXPANSION PANELS */
+.filtres-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  mat-expansion-panel {
+    border: 1px solid var(--asce-border) !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+
+    &.mat-expanded {
+      border-color: var(--asce-green) !important;
+    }
+  }
+
+  mat-expansion-panel-header {
+    padding: 0 12px !important;
+    height: 42px !important;
+
+    &.mat-expanded {
+      background-color: var(--asce-green-light);
+      border-bottom: 1px solid rgba(0, 150, 64, 0.2);
+    }
+  }
+
+  mat-panel-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--asce-black);
+  }
+
+  .panel-content {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+/* BOUTONS */
+.btn-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--asce-green);
+  color: var(--asce-white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: var(--asce-green-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-reset {
+  background-color: var(--asce-white);
+  color: var(--asce-gray-text);
+  border: 1px solid var(--asce-border);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: var(--asce-gray-bg);
+    color: var(--asce-black);
+  }
+}
+
+/* ZONE RÉSULTATS */
+.resultats-zone {
+  min-width: 0;
+}
+
+.resultats-header {
+  margin-bottom: 16px;
+}
+
+.resultats-count {
+  font-size: 0.875rem;
+  color: var(--asce-black);
+  padding: 10px 16px;
+  background-color: var(--asce-white);
+  border: 1px solid var(--asce-border);
+  border-radius: 6px;
+
+  strong {
+    color: var(--asce-green);
+  }
+}
+
+.resultats-table-wrapper {
+  background: var(--asce-white);
+  border: 1px solid var(--asce-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.maquette-table {
+  width: 100%;
+
+  th.mat-mdc-header-cell {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--asce-gray-text);
+    border-bottom: 1px solid var(--asce-border);
+    padding: 12px 16px;
+    background: var(--asce-gray-bg);
+    text-transform: uppercase;
+  }
+
+  td.mat-mdc-cell {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.875rem;
+    color: var(--asce-black);
+  }
+}
+
+.cellule-identifiant {
+  font-family: 'Menlo', 'Consolas', monospace;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--asce-green);
+}
+
+.cellule-strong {
+  font-weight: 600;
+  color: var(--asce-black);
+}
+
+.badge-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--pp {
+    background-color: var(--asce-green-light);
+    color: var(--asce-green);
+  }
+
+  &--pm {
+    background-color: rgba(255, 221, 0, 0.25);
+    color: #856400;
+  }
+}
+
+.cellule-right {
+  text-align: right;
+}
+
+.btn-icone {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--asce-black);
+    background-color: var(--asce-gray-bg);
+  }
+}
+
+.ligne-cliquable {
+  cursor: pointer;
+  &:hover { background-color: #fafafa; }
+}
+
+.etat-initial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  background: var(--asce-white);
+  border: 1px solid var(--asce-border);
+  border-radius: 8px;
+  color: var(--asce-gray-text);
+
+  .icone-neutre {
+    color: #d1d5db;
+    margin-bottom: 12px;
+  }
+}
+
+.resultats-loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+/* Surcharge Angular Material pour densifier les champs */
+::ng-deep {
+  .sidebar-filtres {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mdc-text-field--focused .mdc-notched-outline__leading,
+    .mdc-text-field--focused .mdc-notched-outline__notch,
+    .mdc-text-field--focused .mdc-notched-outline__trailing {
+      border-color: var(--asce-green) !important;
+    }
+
+    .mdc-field--focused .mat-mdc-floating-label {
+      color: var(--asce-green) !important;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .recherche-container {
+    grid-template-columns: 1fr;
+  }
+}

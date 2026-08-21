@@ -1,0 +1,115 @@
+<div class="dialog-statut">
+
+  <!-- ═══════ Header ═══════ -->
+  <header class="dialog-statut__header">
+    <div class="dialog-statut__titre-bloc">
+      <div class="dialog-statut__icone">
+        <lucide-icon [name]="icons['Scale']" [size]="20"></lucide-icon>
+      </div>
+      <div>
+        <h2 class="dialog-statut__titre">Mettre à jour le statut judiciaire</h2>
+        <p class="dialog-statut__sous-titre">
+          {{ data.personneNomAffichage }}
+          @if (data.faitLibelle) {
+            <span>· {{ data.faitLibelle }}</span>
+          }
+          @if (data.numeroDossier) {
+            <span class="mono">· {{ data.numeroDossier }}</span>
+          }
+        </p>
+      </div>
+    </div>
+    <button type="button" class="btn-close" (click)="fermer()" aria-label="Fermer">
+      <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+    </button>
+  </header>
+
+  <!-- ═══════ Statut actuel (rappel) ═══════ -->
+  @if (data.statutActuelLibelle) {
+    <div class="statut-actuel">
+      <div class="statut-actuel__label">
+        <lucide-icon [name]="icons['Info']" [size]="13"></lucide-icon>
+        Statut actuel
+      </div>
+      <div class="statut-actuel__valeur">{{ data.statutActuelLibelle }}</div>
+    </div>
+  }
+
+  <!-- ═══════ Formulaire ═══════ -->
+  <form [formGroup]="form" (ngSubmit)="enregistrer()" class="dialog-statut__body">
+
+    <div class="champ-groupe">
+      <mat-form-field appearance="outline" class="champ-plein">
+        <mat-label>Nouveau statut judiciaire</mat-label>
+        <mat-select formControlName="statutJudiciaireId">
+          @if (chargementStatuts()) {
+            <mat-option disabled>Chargement…</mat-option>
+          } @else {
+            @for (s of statuts(); track s.id) {
+              <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
+            }
+          }
+        </mat-select>
+        @if (form.controls.statutJudiciaireId.touched && form.controls.statutJudiciaireId.errors?.['required']) {
+          <mat-error>Veuillez choisir un statut</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="champ-groupe champ-groupe--2col">
+      <mat-form-field appearance="outline">
+        <mat-label>Date de prise d'effet</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dateStatut">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (form.controls.dateStatut.touched && form.controls.dateStatut.errors?.['required']) {
+          <mat-error>Date obligatoire</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Autorité compétente</mat-label>
+        <input matInput formControlName="autoriteCompetente"
+               placeholder="Ex: Tribunal de Grande Instance de Ouagadougou">
+      </mat-form-field>
+    </div>
+
+    <div class="champ-groupe">
+      <mat-form-field appearance="outline" class="champ-plein">
+        <mat-label>Référence de l'affaire</mat-label>
+        <input matInput formControlName="referenceAffaire"
+               placeholder="Ex: RG N° 2026/00423"
+               class="mono">
+      </mat-form-field>
+    </div>
+
+    <div class="champ-groupe">
+      <mat-form-field appearance="outline" class="champ-plein">
+        <mat-label>Motif du changement (optionnel)</mat-label>
+        <textarea matInput formControlName="motif" rows="3"
+                  placeholder="Décision de justice, nouvelle expertise, appel…"></textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- ═══════ Note d'alerte ═══════ -->
+    <div class="note-alerte">
+      <lucide-icon [name]="icons['AlertCircle']" [size]="15"></lucide-icon>
+      <span>
+        Cette action modifie le statut d'une implication existante. L'historique
+        du changement est automatiquement tracé dans le journal d'audit.
+      </span>
+    </div>
+
+    <!-- ═══════ Footer ═══════ -->
+    <footer class="dialog-statut__footer">
+      <button type="button" class="btn-annuler" (click)="fermer()" [disabled]="enregistrement()">
+        Annuler
+      </button>
+      <button type="submit" class="btn-valider" [disabled]="enregistrement() || form.invalid">
+        <lucide-icon [name]="icons['Save']" [size]="14"></lucide-icon>
+        <span>{{ enregistrement() ? 'Enregistrement…' : 'Enregistrer le nouveau statut' }}</span>
+      </button>
+    </footer>
+
+  </form>
+</div>

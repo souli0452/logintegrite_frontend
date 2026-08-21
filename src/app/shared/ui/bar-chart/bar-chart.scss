@@ -1,0 +1,41 @@
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+
+  &__ligne {
+    display: grid;
+    grid-template-columns: 160px 1fr 40px;
+    gap: var(--spacing-sm);
+    align-items: center;
+  }
+
+  &__label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__zone {
+    background-color: var(--bg-hover);
+    border-radius: var(--radius-sm);
+    height: 24px;
+    overflow: hidden;
+  }
+
+  &__barre {
+    height: 100%;
+    background: linear-gradient(90deg, var(--asce-green), #34d399);
+    border-radius: var(--radius-sm);
+    transition: width 0.3s ease-out;
+  }
+
+  &__valeur {
+    text-align: right;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}

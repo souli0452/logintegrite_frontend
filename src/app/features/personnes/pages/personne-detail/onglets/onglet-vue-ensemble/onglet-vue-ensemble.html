@@ -1,0 +1,122 @@
+<div class="vue-ensemble">
+  <div class="vue-ensemble__grille">
+
+    <!-- Colonne gauche : identité -->
+    <div class="carte">
+      <h3 class="carte__titre">Identité</h3>
+
+      <div class="identite-tete">
+        <div class="identite-avatar">{{ initiales() }}</div>
+        <div>
+          @if (personnePhysique(); as p) {
+            <div class="identite-nom">{{ p.nomNaissance }} {{ p.prenoms }}</div>
+            <div class="identite-role">{{ p.profession ?? 'Profession non renseignée' }}</div>
+          } @else if (personneMorale(); as m) {
+            <div class="identite-nom">{{ m.denominationSociale }}</div>
+            <div class="identite-role">{{ m.formeJuridique }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="champs-grille">
+        @if (personnePhysique(); as p) {
+          <div class="champ">
+            <div class="champ__label">Date de naissance</div>
+            <div class="champ__valeur">{{ p.dateNaissance ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Lieu de naissance</div>
+            <div class="champ__valeur">{{ p.lieuNaissance ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Nationalité</div>
+            <div class="champ__valeur">{{ p.nationalite ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Fonction</div>
+            <div class="champ__valeur">{{ p.profession ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Grade / catégorie</div>
+            <div class="champ__valeur">{{ p.gradeCategorie ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Adresse</div>
+            <div class="champ__valeur">{{ p.adresse ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Téléphone</div>
+            <div class="champ__valeur">{{ p.telephone ?? '—' }}</div>
+          </div>
+        } @else if (personneMorale(); as m) {
+          <div class="champ">
+            <div class="champ__label">Sigle</div>
+            <div class="champ__valeur">{{ m.sigle ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Forme juridique</div>
+            <div class="champ__valeur">{{ m.formeJuridique }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">RCCM</div>
+            <div class="champ__valeur">{{ m.rccm ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">IFU</div>
+            <div class="champ__valeur">{{ m.ifu ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Secteur d'activité</div>
+            <div class="champ__valeur">{{ m.secteurActivite }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Siège social</div>
+            <div class="champ__valeur">{{ m.siegeSocial }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Téléphone</div>
+            <div class="champ__valeur">{{ m.telephone ?? '—' }}</div>
+          </div>
+          <div class="champ">
+            <div class="champ__label">Email</div>
+            <div class="champ__valeur">{{ m.email ?? '—' }}</div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Colonne droite : compteurs + documents récents -->
+    <div>
+      <div class="carte">
+        <h3 class="carte__titre">Résumé</h3>
+
+        <div class="mini-stat">
+          <div class="mini-stat__valeur">{{ nombreImplications() }}</div>
+          <div class="mini-stat__label">Implication(s) enregistrée(s)</div>
+        </div>
+        <div class="mini-stat mini-stat--separateur">
+          <div class="mini-stat__valeur">{{ nombreDocuments() }}</div>
+          <div class="mini-stat__label">Document(s) associé(s)</div>
+        </div>
+      </div>
+
+      <div class="carte carte--marge">
+        <h3 class="carte__titre">Documents récents</h3>
+        @if (nombreDocuments() === 0) {
+          <p class="vue-vide">Aucun document pour cette personne.</p>
+        } @else {
+          <div class="document-item">
+            <div class="document-item__icone">
+              <lucide-icon [name]="icons['FileText']" [size]="18"></lucide-icon>
+            </div>
+            <div class="document-item__body">
+              <div class="document-item__titre">Rapport_audit.pdf</div>
+              <div class="document-item__meta">2.4 Mo</div>
+            </div>
+          </div>
+          <p class="lien-plus">Voir tous les documents</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>

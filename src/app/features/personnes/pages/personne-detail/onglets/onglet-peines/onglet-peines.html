@@ -1,0 +1,85 @@
+<div class="onglet-panel">
+  @if (chargement()) {
+    <div class="loader-zone"><mat-spinner diameter="32"></mat-spinner></div>
+  } @else if (peines().length === 0) {
+    <app-empty-state
+      titre="Aucune peine enregistrée"
+      message="Les peines apparaîtront ici dès qu'elles auront été prononcées. Vous pouvez enregistrer une peine depuis l'onglet Dossiers et implications, à côté d'un fait validé." />
+  } @else {
+    <div class="peines-header">
+      <div class="peines-header__zone">
+        <lucide-icon [name]="icons['Scale']" [size]="18"></lucide-icon>
+        <div>
+          <h3 class="peines-header__titre">{{ totalPeines() }} peine(s) enregistrée(s)</h3>
+          <p class="peines-header__sous-titre">Historique des sanctions prononcées à l'encontre de cette personne.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="liste-peines">
+      @for (peine of peines(); track peine.id) {
+        <article class="carte-peine">
+          <div class="carte-peine__ruban"></div>
+
+          <div class="carte-peine__entete">
+            <div class="carte-peine__type-zone">
+              <div class="carte-peine__icone">
+                <lucide-icon [name]="icons['Gavel']" [size]="16"></lucide-icon>
+              </div>
+              <div>
+                <div class="carte-peine__type">{{ libelleType(peine.typePeine) }}</div>
+                @if (peine.natureSanction) {
+                  <div class="carte-peine__nature">{{ peine.natureSanction }}</div>
+                }
+              </div>
+            </div>
+            @if (peine.dateDecision) {
+              <div class="carte-peine__date">
+                <lucide-icon [name]="icons['Calendar']" [size]="12"></lucide-icon>
+                Décidée le {{ peine.dateDecision | date: 'dd/MM/yyyy' }}
+              </div>
+            }
+          </div>
+
+          <!-- Détails de la peine -->
+          <div class="carte-peine__details">
+            @if (peine.duree) {
+              <div class="detail-item">
+                <span class="detail-item__label">Durée</span>
+                <span class="detail-item__valeur">{{ peine.duree }}</span>
+              </div>
+            }
+            @if (peine.montantAmende) {
+              <div class="detail-item">
+                <span class="detail-item__label">Montant</span>
+                <span class="detail-item__valeur">{{ peine.montantAmende | currency: 'XOF' }}</span>
+              </div>
+            }
+            @if (peine.dateExecution) {
+              <div class="detail-item">
+                <span class="detail-item__label">Exécutée le</span>
+                <span class="detail-item__valeur">{{ peine.dateExecution | date: 'dd/MM/yyyy' }}</span>
+              </div>
+            }
+          </div>
+
+          @if (peine.description) {
+            <div class="carte-peine__description">
+              <span class="description-label">Motifs / description</span>
+              <p>{{ peine.description }}</p>
+            </div>
+          }
+
+          <!-- Contexte : dossier + fait -->
+          <div class="carte-peine__contexte">
+            <lucide-icon [name]="icons['FolderOpen']" [size]="12"></lucide-icon>
+            <span>
+              Dossier <strong>{{ peine.contexte.numeroDossier ?? '(sans numéro)' }}</strong>
+              @if (peine.contexte.typeInfractionLibelle) { · {{ peine.contexte.typeInfractionLibelle }} }
+            </span>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

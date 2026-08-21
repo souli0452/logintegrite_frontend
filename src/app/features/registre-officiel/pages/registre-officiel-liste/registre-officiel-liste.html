@@ -1,0 +1,223 @@
+<div class="registre-page">
+
+  <!-- ============ EN-TÊTE MINIMALISTE ============ -->
+  <header class="registre-header">
+    <div class="registre-header__ligne">
+      <div class="registre-header__titre-zone">
+        <div class="registre-header__icone-wrap">
+          <lucide-icon [name]="icons['ShieldCheck']" [size]="22"></lucide-icon>
+        </div>
+        <h1 class="registre-header__titre">Répertoire officiel</h1>
+        <span class="chip-etat">
+          <span class="chip-etat__pastille"></span>
+          <strong>{{ totalElements() }}</strong>
+          <span>inscrite(s)</span>
+        </span>
+      </div>
+
+      <div class="registre-header__actions">
+        <button type="button"
+                class="btn-recherche-avancee"
+                [class.btn-recherche-avancee--actif]="nbFiltresActifs() > 0"
+                (click)="ouvrirDrawer()">
+          <lucide-icon [name]="icons['SlidersHorizontal']" [size]="16"></lucide-icon>
+          <span>Recherche avancée</span>
+          @if (nbFiltresActifs() > 0) {
+            <span class="btn-recherche-avancee__badge">{{ nbFiltresActifs() }}</span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <p class="registre-header__meta">
+      Mise à jour le {{ dateAujourdhui | date:'d MMMM y':'':'fr' }}
+    </p>
+  </header>
+
+  <!-- ============ CHIPS FILTRES RAPIDES + TRI ============ -->
+  <div class="barre-filtres-rapide">
+    <div class="filtres-chips">
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreType() === 'TOUS'"
+              (click)="changerFiltreType('TOUS')">Toutes</button>
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreType() === 'PHYSIQUE'"
+              (click)="changerFiltreType('PHYSIQUE')">
+        <lucide-icon [name]="icons['User']" [size]="14"></lucide-icon> Physiques
+      </button>
+      <button type="button" class="filtre-chip"
+              [class.filtre-chip--actif]="filtreType() === 'MORALE'"
+              (click)="changerFiltreType('MORALE')">
+        <lucide-icon [name]="icons['Building2']" [size]="14"></lucide-icon> Morales
+      </button>
+    </div>
+
+    <select class="tri-select"
+            [value]="ordreTri()"
+            (change)="changerTri($any($event.target).value)">
+      <option value="RECENT">Inscription récente</option>
+      <option value="ANCIEN">Inscription ancienne</option>
+      <option value="PLUS_DE_DOSSIERS">Plus de dossiers validés</option>
+    </select>
+  </div>
+
+  <!-- ============ CONTENU ============ -->
+  @if (chargement()) {
+    <div class="loader-zone"><mat-spinner diameter="42"></mat-spinner></div>
+  } @else if (personnes().length === 0 && nbFiltresActifs() === 0 && filtreType() === 'TOUS') {
+    <div class="empty-officiel">
+      <div class="empty-officiel__icone"><lucide-icon [name]="icons['Shield']" [size]="48"></lucide-icon></div>
+      <h2 class="empty-officiel__titre">Le registre officiel est vide</h2>
+      <p class="empty-officiel__message">
+        Une personne apparaîtra ici dès qu'un de ses dossiers sera entièrement validé.
+      </p>
+    </div>
+  } @else if (personnes().length === 0) {
+    <div class="filtre-vide">
+      Aucune personne ne correspond aux filtres actuels.
+      <button class="btn-lien" (click)="reinitialiserTout()">Réinitialiser</button>
+    </div>
+  } @else {
+    <div class="grille-cartes">
+      @for (p of personnesTriees(); track p.id) {
+        <article class="carte-officielle" (click)="consulter(p)">
+          <div class="carte-officielle__ruban"></div>
+          <div class="carte-officielle__entete">
+            <div class="carte-officielle__avatar"
+                 [class.carte-officielle__avatar--pp]="p.typePersonne === 'PHYSIQUE'"
+                 [class.carte-officielle__avatar--pm]="p.typePersonne === 'MORALE'">
+              <lucide-icon [name]="p.typePersonne === 'PHYSIQUE' ? icons['User'] : icons['Building2']" [size]="22"></lucide-icon>
+              <div class="carte-officielle__scelle" title="Personne scellée au registre officiel">
+                <lucide-icon [name]="icons['ShieldCheck']" [size]="12"></lucide-icon>
+              </div>
+            </div>
+            <div class="carte-officielle__ident">
+              <div class="carte-officielle__nom">{{ p.nomAffichage }}</div>
+              <div class="carte-officielle__meta">
+                <span class="identifiant-mono">{{ identifiantMetier(p) }}</span>
+                <span class="type-libelle">{{ libelleType(p.typePersonne) }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="carte-officielle__corps">
+            <div class="badge-officiel">
+              <lucide-icon [name]="icons['FileWarning']" [size]="14"></lucide-icon>
+              <span class="badge-officiel__label">Dossiers validés</span>
+              <span class="badge-officiel__nombre">{{ p.nombreDossiersValides }}</span>
+            </div>
+          </div>
+          <div class="carte-officielle__pied">
+            <div class="carte-officielle__date">
+              <lucide-icon [name]="icons['Calendar']" [size]="12"></lucide-icon>
+              <span>{{ p.dateCreation | date:'dd/MM/yyyy':'':'fr' }}</span>
+            </div>
+            <button class="btn-consulter" (click)="consulter(p); $event.stopPropagation()">
+              <lucide-icon [name]="icons['Eye']" [size]="14"></lucide-icon> Consulter
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+
+    <mat-paginator
+      [length]="totalElements()"
+      [pageSize]="taillePage()"
+      [pageIndex]="pageCourante()"
+      [pageSizeOptions]="[12, 24, 48]"
+      (page)="changerPage($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+  }
+
+  <!-- ============ DRAWER RECHERCHE AVANCÉE ============ -->
+  @if (drawerOuvert()) {
+    <div class="drawer-backdrop" (click)="fermerDrawer()"></div>
+  }
+
+  <aside class="drawer-recherche" [class.drawer-recherche--ouvert]="drawerOuvert()">
+    <header class="drawer-recherche__header">
+      <div>
+        <h2 class="drawer-recherche__titre">Recherche avancée</h2>
+        <p class="drawer-recherche__sous-titre">Croisez les critères pour affiner le registre</p>
+      </div>
+      <button type="button" class="drawer-recherche__close" (click)="fermerDrawer()" aria-label="Fermer">
+        <lucide-icon [name]="icons['X']" [size]="18"></lucide-icon>
+      </button>
+    </header>
+
+    <form [formGroup]="formulaireFiltres" class="drawer-recherche__body">
+  <mat-accordion multi>
+
+    <!-- IDENTITÉ -->
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header><mat-panel-title>Identité</mat-panel-title></mat-expansion-panel-header>
+      <mat-form-field appearance="outline"><mat-label>Nom ou dénomination</mat-label>
+        <input matInput formControlName="nomOuDenomination"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Nationalité</mat-label>
+        <input matInput formControlName="nationalite"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>N° pièce d'identité</mat-label>
+        <input matInput formControlName="numeroPieceIdentite"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>RCCM</mat-label>
+        <input matInput formControlName="rccm"></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>IFU</mat-label>
+        <input matInput formControlName="ifu"></mat-form-field>
+    </mat-expansion-panel>
+
+    <!-- CONTEXTE JUDICIAIRE -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header><mat-panel-title>Contexte judiciaire</mat-panel-title></mat-expansion-panel-header>
+      <mat-form-field appearance="outline"><mat-label>Type d'infraction</mat-label>
+        <mat-select formControlName="typeInfractionId">
+          <mat-option value="">Toutes</mat-option>
+          @for (t of typesInfraction(); track t.id) { <mat-option [value]="t.id">{{ t.libelle }}</mat-option> }
+        </mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Zone géographique</mat-label>
+        <mat-select formControlName="zoneGeographiqueId">
+          <mat-option value="">Toutes</mat-option>
+          @for (z of zones(); track z.id) { <mat-option [value]="z.id">{{ z.libelle }}</mat-option> }
+        </mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Statut judiciaire</mat-label>
+        <mat-select formControlName="statutJudiciaireId">
+          <mat-option value="">Tous</mat-option>
+          @for (s of statutsJudiciaires(); track s.id) { <mat-option [value]="s.id">{{ s.libelle }}</mat-option> }
+        </mat-select></mat-form-field>
+    </mat-expansion-panel>
+
+    <!-- CONTEXTE PROFESSIONNEL -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header><mat-panel-title>Contexte professionnel</mat-panel-title></mat-expansion-panel-header>
+      <mat-form-field appearance="outline"><mat-label>Entité d'organisation</mat-label>
+        <mat-select formControlName="entiteOrganisationId">
+          <mat-option value="">Toutes</mat-option>
+          @for (e of entites(); track e.id) { <mat-option [value]="e.id">{{ e.libelle }}</mat-option> }
+        </mat-select></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Fonction occupée</mat-label>
+        <input matInput formControlName="fonction"></mat-form-field>
+    </mat-expansion-panel>
+
+    <!-- PÉRIODE -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header><mat-panel-title>Période des faits</mat-panel-title></mat-expansion-panel-header>
+      <mat-form-field appearance="outline"><mat-label>Date de début</mat-label>
+        <input matInput [matDatepicker]="pickerDebut" formControlName="periodeDebut">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDebut></mat-datepicker></mat-form-field>
+      <mat-form-field appearance="outline"><mat-label>Date de fin</mat-label>
+        <input matInput [matDatepicker]="pickerFin" formControlName="periodeFin">
+        <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFin></mat-datepicker></mat-form-field>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</form>
+
+    <footer class="drawer-recherche__footer">
+      <button type="button" class="btn-reset" (click)="reinitialiserFiltres()">Réinitialiser</button>
+      <button type="button" class="btn-apply" (click)="appliquerFiltres()">
+        <lucide-icon [name]="icons['Search']" [size]="16"></lucide-icon>
+        Appliquer
+      </button>
+    </footer>
+  </aside>
+
+</div>
