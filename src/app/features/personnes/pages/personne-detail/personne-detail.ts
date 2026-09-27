@@ -70,11 +70,11 @@ interface StatutJudiciaireCourant {
   selector: 'app-personne-detail',
   standalone: true,
   imports: [
-    CommonModule, DatePipe, DecimalPipe,
+    CommonModule, DatePipe,
     MatTabsModule, MatProgressSpinnerModule,
     LucideAngularModule,
     HeroPersonne, KpiBarPersonne,
-    OngletApercu, OngletInfos, OngletDocuments, OngletDossiersImplications, OngletPeines, OngletTimeline
+    OngletInfos, OngletDocuments, OngletDossiersImplications, OngletPeines, OngletTimeline
   ],
   templateUrl: './personne-detail.html',
   styleUrl: './personne-detail.scss'

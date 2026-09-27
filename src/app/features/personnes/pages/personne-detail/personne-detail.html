@@ -44,29 +44,7 @@
                    [selectedIndex]="ongletActif()"
                    (selectedIndexChange)="onOngletChange($event)">
 
-      <!-- Onglet 0 : Aperçu -->
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
-          <span>Aperçu</span>
-        </ng-template>
-        <div class="onglet-contenu">
-          <app-onglet-apercu
-            [donnees]="d"
-            [nombrePeines]="nombrePeines()"
-            [alias]="aliasListe()"
-            [piecesIdentite]="piecesIdentiteListe()"
-            (voirToutesInfos)="allerAuxInfos()"
-            (ajouterAlias)="ajouterAlias()"
-            (voirTousAlias)="allerAuxInfos()"
-            (ajouterPiece)="ajouterPiece()"
-            (voirToutesPieces)="allerAuxInfos()"
-            (voirDossier)="ouvrirDossier($event)"
-            (voirTousFaits)="allerAuxDossiers()"
-            (voirToutesPeines)="allerAuxPeines()">
-          </app-onglet-apercu>
-        </div>
-      </mat-tab>
+
 
       <!-- Onglet 1 : Fiche identitaire -->
       <mat-tab>

@@ -26,7 +26,7 @@ Chart.register(...registerables);
   selector: 'app-dashboard-vue',
   standalone: true,
   imports: [
-    DatePipe, DecimalPipe, RouterLink,
+    DatePipe, DecimalPipe,
     MatProgressSpinnerModule, MatButtonModule,
     LucideAngularModule,
     PageHeader, StatCardExecutif

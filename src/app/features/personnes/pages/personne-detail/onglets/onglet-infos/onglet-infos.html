@@ -270,9 +270,10 @@
             Alias connus
             <span class="carte__compteur">({{ alias().length }})</span>
           </h3>
-          <button type="button" class="btn-ajouter-mini" (click)="ajouterAlias.emit()">
-            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
-            <span>Ajouter un alias</span>
+          <button type="button" class="btn-modifier-section"
+                  (click)="modifierIdentite.emit()"
+                  matTooltip="Modifier l'état civil">
+            <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
           </button>
         </header>
 
@@ -322,10 +323,7 @@
 
         @if (alias().length > 0) {
           <footer class="carte__footer">
-            <button type="button" class="lien-voir-tous" (click)="voirTousAlias.emit()">
-              <span>Voir tous les alias</span>
-              <lucide-icon [name]="icons['ArrowRight']" [size]="14"></lucide-icon>
-            </button>
+            
           </footer>
         }
       </section>
@@ -338,9 +336,10 @@
             Pièce d'identité
             <span class="carte__compteur">({{ piecesIdentite().length }})</span>
           </h3>
-          <button type="button" class="btn-ajouter-mini" (click)="ajouterPiece.emit()">
-            <lucide-icon [name]="icons['Plus']" [size]="13"></lucide-icon>
-            <span>Ajouter</span>
+          <button type="button" class="btn-modifier-section"
+                  (click)="modifierIdentite.emit()"
+                  matTooltip="Modifier l'état civil">
+            <lucide-icon [name]="icons['Pencil']" [size]="13"></lucide-icon>
           </button>
         </header>
 
@@ -381,10 +380,7 @@
 
         @if (piecesIdentite().length > 0) {
           <footer class="carte__footer">
-            <button type="button" class="lien-voir-tous" (click)="voirToutesPieces.emit()">
-              <span>Voir toutes les pièces</span>
-              <lucide-icon [name]="icons['ArrowRight']" [size]="14"></lucide-icon>
-            </button>
+            
           </footer>
         }
       </section>
