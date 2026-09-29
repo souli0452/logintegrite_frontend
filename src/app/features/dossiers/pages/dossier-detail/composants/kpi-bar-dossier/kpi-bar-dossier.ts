@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -13,6 +13,7 @@ import { FaitReprocheResponse } from '../../../../models/dossier.models';
  * Barre horizontale de 4 KPI du dossier : personnes, faits, préjudice total, documents.
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-kpi-bar-dossier',
   standalone: true,
   imports: [CommonModule, MatTooltipModule, LucideAngularModule],

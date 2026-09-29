@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +33,7 @@ type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_FAITS';
 type OngletActif = 'EN_ATTENTE' | 'REJETES';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-validation-liste',
   standalone: true,
   imports: [

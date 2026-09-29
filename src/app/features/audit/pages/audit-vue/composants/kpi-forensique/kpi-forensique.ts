@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -25,6 +25,7 @@ import { KpiForensiqueResponse } from '../../../../models/audit.models';
  * Utilisateurs actifs, Alertes de sécurité.
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-kpi-forensique',
   standalone: true,
   imports: [CommonModule, MatTooltipModule, LucideAngularModule],

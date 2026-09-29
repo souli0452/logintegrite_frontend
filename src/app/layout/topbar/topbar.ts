@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
@@ -26,6 +26,7 @@ const ROLES_CONNUES: Record<string, RoleAffichage> = {
 };
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topbar',
   standalone: true,
   imports: [MatToolbarModule, MatMenuModule, MatButtonModule, MatBadgeModule, LucideAngularModule, NgClass],

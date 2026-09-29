@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,6 +18,7 @@ import { DossierResponse, StatutDossier } from '../../../../models/dossier.model
  * 3 zones : sceau supérieur vert, corps 2 colonnes (identité + vitrine statut), filet bas.
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-hero-dossier',
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatTooltipModule, LucideAngularModule],

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { 
   LucideAngularModule, ChevronRight, LucideIconData,
@@ -17,6 +17,7 @@ interface CarteReferentiel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-referentiels-hub',
   standalone: true,
   imports: [RouterLink, LucideAngularModule, PageHeader],

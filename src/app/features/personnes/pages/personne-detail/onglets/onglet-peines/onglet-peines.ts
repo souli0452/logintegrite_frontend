@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output, signal, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, computed, inject, input, output, signal, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule, Gavel, Scale, Calendar, FolderOpen, LucideIconData } from 'lucide-angular';
@@ -15,6 +15,7 @@ interface PeineAvecContexte extends PeineResponse {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-peines',
   standalone: true,
   imports: [

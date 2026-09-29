@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ReferentielHierarchique } from '../referentiel-hierarchique/referentiel-hierarchique';
 import { ZoneGeographiqueService } from '../../services/zone-geographique.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-zones-geographiques-page',
   standalone: true,
   imports: [ReferentielHierarchique],

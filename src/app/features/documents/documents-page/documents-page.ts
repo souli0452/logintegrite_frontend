@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EnConstruction } from '../../../shared/en-construction/en-construction';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-documents-page',
   standalone: true,
   imports: [EnConstruction],

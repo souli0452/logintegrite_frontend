@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,6 +18,7 @@ import { PersonneDetailComplet } from '../../../../services/personne-detail.serv
 import { PersonnePhysiqueResponse, PersonneMoraleResponse } from '../../../../models/personne.models';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-hero-personne',
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatTooltipModule, LucideAngularModule],

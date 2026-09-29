@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 
 export type StatusType = 'success' | 'warning' | 'danger' | 'neutral';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-status-badge',
   standalone: true,
   templateUrl: './status-badge.html',

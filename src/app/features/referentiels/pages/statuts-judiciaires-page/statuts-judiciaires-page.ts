@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ReferentielSimpleListe } from '../referentiel-simple-liste/referentiel-simple-liste';
 import { StatutJudiciaireService } from '../../services/statut-judiciaire.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-statuts-judiciaires-page',
   standalone: true,
   imports: [ReferentielSimpleListe],

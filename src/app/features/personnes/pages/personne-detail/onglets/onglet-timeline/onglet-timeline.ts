@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { LucideAngularModule, LucideIconData,
   CheckCircle2, FileText, PenLine, AlertTriangle, Search, Flag } from 'lucide-angular';
 
@@ -30,6 +30,7 @@ interface EvenementTimeline {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-timeline',
   standalone: true,
   imports: [LucideAngularModule, EmptyState],

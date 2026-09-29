@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 
 export interface BarChartData {
   libelle: string;
@@ -6,6 +6,7 @@ export interface BarChartData {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-bar-chart',
   standalone: true,
   templateUrl: './bar-chart.html',

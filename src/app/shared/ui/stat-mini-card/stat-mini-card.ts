@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 
 type CouleurStat = 'green' | 'yellow' | 'blue' | 'gray';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-stat-mini-card',
   standalone: true,
   imports: [LucideAngularModule],

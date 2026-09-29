@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -24,6 +24,7 @@ import { OngletDossierFaits } from './onglets/onglet-dossier-faits/onglet-dossie
 import { OngletDossierDocuments } from './onglets/onglet-dossier-documents/onglet-dossier-documents';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-dossier-detail',
   standalone: true,
   imports: [

@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ReferentielHierarchique } from '../referentiel-hierarchique/referentiel-hierarchique';
 import { EntiteOrganisationService } from '../../services/entite-organisation.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-entites-organisation-page',
   standalone: true,
   imports: [ReferentielHierarchique],

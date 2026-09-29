@@ -1,8 +1,9 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { LucideAngularModule, User, Building2, FileText, LucideIconData } from 'lucide-angular';
 import { PersonnePhysiqueResponse, PersonneMoraleResponse } from '../../../../models/personne.models';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-vue-ensemble',
   standalone: true,
   imports: [LucideAngularModule],

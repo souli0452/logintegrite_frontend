@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -13,6 +13,7 @@ import {
  * l'onglet correspondant du détail.
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-kpi-bar-personne',
   standalone: true,
   imports: [CommonModule, MatTooltipModule, LucideAngularModule],
