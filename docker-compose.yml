@@ -1,0 +1,10 @@
+name: logintegrite-front
+
+services:
+  frontend:
+    build: .
+    image: logintegrite-frontend:latest
+    container_name: logintegrite-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
