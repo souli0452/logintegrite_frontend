@@ -240,7 +240,7 @@ export class OngletDossiersImplications {
       autoFocus: false
     });
 
-    ref.afterClosed().subscribe((resultat: any) => {
+    ref.afterClosed().subscribe((resultat?: { modifie?: boolean }) => {
       if (resultat?.modifie) {
         this.donneesModifiees.emit();
       }
@@ -267,7 +267,7 @@ export class OngletDossiersImplications {
       autoFocus: false
     });
 
-    ref.afterClosed().subscribe((resultat: any) => {
+    ref.afterClosed().subscribe((resultat?: { modifie?: boolean }) => {
       if (resultat?.modifie) {
         this.donneesModifiees.emit();
       }

@@ -9,7 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, switchMap, of } from 'rxjs';
 import {
   LucideAngularModule,
   Camera, Trash2, Building2, X, Save, UserCog,
@@ -18,7 +18,7 @@ import {
 } from 'lucide-angular';
 
 import { messageErreurHttp } from '../../../../shared/utils/http-error.util';
-import { PersonneMoraleResponse, PersonneMoraleRequest, AliasResponse } from '../../models/personne.models';
+import { PersonneMoraleResponse, PersonneMoraleRequest, PersonneResumeResponse, AliasResponse } from '../../models/personne.models';
 import { PersonneService } from '../../services/personne.service';
 import { AliasService } from '../../services/alias.service';
 import { PersonnePhotoService } from '../../services/personne-photo.service';
@@ -178,19 +178,18 @@ export class PersonneMoraleFormDialog {
     this.rechercheSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((terme) => {
-        if (!terme || terme.trim().length < 2) return of({ content: [] } as any);
+      switchMap((terme): Observable<PersonneResumeResponse[]> => {
+        if (!terme || terme.trim().length < 2) return of([]);
         return this.personneService.rechercheAvancee({
           page: 0,
           size: 10,
           nomOuDenomination: terme,
           typePersonne: 'PHYSIQUE'
-        });
+        }).pipe(map((page) => page.content ?? []));
       })
-    ).subscribe((page: any) => {
-      const resultats = Array.isArray(page) ? page : page.content;
+    ).subscribe((resultats) => {
       this.optionsRepresentant.set(
-        (resultats ?? []).map((p: any) => ({ id: p.id, nomAffichage: p.nomAffichage }))
+        resultats.map((p) => ({ id: p.id, nomAffichage: p.nomAffichage }))
       );
     });
 

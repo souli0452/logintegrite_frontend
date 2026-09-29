@@ -1,4 +1,17 @@
 import { PersonneDetailComplet } from './personne-detail.service';
+import {
+  DocumentResponse,
+  FaitReprocheResponse,
+  PersonneMoraleResponse,
+  PersonnePhysiqueResponse
+} from '../models/personne.models';
+
+/** Champs historiques que l'API peut encore renvoyer selon la version (repli d'export). */
+type FaitExport = FaitReprocheResponse & { lieuFaits?: string; lieuPrecis?: string; montantEstime?: number };
+type DocumentExport = DocumentResponse & {
+  titre?: string; dateAjout?: string; dateUpload?: string; nomFichier?: string; nomOriginal?: string;
+};
+type ValeurChamp = string | number | null | undefined;
 
 /**
  * Utilitaires d'export côté client de la fiche personne complète.
@@ -7,7 +20,7 @@ import { PersonneDetailComplet } from './personne-detail.service';
 export class PersonneExportUtil {
 
   static construireExport(donnees: PersonneDetailComplet, numeroFiche: string) {
-    const d: any = donnees.detail;
+    const d = donnees.detail;
     return {
       meta: {
         institut: 'ASCE-LC',
@@ -30,7 +43,7 @@ export class PersonneExportUtil {
         dateOuverture: dos.dateOuverture,
         statutDossier: dos.statutDossier
       })),
-      implications: (donnees.implications || []).map((i: any) => ({
+      implications: (donnees.implications || []).map((i) => ({
         id: i.id,
         dossierId: i.dossierId,
         role: i.roleImplicationLibelle,
@@ -39,7 +52,7 @@ export class PersonneExportUtil {
         autoriteCompetente: i.autoriteCompetente,
         referenceAffaire: i.referenceAffaire
       })),
-      faitsReproches: (donnees.faits || []).map((f: any) => ({
+      faitsReproches: (donnees.faits || []).map((f: FaitExport) => ({
         id: f.id,
         typeInfraction: f.typeInfractionLibelle,
         dateFaits: f.dateFaits,
@@ -48,7 +61,7 @@ export class PersonneExportUtil {
         montantEstime: f.montantEstime ?? f.montantPrejudice
       })),
       implicationFaits: donnees.implicationFaits ?? [],
-      documents: (donnees.documents ?? []).map((doc: any) => ({
+      documents: (donnees.documents ?? []).map((doc: DocumentExport) => ({
         id: doc.id,
         typeDocument: doc.typeDocumentLibelle,
         titre: doc.titre ?? doc.nomOriginal,
@@ -68,7 +81,6 @@ export class PersonneExportUtil {
    * Télécharge la fiche en JSON côté client.
    */
   static telechargerJson(donnees: PersonneDetailComplet, numeroFiche: string): void {
-    console.log('[PersonneExportUtil] Construction du payload JSON…');
     const payload = this.construireExport(donnees, numeroFiche);
 
     let json: string;
@@ -129,7 +141,7 @@ export class PersonneExportUtil {
   }
 
   private static construireHtmlPdf(donnees: PersonneDetailComplet, numeroFiche: string): string {
-    const d: any = donnees.detail;
+    const d = donnees.detail;
     const isPhysique = donnees.resume.typePersonne === 'PHYSIQUE';
     const dateGeneration = new Date().toLocaleDateString('fr-FR', {
       day: '2-digit',
@@ -140,8 +152,8 @@ export class PersonneExportUtil {
     });
 
     const infosPerso = isPhysique
-      ? this.htmlInfosPhysique(d, donnees.resume.nomAffichage)
-      : this.htmlInfosMorale(d);
+      ? this.htmlInfosPhysique(d as PersonnePhysiqueResponse, donnees.resume.nomAffichage)
+      : this.htmlInfosMorale(d as PersonneMoraleResponse);
 
     return `<!DOCTYPE html>
 <html lang="fr">
@@ -356,8 +368,8 @@ export class PersonneExportUtil {
 </html>`;
   }
 
-  private static htmlInfosPhysique(p: any, nomDefaut?: string): string {
-    const champ = (label: string, val: any) =>
+  private static htmlInfosPhysique(p: Partial<PersonnePhysiqueResponse> | undefined, nomDefaut?: string): string {
+    const champ = (label: string, val: ValeurChamp) =>
       `<div class="champ"><span class="champ-label">${label}</span><span class="champ-valeur">${this.escapeHtml(val ?? '—')}</span></div>`;
     return `
       ${champ('Nom complet', p?.nomAffichage ?? nomDefaut)}
@@ -373,8 +385,8 @@ export class PersonneExportUtil {
     `;
   }
 
-  private static htmlInfosMorale(m: any): string {
-    const champ = (label: string, val: any) =>
+  private static htmlInfosMorale(m: Partial<PersonneMoraleResponse> | undefined): string {
+    const champ = (label: string, val: ValeurChamp) =>
       `<div class="champ"><span class="champ-label">${label}</span><span class="champ-valeur">${this.escapeHtml(val ?? '—')}</span></div>`;
     return `
       ${champ('Dénomination', m?.denominationSociale)}
@@ -421,7 +433,7 @@ export class PersonneExportUtil {
     if (!donnees.implications || donnees.implications.length === 0) {
       return '<div class="empty">Aucune implication.</div>';
     }
-    const rows = donnees.implications.map((i: any) => `
+    const rows = donnees.implications.map((i) => `
       <tr>
         <td>${this.escapeHtml(i.roleImplicationLibelle || '—')}</td>
         <td>${this.escapeHtml(i.entiteOrganisationLibelle || i.entiteLibelleALEpoque || '—')}</td>
@@ -444,7 +456,7 @@ export class PersonneExportUtil {
     if (!donnees.faits || donnees.faits.length === 0) {
       return '<div class="empty">Aucun fait reproché.</div>';
     }
-    const rows = donnees.faits.map((f: any) => `
+    const rows = donnees.faits.map((f) => `
       <tr>
         <td>${this.escapeHtml(f.typeInfractionLibelle || '—')}</td>
         <td>${f.dateFaits ? new Date(f.dateFaits).toLocaleDateString('fr-FR') : '—'}</td>

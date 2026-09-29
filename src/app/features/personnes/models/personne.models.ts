@@ -39,7 +39,7 @@ export interface PersonnePhysiqueRequest {
   nip?: string;
 }
 
-export interface PersonnePhysiqueResponse {
+export interface PersonnePhysiqueResponse extends MetadonneesFiche {
   id: string;
   nomAffichage: string;
   nomNaissance: string;
@@ -82,7 +82,7 @@ export interface PersonneMoraleRequest {
   representantLegalId?: string;
 }
 
-export interface PersonneMoraleResponse extends Omit<PersonneMoraleRequest, never> {
+export interface PersonneMoraleResponse extends Omit<PersonneMoraleRequest, never>, MetadonneesFiche {
   id: string;
   nomAffichage: string;
   representantLegalNomComplet?: string;
@@ -102,9 +102,22 @@ export interface ImplicationResponse {
   entiteOrganisationId?: string;
   entiteOrganisationLibelle?: string;
   fonctionOccupee?: string;
+  entiteLibelleALEpoque?: string;
   dateDebut: string;
   dateFin?: string;
   observations?: string;
+  // Dernier statut judiciaire (renvoye par l'API, absent tant qu'aucun statut n'est saisi)
+  statutJudiciaireId?: string;
+  statutJudiciaireLibelle?: string;
+  autoriteCompetente?: string;
+  referenceAffaire?: string;
+}
+
+/** Metadonnees d'audit communes aux fiches de personnes (renvoyees par l'API). */
+export interface MetadonneesFiche {
+  dateCreation?: string;
+  dateModification?: string;
+  creeParNomComplet?: string;
 }
 
 export interface FaitReprocheResponse {
@@ -210,6 +223,10 @@ export interface ImplicationFaitResume {
   faitDescription: string;
   faitDateFaits?: string;
   statutValidation?: 'EN_ATTENTE' | 'VALIDEE' | 'REJETEE';
+  // Statut judiciaire de la personne pour ce fait
+  statutJudiciaireId?: string;
+  statutJudiciaireLibelle?: string;
+  dateStatut?: string;
 }
 
 export interface VerificationNipResponse {

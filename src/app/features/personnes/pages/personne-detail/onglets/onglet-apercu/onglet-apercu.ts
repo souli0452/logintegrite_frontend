@@ -122,7 +122,7 @@ export class OngletApercu {
     const d = this.donnees();
     if (!d || d.dossiers.length === 0) return null;
     // Le plus récent en date d'ouverture
-    const tries = [...d.dossiers].sort((a: any, b: any) => {
+    const tries = [...d.dossiers].sort((a, b) => {
       const dA = a.dateOuverture ? new Date(a.dateOuverture).getTime() : 0;
       const dB = b.dateOuverture ? new Date(b.dateOuverture).getTime() : 0;
       return dB - dA;
@@ -137,7 +137,7 @@ export class OngletApercu {
     const d = this.donnees();
     if (!d || !d.peines || d.peines.length === 0) return null;
     // Peine avec la date de décision la plus récente
-    const tries = [...d.peines].sort((a: any, b: any) => {
+    const tries = [...d.peines].sort((a, b) => {
       const dA = a.dateDecision ? new Date(a.dateDecision).getTime() : 0;
       const dB = b.dateDecision ? new Date(b.dateDecision).getTime() : 0;
       return dB - dA;

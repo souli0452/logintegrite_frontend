@@ -80,7 +80,7 @@ export class PersonnePhysiqueFormDialog {
     dateNaissance: [this.data.dateNaissance ? new Date(this.data.dateNaissance) : null],
     lieuNaissance: [this.data.lieuNaissance ?? ''],
     // 🆕 Nationalité par ID (Vague F.1)
-    nationaliteId: [(this.data as any).nationaliteId ?? '', Validators.required],
+    nationaliteId: [this.data.nationaliteId ?? '', Validators.required],
     situationMatrimoniale: [this.data.situationMatrimoniale ?? ''],
     nomConjoint: [{
       value: this.data.nomConjoint ?? '',
@@ -153,7 +153,7 @@ export class PersonnePhysiqueFormDialog {
       dateExpiration: v.dateExpiration instanceof Date
         ? v.dateExpiration.toISOString().substring(0, 10)
         : undefined
-    } as any).subscribe({
+    }).subscribe({
       next: (nouvelle) => {
         this.piecesListe.update((liste) => [...liste, nouvelle]);
         const cnib = this.typesPieceIdentite().find(t => t.code === 'CNIB');

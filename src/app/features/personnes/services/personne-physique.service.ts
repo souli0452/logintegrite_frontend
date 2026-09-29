@@ -24,8 +24,8 @@ export class PersonnePhysiqueService {
  * @param exclureId ID de la personne à exclure (utile en modification)
  */
 verifierNip(nip: string, exclureId?: string): Observable<VerificationNipResponse> {
-  let params: any = { nip };
-  if (exclureId) params.exclureId = exclureId;
+  const params: Record<string, string> = { nip };
+  if (exclureId) params['exclureId'] = exclureId;
   return this.http.get<VerificationNipResponse>(`${this.baseUrl}/verifier-nip`, { params });
 }
 

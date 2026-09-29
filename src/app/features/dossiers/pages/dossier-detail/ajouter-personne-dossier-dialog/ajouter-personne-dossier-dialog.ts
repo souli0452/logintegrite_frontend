@@ -180,7 +180,7 @@ export class AjouterPersonneDossierDialog implements OnInit {
     this.chargementRoles.set(true);
     this.roleService.lister().subscribe({
       next: (liste) => {
-        this.roles.set(liste.filter((r: any) => r.actif !== false));
+        this.roles.set(liste.filter((r) => r.actif !== false));
         this.chargementRoles.set(false);
       },
       error: () => {
@@ -275,8 +275,8 @@ export class AjouterPersonneDossierDialog implements OnInit {
         return;
       }
       this.entiteService.lister().subscribe({
-        next: (liste: any) => {
-          const filtre = liste.filter((e: any) =>
+        next: (liste) => {
+          const filtre = liste.filter((e) =>
             e.libelle.toLowerCase().includes(terme.toLowerCase())
           );
           this.entitesFiltrees.set(filtre.slice(0, 8));
@@ -330,7 +330,7 @@ export class AjouterPersonneDossierDialog implements OnInit {
 
     this.creationEnCours.set(true);
     this.personnePhysiqueService.creer(request).subscribe({
-      next: (created: any) => {
+      next: (created) => {
         const resume: PersonneResumeResponse = {
           id: created.id,
           typePersonne: 'PHYSIQUE',
@@ -387,7 +387,7 @@ export class AjouterPersonneDossierDialog implements OnInit {
 
     this.creationEnCours.set(true);
     this.personneMoraleService.creer(request).subscribe({
-      next: (created: any) => {
+      next: (created) => {
         const resume: PersonneResumeResponse = {
           id: created.id,
           typePersonne: 'MORALE',

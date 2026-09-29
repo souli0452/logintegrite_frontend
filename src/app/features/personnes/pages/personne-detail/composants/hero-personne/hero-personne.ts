@@ -99,15 +99,15 @@ export class HeroPersonne {
     if (!d || d.implications.length === 0) return null;
 
     const implicationsAvecStatut = [...d.implications]
-      .filter((i: any) => i.statutJudiciaireId)
-      .sort((a: any, b: any) => {
+      .filter((i) => i.statutJudiciaireId)
+      .sort((a, b) => {
         const dA = a.dateDebut ? new Date(a.dateDebut).getTime() : 0;
         const dB = b.dateDebut ? new Date(b.dateDebut).getTime() : 0;
         return dB - dA;
       });
 
     if (implicationsAvecStatut.length === 0) return null;
-    const derniere: any = implicationsAvecStatut[0];
+    const derniere = implicationsAvecStatut[0];
     return {
       libelle: (derniere.statutJudiciaireLibelle || 'Statut inconnu') as string,
       depuis: derniere.dateDebut as string,

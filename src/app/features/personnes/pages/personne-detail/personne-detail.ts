@@ -144,15 +144,13 @@ export class PersonneDetail implements OnInit {
   readonly dateInscription = computed<Date | null>(() => {
     const d = this.donnees();
     if (!d) return null;
-    const detail = d.detail as any;
-    return detail?.dateCreation ? new Date(detail.dateCreation) : null;
+    return d.detail.dateCreation ? new Date(d.detail.dateCreation) : null;
   });
 
   readonly creePar = computed<string>(() => {
     const d = this.donnees();
     if (!d) return '—';
-    const detail = d.detail as any;
-    return detail?.creeParNomComplet || '—';
+    return d.detail.creeParNomComplet || '—';
   });
 
   readonly statutJudiciaireCourant = computed<StatutJudiciaireCourant | null>(() => {
@@ -160,15 +158,15 @@ export class PersonneDetail implements OnInit {
     if (!d || d.implications.length === 0) return null;
 
     const implicationsAvecStatut = [...d.implications]
-      .filter((i: any) => i.statutJudiciaireId)
-      .sort((a: any, b: any) => {
+      .filter((i) => i.statutJudiciaireId)
+      .sort((a, b) => {
         const dA = a.dateDebut ? new Date(a.dateDebut).getTime() : 0;
         const dB = b.dateDebut ? new Date(b.dateDebut).getTime() : 0;
         return dB - dA;
       });
 
     if (implicationsAvecStatut.length === 0) return null;
-    const derniere: any = implicationsAvecStatut[0];
+    const derniere = implicationsAvecStatut[0];
     return {
       libelle: derniere.statutJudiciaireLibelle || 'Statut inconnu',
       depuis: derniere.dateDebut,
@@ -190,11 +188,11 @@ export class PersonneDetail implements OnInit {
   readonly derniereMiseAJour = computed<Date | null>(() => {
     const d = this.donnees();
     if (!d) return null;
-    const detail = d.detail as any;
+    const detail = d.detail;
 
     const dates: Date[] = [];
-    if (detail?.dateModification) dates.push(new Date(detail.dateModification));
-    if (detail?.dateCreation) dates.push(new Date(detail.dateCreation));
+    if (detail.dateModification) dates.push(new Date(detail.dateModification));
+    if (detail.dateCreation) dates.push(new Date(detail.dateCreation));
 
     if (dates.length === 0) return null;
     return new Date(Math.max(...dates.map(date => date.getTime())));
@@ -204,7 +202,7 @@ export class PersonneDetail implements OnInit {
     const d = this.donnees();
     if (!d) return 0;
     const faitsUniques = new Set(
-      (d.implicationFaits || []).map((lf: any) => lf.faitReprocheId)
+      (d.implicationFaits || []).map((lf) => lf.faitReprocheId)
     );
     return faitsUniques.size;
   });
@@ -212,14 +210,14 @@ export class PersonneDetail implements OnInit {
   readonly faitsPropresIds = computed(() => {
     const d = this.donnees();
     if (!d) return new Set<string>();
-    return new Set((d.implicationFaits || []).map((lf: any) => lf.faitReprocheId));
+    return new Set((d.implicationFaits || []).map((lf) => lf.faitReprocheId));
   });
 
   readonly faitsPropres = computed(() => {
     const d = this.donnees();
     if (!d) return [];
     const idsAutorises = this.faitsPropresIds();
-    return (d.faits || []).filter((f: any) => idsAutorises.has(f.id));
+    return (d.faits || []).filter((f) => idsAutorises.has(f.id));
   });
 
   readonly ageAffichage = computed<string>(() => {
@@ -279,8 +277,9 @@ export class PersonneDetail implements OnInit {
   }
 
   private chargerPhotoSiPresente(data: PersonneDetailComplet): void {
-    const detail = data.detail as any;
-    if (!detail?.aUnePhoto && !detail?.aUnLogo) {
+    // Photo pour une personne physique, logo pour une personne morale.
+    const detail = data.detail as { aUnePhoto?: boolean; aUnLogo?: boolean };
+    if (!detail.aUnePhoto && !detail.aUnLogo) {
       this.libererAnciennePhoto();
       this.photoUrl.set(null);
       return;
@@ -472,10 +471,10 @@ export class PersonneDetail implements OnInit {
     const d = this.donnees();
     if (!d) return;
 
-    const liaisonsAvecStatut: any[] = [...(d.implicationFaits || [])]
-      .filter((lf: any) => lf.statutJudiciaireId);
+    const liaisonsAvecStatut = [...(d.implicationFaits || [])]
+      .filter((lf) => lf.statutJudiciaireId);
 
-    const liaison: any = liaisonsAvecStatut[0] || (d.implicationFaits || [])[0];
+    const liaison = liaisonsAvecStatut[0] || (d.implicationFaits || [])[0];
 
     if (!liaison) {
       this.toastr.warning(
@@ -484,9 +483,9 @@ export class PersonneDetail implements OnInit {
       return;
     }
 
-    const implication: any = d.implications.find((i: any) => i.id === liaison.implicationId);
+    const implication = d.implications.find((i) => i.id === liaison.implicationId);
     const dossier = implication ? d.dossiers.find(dos => dos.id === implication.dossierId) : undefined;
-    const fait: any = (d.faits || []).find((f: any) => f.id === liaison.faitReprocheId);
+    const fait = (d.faits || []).find((f) => f.id === liaison.faitReprocheId);
 
     const donnees: DonneesDialogStatut = {
       implicationFaitId: liaison.id,
