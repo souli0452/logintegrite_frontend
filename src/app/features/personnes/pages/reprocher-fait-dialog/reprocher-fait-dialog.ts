@@ -5,7 +5,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -27,6 +26,8 @@ import { DossierResponse } from '../../../dossiers/models/dossier.models';
 import { ImplicationResponse } from '../../models/personne.models';
 import { messageErreurHttp } from '../../../../shared/utils/http-error.util';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 export interface ReprocherFaitDialogData {
   personneId: string;
   personneNomAffichage: string;
@@ -42,7 +43,7 @@ export interface ReprocherFaitDialogData {
     MatDatepickerModule, MatButtonModule, MatButtonToggleModule,
     MatProgressSpinnerModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './reprocher-fait-dialog.html',
   styleUrl: './reprocher-fait-dialog.scss'
 })

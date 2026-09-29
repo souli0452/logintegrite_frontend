@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject, debounceTime, distinctUntilChanged, map, switchMap, of } from 'rxjs';
@@ -23,6 +22,8 @@ import { PersonneService } from '../../services/personne.service';
 import { AliasService } from '../../services/alias.service';
 import { PersonnePhotoService } from '../../services/personne-photo.service';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 interface OptionRepresentant {
   id: string;
   nomAffichage: string;
@@ -37,7 +38,7 @@ interface OptionRepresentant {
     MatSelectModule, MatDatepickerModule, MatAutocompleteModule,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './personne-morale-form-dialog.html',
   styleUrl: './personne-morale-form-dialog.scss'
 })

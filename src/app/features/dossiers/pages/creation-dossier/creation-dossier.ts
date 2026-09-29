@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -32,6 +31,8 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 import { FaitReprocheRequest } from '../../models/dossier.models';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 interface OptionPersonne { id: string; nomAffichage: string; }
 interface FichierEnAttente { fichier: File; typeDocumentId: string; }
 
@@ -44,7 +45,7 @@ interface FichierEnAttente { fichier: File; typeDocumentId: string; }
     MatDatepickerModule, MatStepperModule, MatProgressSpinnerModule,
     LucideAngularModule, PageHeader
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './creation-dossier.html',
   styleUrl: './creation-dossier.scss'
 })

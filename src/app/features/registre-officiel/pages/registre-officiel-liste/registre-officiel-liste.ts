@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import {
@@ -29,6 +28,8 @@ import {
   StatutJudiciaireResponse, EntiteOrganisationResponse
 } from '../../../referentiels/models/referentiel.models';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 type FiltreType = 'TOUS' | 'PHYSIQUE' | 'MORALE';
 type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_DOSSIERS';
 
@@ -42,7 +43,7 @@ type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_DOSSIERS';
     MatDatepickerModule, MatExpansionModule,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './registre-officiel-liste.html',
   styleUrl: './registre-officiel-liste.scss'
 })

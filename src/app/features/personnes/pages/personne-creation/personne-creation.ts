@@ -5,7 +5,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -34,6 +33,8 @@ import { TypePieceIdentiteService } from '../../../referentiels/services/type-pi
 import { NationaliteResponse, TypePieceIdentiteResponse } from '../../../referentiels/models/referentiel.models';
 import { ChampNip } from '../../composants/champ-nip/champ-nip';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 type TypePersonne = 'PHYSIQUE' | 'MORALE';
 
 interface OptionRepresentant {
@@ -50,7 +51,7 @@ interface OptionRepresentant {
     MatSelectModule, MatDatepickerModule, MatAutocompleteModule, MatProgressSpinnerModule,
     LucideAngularModule, ChampNip
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './personne-creation.html',
   styleUrl: './personne-creation.scss'
 })

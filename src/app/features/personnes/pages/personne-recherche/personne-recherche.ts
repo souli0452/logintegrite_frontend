@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion'; // <-- AJOUT ICI
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -31,6 +30,8 @@ import {
   EntiteOrganisationResponse
 } from '../../../referentiels/models/referentiel.models';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 @Component({
   selector: 'app-personne-recherche',
   standalone: true,
@@ -43,7 +44,7 @@ import {
     LucideAngularModule,
     PageHeader, EmptyState
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './personne-recherche.html',
   styleUrl: './personne-recherche.scss'
 })

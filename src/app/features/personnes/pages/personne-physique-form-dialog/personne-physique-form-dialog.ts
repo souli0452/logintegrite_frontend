@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   LucideAngularModule,
@@ -33,6 +32,8 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 import { ChampNip } from '../../composants/champ-nip/champ-nip';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 
 @Component({
   selector: 'app-personne-physique-form-dialog',
@@ -43,7 +44,7 @@ import { ChampNip } from '../../composants/champ-nip/champ-nip';
     MatSelectModule, MatDatepickerModule,ChampNip,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './personne-physique-form-dialog.html',
   styleUrl: './personne-physique-form-dialog.scss'
 })

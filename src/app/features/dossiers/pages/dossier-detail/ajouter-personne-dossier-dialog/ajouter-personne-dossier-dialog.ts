@@ -8,7 +8,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, debounceTime, distinctUntilChanged, switchMap, of, catchError, map } from 'rxjs';
 import {
@@ -38,6 +37,8 @@ import { NationaliteService } from '../../../../referentiels/services/nationalit
 import { NationaliteResponse } from '../../../../referentiels/models/referentiel.models';
 import { ChampNip } from '../../../../personnes/composants/champ-nip/champ-nip';
 
+import { provideFrenchDateAdapter } from '../../../../../core/i18n/french-date-adapter';
+
 
 export interface DonneesDialogAjoutPersonne {
   dossierId: string;
@@ -59,7 +60,7 @@ type TypePersonneCreation = 'PHYSIQUE' | 'MORALE';
     MatProgressSpinnerModule,ChampNip,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './ajouter-personne-dossier-dialog.html',
   styleUrl: './ajouter-personne-dossier-dialog.scss'
 })

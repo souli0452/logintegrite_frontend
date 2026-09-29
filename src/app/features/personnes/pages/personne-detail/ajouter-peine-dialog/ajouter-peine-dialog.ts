@@ -6,12 +6,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import { LucideAngularModule, Gavel, X, LucideIconData } from 'lucide-angular';
 
 import { PeineService } from '../../../services/peine.service';
 import { PeineRequest, TypePeine, NatureSanction } from '../../../models/peine.models';
+
+import { provideFrenchDateAdapter } from '../../../../../core/i18n/french-date-adapter';
 
 interface DialogData {
   implicationFaitId: string;
@@ -32,7 +33,7 @@ interface DialogData {
     MatSelectModule, MatDatepickerModule, MatProgressSpinnerModule,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './ajouter-peine-dialog.html',
   styleUrl: './ajouter-peine-dialog.scss'
 })

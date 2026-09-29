@@ -10,7 +10,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
@@ -23,6 +22,8 @@ import {
   RoleImplicationResponse
 } from '../../../referentiels/models/referentiel.models';
 import { DossierResponse } from '../../../dossiers/models/dossier.models';
+
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
 
 export interface AjouterImplicationDialogData {
   personneId: string;
@@ -39,7 +40,7 @@ export interface AjouterImplicationDialogData {
     MatDatepickerModule, MatButtonModule, MatButtonToggleModule,
     MatProgressSpinnerModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './ajouter-implication-dialog.html',
   styleUrl: './ajouter-implication-dialog.scss'
 })

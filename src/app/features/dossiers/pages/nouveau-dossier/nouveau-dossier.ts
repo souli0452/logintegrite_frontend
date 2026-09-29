@@ -2,7 +2,6 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,6 +31,8 @@ import {
   TypeInfractionResponse, ZoneGeographiqueResponse
 } from '../../../referentiels/models/referentiel.models';
 
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+
 interface FaitLocal {
   typeInfractionId: string;
   typeInfractionLibelle: string;
@@ -52,7 +53,7 @@ interface FaitLocal {
     MatSelectModule, MatDatepickerModule, MatProgressSpinnerModule,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './nouveau-dossier.html',
   styleUrl: './nouveau-dossier.scss'
 })

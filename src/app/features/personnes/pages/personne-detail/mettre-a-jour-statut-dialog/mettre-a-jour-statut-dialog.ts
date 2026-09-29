@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
 import { ToastrService } from 'ngx-toastr';
 import {
   LucideAngularModule, Scale, X, Save, Info, AlertCircle,
@@ -17,6 +16,8 @@ import { StatutJudiciaireService } from '../../../../referentiels/services/statu
 import { StatutJudiciaireResponse } from '../../../../referentiels/models/referentiel.models';
 import { ImplicationService } from '../../../services/implication.service';
 import { MiseAJourStatutJudiciaireRequest } from '../../../../dossiers/models/dossier.models';
+
+import { provideFrenchDateAdapter } from '../../../../../core/i18n/french-date-adapter';
 
 /**
  * Données passées au dialog par le parent.
@@ -40,7 +41,7 @@ export interface DonneesDialogStatut {
     MatSelectModule, MatDatepickerModule,
     LucideAngularModule
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './mettre-a-jour-statut-dialog.html',
   styleUrl: './mettre-a-jour-statut-dialog.scss'
 })
