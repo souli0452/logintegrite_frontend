@@ -3,8 +3,12 @@ import { inject } from '@angular/core';
 import { from, switchMap } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { keycloakInstance } from '../auth/keycloak-init';
+import { estRequeteApi } from './api-url.util';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  // Le jeton n'est joint qu'aux appels vers notre API, jamais a une URL tierce.
+  if (!estRequeteApi(req.url)) return next(req);
+
   const auth = inject(AuthService);
   if (!auth.isAuthenticated()) return next(req);
 

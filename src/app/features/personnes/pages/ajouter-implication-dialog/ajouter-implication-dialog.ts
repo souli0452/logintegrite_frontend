@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -122,12 +123,6 @@ export class AjouterImplicationDialog {
   }
 
   async soumettre(): Promise<void> {
-    console.log('=== AJOUT IMPLICATION ===');
-    console.log('mode:', this.modeChoix());
-    console.log('formNouveauDossier valide:', this.formNouveauDossier.valid, this.formNouveauDossier.value);
-    console.log('formDossierExistant valide:', this.formDossierExistant.valid, this.formDossierExistant.value);
-    console.log('formImplication valide:', this.formImplication.valid, this.formImplication.value);
-
     if (!this.formulaireValide()) {
       if (this.modeChoix() === 'nouveau') {
         this.formNouveauDossier.markAllAsTouched();
@@ -154,9 +149,7 @@ export class AjouterImplicationDialog {
           numeroDossier: v.numeroDossier || undefined,
           descriptionContexte: v.descriptionContexte || undefined
         };
-        console.log('Creation dossier:', dossierRequest);
         const dossier = await firstValueFrom(this.dossierService.creer(dossierRequest));
-        console.log('Dossier cree:', dossier);
         dossierId = dossier.id;
       } else {
         // MODE 2 : utiliser un dossier existant
@@ -178,10 +171,8 @@ export class AjouterImplicationDialog {
         dateFin: dateFinFormatee,
         observations: imp.observations || undefined
       };
-      console.log('Ajout implication:', implicationRequest);
 
-      const impResp = await firstValueFrom(this.dossierService.ajouterImplication(dossierId, implicationRequest));
-      console.log('Implication creee:', impResp);
+      await firstValueFrom(this.dossierService.ajouterImplication(dossierId, implicationRequest));
 
       this.toastr.success(
         this.modeChoix() === 'nouveau'
@@ -190,8 +181,8 @@ export class AjouterImplicationDialog {
       );
       this.dialogRef.close({ dossierId, cree: true });
 
-    } catch (err: any) {
-      console.error('=== ERREUR ===', err);
+    } catch (erreur: unknown) {
+      const err = erreur as HttpErrorResponse;
       let msg = '';
       if (err?.status === 409) {
         msg = this.modeChoix() === 'nouveau'

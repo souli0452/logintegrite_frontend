@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -276,8 +277,9 @@ export class CreationDossier {
         descriptionContexte: v.descriptionContexte || undefined
       }));
       dossierId = dossier.id;
-    } catch (err: any) {
-      this.toastr.error(err?.error?.message ?? 'Échec de la création du dossier');
+    } catch (erreur: unknown) {
+      const err = erreur as HttpErrorResponse;
+      this.toastr.error(err?.error?.message ?? err?.error?.detail ?? 'Échec de la création du dossier');
       this.enCours.set(false);
       return;
     }

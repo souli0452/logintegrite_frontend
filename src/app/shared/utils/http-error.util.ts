@@ -2,23 +2,27 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 /**
- * Le backend renvoie deux formats d'erreur differents :
- * - RFC7807 ProblemDetail (404 / 400 / validation) -> message utile dans `detail`,
- *   erreurs de champ dans `properties.erreurs`.
- * - Conflits d'integrite (409, doublons/contraintes FK) -> shape { status, error, message }.
- * Ce helper normalise les deux pour ne jamais perdre le message backend.
+ * Le backend renvoie des erreurs au format RFC 9457 (ProblemDetail) :
+ * - `detail` / `message` : message utile pour l'utilisateur ;
+ * - `erreurs` : erreurs de validation par champ (Spring place les proprietes au premier niveau du JSON).
+ * L'ancien format `properties.erreurs` reste lu pour compatibilite.
+ * Ce helper normalise le tout pour ne jamais perdre le message backend.
  */
 export function messageErreurHttp(err: unknown, fallback: string): string {
   const reponse = err as HttpErrorResponse | undefined;
   const corps = reponse?.error as
-    | { detail?: string; message?: string; properties?: { erreurs?: Record<string, string> } }
+    | {
+        detail?: string;
+        message?: string;
+        erreurs?: Record<string, string>;
+        properties?: { erreurs?: Record<string, string> };
+      }
     | undefined;
 
-  if (!corps) return fallback;
+  if (!corps || typeof corps !== 'object') return fallback;
 
-  const premiereErreurChamp = corps.properties?.erreurs
-    ? Object.values(corps.properties.erreurs)[0]
-    : undefined;
+  const erreursChamps = corps.erreurs ?? corps.properties?.erreurs;
+  const premiereErreurChamp = erreursChamps ? Object.values(erreursChamps)[0] : undefined;
 
   return premiereErreurChamp ?? corps.detail ?? corps.message ?? fallback;
 }
