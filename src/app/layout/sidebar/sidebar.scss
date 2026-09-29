@@ -1,3 +1,24 @@
+/* Petit ecran : la barre reste reservee a 72px dans la mise en page et, une fois depliee (survol ou toucher),
+   passe PAR-DESSUS le contenu au lieu de le comprimer. */
+@media (max-width: 900px) {
+  :host {
+    display: block;
+    width: 72px;
+    position: relative;
+    z-index: 50;
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &:not(.sidebar--pliee) {
+      box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
 .sidebar {
   height: 100vh;
   display: flex;

@@ -119,6 +119,13 @@ p {
   margin: 0;
 }
 
+/* Tableaux : sur petit ecran, defilement horizontal plutot que colonnes tronquees. */
+/* !important : plusieurs conteneurs de listes declarent "overflow: hidden" dans le style de leur composant. */
+div:has(> table.mat-mdc-table) {
+  overflow-x: auto !important;
+  max-width: 100%;
+}
+
 a {
   color: var(--asce-green);
   text-decoration: none;
