@@ -19,12 +19,18 @@
 }
 
 /*
- * Menu lateral. Conception :
- *  - il doit tenir SANS defiler sur les ecrans courants (portable 1366x768, Windows a 125 % ou 150 % : 600 a 730 px utiles) ;
- *  - texte en graisse normale, le gras est reserve a l'element actif ;
- *  - quand la hauteur manque, les titres de section deviennent de simples filets et le logo se reduit.
+ * Menu lateral. Conception : la taille s'ADAPTE A LA HAUTEUR de la fenetre.
+ *   - fenetre haute (> 780 px) : texte 15 px, icones 20 px, lignes de 44 px, titres de rubrique visibles ;
+ *   - fenetre moyenne (<= 780 px : portable 1366x768, Windows a 125 %) : texte 13 px, icones 17 px, lignes de 34 px ;
+ *   - fenetre courte (<= 640 px : Windows a 150 %) : lignes de 32 px.
+ * Le menu ne doit defiler sur aucun de ces cas. Le gras est reserve a l'element actif.
  */
 .sidebar {
+  /* Dimensions du menu (redefinies plus bas selon la hauteur) */
+  --nav-texte: 1.0714rem;    /* 15 px */
+  --nav-icone: 20px;
+  --nav-ligne: 44px;
+
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -32,13 +38,13 @@
   background-color: var(--asce-green-deep);
   color: #ffffff;
   transition: width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 256px;
-  font-size: var(--text-sm);           /* ~13,5 px */
+  width: 264px;
+  font-size: var(--nav-texte);
   letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
 
   &--pliee {
-    width: 68px;
+    width: 72px;
 
     .sidebar__item,
     .sidebar__group-header,
@@ -61,18 +67,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 16px;
+    padding: 14px 18px;
     background-color: #ffffff;
   }
 
   &__logo-img {
     width: 100%;
-    max-width: 150px;
+    max-width: 168px;
     height: auto;
     display: block;
     transition: max-width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &--pliee { max-width: 40px; }
+    &--pliee { max-width: 44px; }
   }
 
   /* Filet aux couleurs du drapeau : aplats nets, comme dans le logo. */
@@ -90,10 +96,10 @@
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 10px 8px 8px;
+    padding: 14px 10px 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     /* Barre de defilement fine et discrete, seulement si l'ecran est vraiment tres petit */
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
@@ -106,30 +112,30 @@
   &__section {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
   }
 
   &__section-titre {
-    margin: 0 0 3px;
-    padding: 0 12px;
+    margin: 0 0 4px;
+    padding: 0 14px;
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.58);
   }
 
   &__item,
   &__group-header {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 14px;
     width: 100%;
-    min-height: 36px;
-    padding: 7px 12px;
+    min-height: var(--nav-ligne);
+    padding: 8px 14px;
     background: transparent;
     border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.86);
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.88);
     font: inherit;
     font-weight: 400;
     text-align: left;
@@ -162,49 +168,49 @@
   &__item-icone,
   &__group-icone {
     flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.76);
   }
 
   &__group-header--ouvert { color: #ffffff; }
   &__group-label { flex: 1; }
-  &__group-chevron { color: rgba(255, 255, 255, 0.55); }
+  &__group-chevron { color: rgba(255, 255, 255, 0.58); }
 
   &__enfants {
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    margin: 1px 0 3px 23px;
-    padding-left: 10px;
+    gap: 2px;
+    margin: 2px 0 4px calc(14px + var(--nav-icone) / 2);
+    padding-left: 14px;
     border-left: 1px solid rgba(255, 255, 255, 0.16);
   }
 
   &__item--enfant {
-    min-height: 32px;
-    padding: 5px 10px;
-    font-size: var(--text-xs);
-    color: rgba(255, 255, 255, 0.8);
+    min-height: calc(var(--nav-ligne) - 8px);
+    padding: 6px 12px;
+    font-size: calc(var(--nav-texte) - 1px);
+    color: rgba(255, 255, 255, 0.82);
   }
 
   /* Pied : reduire / deplier, discret, ne recouvre jamais le menu. */
   &__pied {
     flex: 0 0 auto;
-    padding: 6px 8px;
+    padding: 8px 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   &__bascule {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 14px;
     width: 100%;
-    min-height: 34px;
-    padding: 6px 12px;
+    min-height: calc(var(--nav-ligne) - 6px);
+    padding: 6px 14px;
     background: transparent;
     border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.7);
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.72);
     font: inherit;
-    font-size: var(--text-xs);
+    font-size: calc(var(--nav-texte) - 1px);
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
 
@@ -217,31 +223,46 @@
   }
 }
 
-/* Ecrans peu hauts (portables, Windows agrandi a 125 % / 150 %) : on gagne de la place sans rien retirer. */
+/* Taille des icones pilotee par la hauteur de fenetre. Les icones sont dessinees par un composant enfant :
+   ::ng-deep traverse l'encapsulation des styles (prime sur l'attribut "size"). */
+:host ::ng-deep .sidebar lucide-icon svg {
+  width: var(--nav-icone);
+  height: var(--nav-icone);
+}
+:host ::ng-deep .sidebar .sidebar__group-chevron svg {
+  width: calc(var(--nav-icone) - 4px);
+  height: calc(var(--nav-icone) - 4px);
+}
+
+/* Fenetre de hauteur moyenne (portables, Windows agrandi a 125 %) : compact, sans rien retirer. */
 @media (max-height: 780px) {
   .sidebar {
+    --nav-texte: var(--text-sm);   /* 13 px */
+    --nav-icone: 17px;
+    --nav-ligne: 34px;
+
     &__brand { padding: 6px 14px; }
     &__logo-img { max-width: 124px; &--pliee { max-width: 38px; } }
     &__nav { gap: 0; padding-top: 8px; }
-
-    /* Les titres de section deviennent des filets : meme structure, moins de hauteur */
     &__section-titre { display: none; }
     &__section + &__section {
       margin-top: 7px;
       padding-top: 7px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-    &__item, &__group-header { min-height: 34px; padding-top: 6px; padding-bottom: 6px; }
-    &__item--enfant { min-height: 30px; padding-top: 4px; padding-bottom: 4px; }
+    &__item, &__group-header, &__bascule { gap: 11px; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; }
+    &__enfants { padding-left: 10px; margin-left: 23px; }
   }
 }
 
+/* Fenetre courte (Windows agrandi a 150 %) */
 @media (max-height: 640px) {
   .sidebar {
+    --nav-ligne: 32px;
+
     &__logo-img { max-width: 104px; }
-    &__item, &__group-header { min-height: 32px; padding-top: 5px; padding-bottom: 5px; }
+    &__item, &__group-header, &__bascule { padding-top: 5px; padding-bottom: 5px; }
     &__section + &__section { margin-top: 5px; padding-top: 5px; }
-    &__bascule { min-height: 30px; padding-top: 4px; padding-bottom: 4px; }
   }
 }
 

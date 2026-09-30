@@ -22,12 +22,12 @@
                     (click)="basculerGroupe(item.label)"
                     [title]="state.pliee() ? item.label : ''"
                     [attr.aria-label]="state.pliee() ? item.label : null">
-              <lucide-icon [name]="item.icone" [size]="17" [strokeWidth]="1.75" class="sidebar__group-icone"></lucide-icon>
+              <lucide-icon [name]="item.icone" [size]="20" [strokeWidth]="1.75" class="sidebar__group-icone"></lucide-icon>
               @if (!state.pliee()) {
                 <span class="sidebar__group-label">{{ item.label }}</span>
                 <lucide-icon
                   [name]="estOuvert(item.label) ? icons['ChevronDown'] : icons['ChevronRight']"
-                  [size]="14"
+                  [size]="16"
                   [strokeWidth]="1.75"
                   class="sidebar__group-chevron"></lucide-icon>
               }
@@ -51,7 +51,7 @@
                class="sidebar__item"
                [title]="state.pliee() ? item.label : ''"
                [attr.aria-label]="state.pliee() ? item.label : null">
-              <lucide-icon [name]="item.icone" [size]="17" [strokeWidth]="1.75" class="sidebar__item-icone"></lucide-icon>
+              <lucide-icon [name]="item.icone" [size]="20" [strokeWidth]="1.75" class="sidebar__item-icone"></lucide-icon>
               @if (!state.pliee()) {
                 <span>{{ item.label }}</span>
               }
@@ -66,7 +66,7 @@
     <button type="button" class="sidebar__bascule" (click)="state.basculer()"
             [attr.aria-label]="state.pliee() ? 'Déplier le menu' : 'Réduire le menu'"
             [title]="state.pliee() ? 'Déplier le menu' : 'Réduire le menu'">
-      <lucide-icon [name]="state.pliee() ? icons['PanelLeftOpen'] : icons['PanelLeftClose']" [size]="17" [strokeWidth]="1.75"></lucide-icon>
+      <lucide-icon [name]="state.pliee() ? icons['PanelLeftOpen'] : icons['PanelLeftClose']" [size]="20" [strokeWidth]="1.75"></lucide-icon>
       @if (!state.pliee()) {
         <span>Réduire le menu</span>
       }
