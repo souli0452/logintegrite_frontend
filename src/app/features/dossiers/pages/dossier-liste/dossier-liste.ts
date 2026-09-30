@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -14,9 +14,11 @@ import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
 import { DossierService } from '../../services/dossier.service';
 import { DossierResponse, StatutDossier } from '../../models/dossier.models';
 import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
+import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 @Component({
   selector: 'app-dossier-liste',
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
   imports: [
     MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,

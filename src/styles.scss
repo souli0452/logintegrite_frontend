@@ -21,6 +21,15 @@ $asce-theme: mat.define-theme((
 
 html {
   @include mat.all-component-themes($asce-theme);
+
+  /* Couleurs de la charte ASCE-LC pour les composants Material */
+  --mat-sys-primary: #00843D;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #E6F5EC;
+  --mat-sys-on-primary-container: #005A2B;
+  --mat-sys-secondary: #005A2B;
+  --mat-sys-tertiary: #EE1D23;
+  --mat-sys-surface-tint: #00843D;
 }
 
 /* ===============================================
@@ -29,11 +38,15 @@ html {
    =============================================== */
 
 :root {
-  /* Charte institutionnelle */
-  --asce-green: #009640;
-  --asce-red: #E30613;
-  --asce-yellow: #FFDD00;
-  --asce-black: #1D1D1B;
+  /* Charte graphique ASCE-LC (couleurs mesurees sur le logo officiel) */
+  --asce-green: #00A54F;          /* vert de la charte : grandes surfaces, accents, graphiques */
+  --asce-green-strong: #00843D;   /* vert des boutons, liens et textes (contraste 4,8:1 sur blanc) */
+  --asce-green-dark: #005A2B;     /* vert fonce : titres, etats survol */
+  --asce-green-deep: #06331F;     /* vert tres fonce : menu lateral */
+  --asce-green-tint: #E6F5EC;     /* fond teinte de vert */
+  --asce-red: #EE1D23;
+  --asce-yellow: #FFDC01;
+  --asce-black: #231F20;
 
   /* Fonds neutres */
   --bg-page: #f8fafc;
@@ -87,7 +100,7 @@ html {
   --sidebar-border: rgba(212, 175, 55, 0.35);
 
   /* Teinte de fond pour les etats "rouge" (hover, alertes) */
-  --asce-red-bg: rgba(227, 6, 19, 0.12);
+  --asce-red-bg: rgba(238, 29, 35, 0.10);
 }
 
 /* ===============================================
@@ -127,7 +140,7 @@ div:has(> table.mat-mdc-table) {
 }
 
 a {
-  color: var(--asce-green);
+  color: var(--asce-green-strong);
   text-decoration: none;
 
   &:hover {

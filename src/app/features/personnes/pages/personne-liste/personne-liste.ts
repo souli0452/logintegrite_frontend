@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -25,12 +25,15 @@ import { PersonneDetailService, PersonneDetailComplet } from '../../services/per
 import { PersonneResumeResponse, PersonnePhysiqueResponse, PersonneMoraleResponse } from '../../models/personne.models';
 import { PersonnePhysiqueFormDialog } from '../personne-physique-form-dialog/personne-physique-form-dialog';
 import { PersonneMoraleFormDialog } from '../personne-morale-form-dialog/personne-morale-form-dialog';
+import { referencePersonne } from '../../../../shared/utils/reference.util';
+import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 type FiltreType = 'TOUS' | 'PHYSIQUE' | 'MORALE';
 type FiltreAncrage = 'TOUS' | 'EN_INSTRUCTION' | 'REGISTRE_OFFICIEL';
 
 @Component({
   selector: 'app-personne-liste',
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
   imports: [
     RouterLink, DatePipe,
@@ -259,8 +262,7 @@ export class PersonneListe implements OnDestroy {
 
   // Identifiant metier lisible construit a partir de l'UUID
   identifiantMetier(personne: PersonneResumeResponse): string {
-    const prefix = personne.typePersonne === 'PHYSIQUE' ? 'PERS' : 'ORG';
-    return `${prefix}-${personne.id.substring(0, 6).toUpperCase()}`;
+    return referencePersonne(personne.id, personne.typePersonne);
   }
 
   estDeveloppee(personne: PersonneResumeResponse): boolean {

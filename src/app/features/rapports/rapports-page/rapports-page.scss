@@ -1,11 +1,11 @@
 // Palette ASCE-LC
-$asce-vert:        #009640;
-$asce-vert-fonce:  #007a33;
+$asce-vert:        var(--asce-green-strong);
+$asce-vert-fonce:  var(--asce-green-strong);
 $asce-vert-clair:  #e6f5ec;
-$asce-rouge:       #E30613;
+$asce-rouge:       var(--asce-red);
 $asce-rouge-fonce: #b8050f;
 $asce-rouge-clair: #fce8ea;
-$asce-noir:        #1D1D1B;
+$asce-noir:        var(--asce-black);
 $asce-blanc:       #FFFFFF;
 
 $gris-700: #4a4a48;

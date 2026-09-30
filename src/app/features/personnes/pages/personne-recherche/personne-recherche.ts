@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +10,7 @@ import { MatExpansionModule } from '@angular/material/expansion'; // <-- AJOUT I
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -32,6 +33,8 @@ import {
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
 import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
+import { referencePersonne } from '../../../../shared/utils/reference.util';
+import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 @Component({
   selector: 'app-personne-recherche',
@@ -45,13 +48,14 @@ import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-i
     LucideAngularModule,
     PageHeader, EmptyState
   ],
-  providers: [provideFrenchDateAdapter()],
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }, provideFrenchDateAdapter()],
   templateUrl: './personne-recherche.html',
   styleUrl: './personne-recherche.scss'
 })
 export class PersonneRecherche {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly toastr = inject(ToastrService);
   private readonly personneService = inject(PersonneService);
   private readonly typeInfractionService = inject(TypeInfractionService);
@@ -91,6 +95,14 @@ export class PersonneRecherche {
   });
 
   constructor() {
+    // Terme transmis par la barre de recherche du haut : pre-remplit le formulaire et lance la recherche.
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+      const terme = params.get('q')?.trim();
+      if (terme) {
+        this.formulaire.patchValue({ nomOuDenomination: terme });
+        this.rechercher();
+      }
+    });
     this.typeInfractionService.lister().subscribe({ next: (d) => this.typesInfraction.set(d), error: () => {} });
     this.zoneService.lister().subscribe({ next: (d) => this.zones.set(d), error: () => {} });
     this.statutJudiciaireService.lister().subscribe({ next: (d) => this.statutsJudiciaires.set(d), error: () => {} });
@@ -157,8 +169,7 @@ export class PersonneRecherche {
   }
 
   identifiantMetier(p: PersonneResumeResponse): string {
-    const prefix = p.typePersonne === 'PHYSIQUE' ? 'PERS' : 'ORG';
-    return `${prefix}-${p.id.substring(0, 6).toUpperCase()}`;
+    return referencePersonne(p.id, p.typePersonne);
   }
 
   private formaterDate(date: Date | null | undefined): string | undefined {

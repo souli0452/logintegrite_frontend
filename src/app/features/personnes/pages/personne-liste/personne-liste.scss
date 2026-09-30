@@ -52,7 +52,7 @@
   text-decoration: none;
 
   &:hover {
-    background: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-dark);
     text-decoration: none;
   }
 }
@@ -65,14 +65,14 @@
   background: transparent;
   border: 1px solid var(--asce-green);
   border-radius: var(--radius-md);
-  color: var(--asce-green-dark, #005a2b);
+  color: var(--asce-green-dark);
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
 
   &:hover {
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
   }
 }
 
@@ -170,9 +170,9 @@
   }
 
   &--actif {
-    background: var(--asce-green-light, #e6f4ea);
-    border-color: var(--asce-green-dark, #005a2b);
-    color: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-tint);
+    border-color: var(--asce-green-dark);
+    color: var(--asce-green-dark);
     font-weight: 600;
   }
 
@@ -184,8 +184,8 @@
     }
 
     &.filtre-chip--officiel.filtre-chip--actif {
-      background: var(--asce-green-light, #e6f4ea);
-      color: var(--asce-green-dark, #005a2b);
+      background: var(--asce-green-tint);
+      color: var(--asce-green-dark);
       border-color: var(--asce-green);
     }
   }
@@ -291,8 +291,8 @@
   flex-shrink: 0;
 
   &--pp {
-    background: var(--asce-green-light, #e6f4ea);
-    color: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-tint);
+    color: var(--asce-green-dark);
   }
 
   &--pm {
@@ -315,8 +315,8 @@
   }
 
   &--officiel {
-    background: var(--asce-green-light, #e6f4ea);
-    color: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-tint);
+    color: var(--asce-green-dark);
     font-weight: 600;
   }
 }
@@ -370,18 +370,18 @@
   transition: all 0.15s;
 
   &:hover {
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
     border-color: var(--asce-green);
-    color: var(--asce-green-dark, #005a2b);
+    color: var(--asce-green-dark);
   }
 
   &--danger {
-    color: var(--asce-red, #DC2626);
+    color: var(--asce-red);
 
     &:hover {
       background: #FEE2E2;
-      border-color: var(--asce-red, #DC2626);
-      color: var(--asce-red, #DC2626);
+      border-color: var(--asce-red);
+      color: var(--asce-red);
     }
   }
 }
@@ -396,20 +396,25 @@
   }
 
   &--expanded {
-    background-color: var(--asce-green-light, #e6f4ea);
+    background-color: var(--asce-green-tint);
   }
 }
 
 /* Panneau expandable */
+/* Ligne repliee : aucune hauteur ni filet (Material impose sinon une hauteur minimale de ligne). */
+.ligne-detail {
+  height: 0 !important;
+  min-height: 0 !important;
+}
+
 .ligne-detail td {
   padding: 0 !important;
-  border-bottom-width: 0;
+  border: 0 !important;
 }
 
 .detail-panel {
   overflow: hidden;
   background: #fafbfc;
-  border-top: 1px dashed var(--border-default);
 }
 
 .detail-content {
@@ -419,6 +424,7 @@
   flex-wrap: wrap;
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
+  border-top: 1px dashed var(--border-default);
 }
 
 .detail-loading {

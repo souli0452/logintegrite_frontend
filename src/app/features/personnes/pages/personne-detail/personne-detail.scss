@@ -1,8 +1,8 @@
 :host {
-  --ascelc-rouge:  #E30613;
-  --ascelc-vert:   #009640;
-  --ascelc-jaune:  #FFDD00;
-  --ascelc-noir:   #1D1D1B;
+  --ascelc-rouge:  var(--asce-red);
+  --ascelc-vert:   var(--asce-green-strong);
+  --ascelc-jaune:  var(--asce-yellow);
+  --ascelc-noir:   var(--asce-black);
   --ascelc-blanc:  #FFFFFF;
 
   --neutre-50:  #FAFAF9;
@@ -330,7 +330,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.55rem 1.25rem;
-  background: linear-gradient(135deg, var(--ascelc-vert), var(--ascelc-vert-fonce, #007A34));
+  background: linear-gradient(135deg, var(--ascelc-vert), var(--ascelc-vert-fonce, var(--asce-green-strong)));
   color: var(--ascelc-blanc);
   border: none;
   border-radius: 8px;

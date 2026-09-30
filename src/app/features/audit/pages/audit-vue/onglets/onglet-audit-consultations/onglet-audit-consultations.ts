@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { DatePipe, SlicePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -10,9 +10,11 @@ import { ToastrService } from 'ngx-toastr';
 import { EmptyState } from '../../../../../../shared/ui/empty-state/empty-state';
 import { AuditService } from '../../../../services/audit.service';
 import { JournalConsultationResponse } from '../../../../models/audit.models';
+import { PaginatorFrancais } from '../../../../../../core/i18n/paginator-francais';
 
 @Component({
   selector: 'app-onglet-audit-consultations',
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
   imports: [
     DatePipe, SlicePipe,

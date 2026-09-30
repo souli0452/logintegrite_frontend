@@ -1,9 +1,9 @@
 :host {
-  --ascelc-rouge:      #E30613;
-  --ascelc-vert:       #009640;
-  --ascelc-vert-fonce: #007A34;
-  --ascelc-jaune:      #FFDD00;
-  --ascelc-noir:       #1D1D1B;
+  --ascelc-rouge:      var(--asce-red);
+  --ascelc-vert:       var(--asce-green-strong);
+  --ascelc-vert-fonce: var(--asce-green-strong);
+  --ascelc-jaune:      var(--asce-yellow);
+  --ascelc-noir:       var(--asce-black);
   --ascelc-blanc:      #FFFFFF;
 
   --neutre-50:  #FAFAF9;

@@ -50,6 +50,7 @@ import { PersonnePhysiqueFormDialog } from '../personne-physique-form-dialog/per
 import { PersonneMoraleFormDialog } from '../personne-morale-form-dialog/personne-morale-form-dialog';
 
 import { PersonneExportUtil } from '../../services/personne-export.util';
+import { referencePersonne } from '../../../../shared/utils/reference.util';
 
 interface EvenementHistorique {
   action: string;
@@ -137,8 +138,7 @@ export class PersonneDetail implements OnInit {
   readonly numeroFiche = computed<string>(() => {
     const d = this.donnees();
     if (!d) return '—';
-    const prefix = d.resume.typePersonne === 'PHYSIQUE' ? 'PERS' : 'ORG';
-    return `${prefix}-${d.resume.id.substring(0, 6).toUpperCase()}`;
+    return referencePersonne(d.resume.id, d.resume.typePersonne);
   });
 
   readonly dateInscription = computed<Date | null>(() => {

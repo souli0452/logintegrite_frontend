@@ -1,9 +1,9 @@
 :host { display: block; }
 
 .dialog-faits {
-  --ascelc-vert:       #009640;
-  --ascelc-vert-fonce: #007A34;
-  --ascelc-noir:       #1D1D1B;
+  --ascelc-vert:       var(--asce-green-strong);
+  --ascelc-vert-fonce: var(--asce-green-strong);
+  --ascelc-noir:       var(--asce-black);
   --neutre-50:  #FAFAF9;
   --neutre-100: #F5F5F4;
   --neutre-200: #E7E5E4;

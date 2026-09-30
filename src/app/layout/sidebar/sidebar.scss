@@ -1,5 +1,4 @@
-/* Petit ecran : la barre reste reservee a 72px dans la mise en page et, une fois depliee (survol ou toucher),
-   passe PAR-DESSUS le contenu au lieu de le comprimer. */
+/* Petit ecran : la barre reste reservee a 72px dans la mise en page et, une fois depliee, passe PAR-DESSUS le contenu. */
 @media (max-width: 900px) {
   :host {
     display: block;
@@ -14,7 +13,7 @@
     left: 0;
 
     &:not(.sidebar--pliee) {
-      box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
+      box-shadow: 8px 0 24px rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -23,223 +22,170 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--asce-green);
-  color: white;
-  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 260px;
-  border-right: 2px solid var(--asce-yellow);
+  background-color: var(--asce-green-deep);
+  color: #ffffff;
+  transition: width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 264px;
 
   &--pliee {
     width: 72px;
 
-    .sidebar__brand-text,
-    .sidebar__item-label,
-    .sidebar__group-label,
-    .sidebar__group-chevron {
-      display: none;
-    }
-
     .sidebar__item,
-    .sidebar__group-header {
+    .sidebar__group-header,
+    .sidebar__bascule {
       justify-content: center;
       padding: 12px;
-      border-left: none;
-    }
-
-    .sidebar__enfants {
-      display: none;
     }
   }
 
+  /* Logo : sur fond blanc pour rester fidele a la charte (le noir du logo est illisible sur le vert). */
   &__brand {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 24px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    background-color: #ffffff; // Fond blanc uniquement pour la zone du logo
+    justify-content: center;
+    padding: 10px 16px;
+    background-color: #ffffff;
   }
 
   &__logo-img {
-    height: 85px; /* Logo agrandi */
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-    margin: 0 auto; /* Force le centrage */
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    display: block;
+    transition: max-width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 
     &--pliee {
-      height: 44px; /* Logo légèrement plus grand en mode plié */
+      max-width: 44px;
     }
   }
 
-  &__brand-text {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
+  /* Filet aux couleurs du drapeau : aplats nets, comme dans le logo. */
+  &__drapeau {
+    height: 4px;
+    background: linear-gradient(90deg,
+      var(--asce-red) 0 33.33%,
+      var(--asce-yellow) 33.33% 66.66%,
+      var(--asce-green) 66.66% 100%);
   }
-
 
   &__nav {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 16px 8px;
+    padding: 8px 10px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
   }
 
-  &__item {
+  &__section {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    border-left: 3px solid transparent;
-    white-space: nowrap;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.12);
-      color: var(--asce-yellow);
-      text-decoration: none;
-    }
-
-    &--active {
-      background-color: rgba(255, 221, 0, 0.18);
-      color: white;
-      font-weight: 600;
-      border-left-color: var(--asce-yellow);
-
-      .sidebar__item-icone { color: var(--asce-yellow); }
-    }
+    flex-direction: column;
+    gap: 2px;
   }
 
-  &__item-icone {
-    flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.8);
-    transition: color 0.2s ease;
+  &__section-titre {
+    margin: 0 0 4px;
+    padding: 0 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.62);
   }
 
-  &__item-label {
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
+  &__item,
   &__group-header {
     display: flex;
     align-items: center;
     gap: 12px;
     width: 100%;
-    padding: 10px 14px;
+    padding: 8px 14px;
     background: transparent;
     border: none;
+    border-left: 3px solid transparent;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.92);
+    font: inherit;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
     text-align: left;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    text-decoration: none;
     white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.12);
-      color: var(--asce-yellow);
+      background-color: rgba(255, 255, 255, 0.09);
+      text-decoration: none;
     }
 
-    &--ouvert {
-      color: white;
-      .sidebar__group-icone { color: var(--asce-yellow); }
+    &:focus-visible {
+      outline: 2px solid var(--asce-yellow);
+      outline-offset: 1px;
     }
   }
 
+  &__item--active {
+    background-color: rgba(0, 165, 79, 0.24);
+    border-left-color: var(--asce-green);
+    color: #ffffff;
+    font-weight: 600;
+
+    .sidebar__item-icone { color: #ffffff; }
+  }
+
+  &__item-icone,
   &__group-icone {
     flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.78);
   }
 
-  &__group-label {
-    flex: 1;
-  }
+  &__group-header--ouvert { color: #ffffff; }
 
-  &__group-chevron {
-    color: rgba(255, 255, 255, 0.6);
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  &__group-label { flex: 1; }
+
+  &__group-chevron { color: rgba(255, 255, 255, 0.6); }
 
   &__enfants {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding: 4px 0 4px 12px;
-    margin-top: 2px;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    margin-left: 22px;
+    margin: 2px 0 4px 22px;
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
   }
 
   &__item--enfant {
-    padding: 8px 12px;
+    padding: 6px 12px;
     font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.82);
     border-left: none;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    &.sidebar__item--active {
-      background-color: transparent;
-      color: var(--asce-yellow);
-      .sidebar__item-icone { color: var(--asce-yellow); }
-    }
-  }
-  
-  /* Entrée principale : traitement visuel distinctif */
-.sidebar__item--principal {
-  background: linear-gradient(90deg, rgba(255, 221, 0, 0.12) 0%, transparent 100%);
-  border-left: 3px solid #FFDD00 !important;
-  font-weight: 600;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin-bottom: 4px;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: -1px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
   }
 
-  lucide-icon {
-    color: #FFDD00 !important;
-  }
+  &__bascule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 10px 12px;
+    padding: 10px 14px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    font: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 
-  &:hover {
-    background: linear-gradient(90deg, rgba(255, 221, 0, 0.2) 0%, transparent 100%);
-  }
+    &:hover { background-color: rgba(255, 255, 255, 0.09); }
 
-  &.sidebar__item--active {
-    background: linear-gradient(90deg, rgba(255, 221, 0, 0.25) 0%, transparent 100%);
-
-    lucide-icon {
-      color: #FFDD00 !important;
+    &:focus-visible {
+      outline: 2px solid var(--asce-yellow);
+      outline-offset: 1px;
     }
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar__logo-img { transition: none; }
 }

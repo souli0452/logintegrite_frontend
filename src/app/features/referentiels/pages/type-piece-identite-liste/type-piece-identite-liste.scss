@@ -29,7 +29,7 @@
   &:hover {
     background: var(--bg-surface);
     border-color: var(--asce-green);
-    color: var(--asce-green-dark, #005a2b);
+    color: var(--asce-green-dark);
   }
 }
 
@@ -88,7 +88,7 @@
   cursor: pointer;
 
   &:hover {
-    background: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-dark);
   }
 }
 
@@ -136,7 +136,7 @@
     font-family: 'Menlo', 'Courier New', monospace;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--asce-green-dark, #005a2b);
+    color: var(--asce-green-dark);
   }
 
   .cellule-right {

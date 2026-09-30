@@ -2,15 +2,15 @@
 
 :host {
   /* CHARTE GRAPHIQUE OFFICIELLE ASCE-LC */
-  --ascelc-vert: #009640;
-  --ascelc-vert-fonce: #007a33;
+  --ascelc-vert: var(--asce-green-strong);
+  --ascelc-vert-fonce: var(--asce-green-strong);
   --ascelc-vert-clair: #e6f5ec;
-  --ascelc-rouge: #E30613;
+  --ascelc-rouge: var(--asce-red);
   --ascelc-rouge-fonce: #b8050f;
   --ascelc-rouge-clair: #fce8ea;
-  --ascelc-jaune: #FFDD00;
+  --ascelc-jaune: var(--asce-yellow);
   --ascelc-jaune-fonce: #b39a00;
-  --ascelc-noir: #1D1D1B;
+  --ascelc-noir: var(--asce-black);
   --ascelc-blanc: #FFFFFF;
 
   /* Gris neutres */
@@ -57,7 +57,8 @@
 }
 
 // Définitions des colonnes
-.dashboard-cartes { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.dashboard-cartes { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1200px) { .dashboard-cartes { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } }
 .dashboard-metriques { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 .performance-section { grid-template-columns: 1fr 1fr; }
 .dashboard-graphiques { grid-template-columns: 3fr 2fr; }
@@ -86,49 +87,24 @@
   font-weight: 500;
 }
 
-.executive-banner {
+.a-traiter {
   @extend %flex-between;
-  background: linear-gradient(135deg, var(--ascelc-vert) 0%, var(--ascelc-vert-fonce) 100%);
-  color: var(--ascelc-blanc);
-  padding: 1.75rem 2rem;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 150, 64, 0.2);
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  background: rgba(255, 220, 1, 0.16);
+  border: 1px solid rgba(179, 154, 0, 0.45);
+  border-left: 4px solid var(--asce-yellow);
+  border-radius: 8px;
 
-  &__left {
-    .executive-badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-    h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
-    p { margin: 0.25rem 0 0; opacity: 0.9; font-size: 0.875rem; }
-  }
-
-  &__right {
-    text-align: right;
-    .executive-date { font-size: 0.875rem; font-weight: 600; text-transform: capitalize; }
-    .executive-status {
-      @extend %flex-center;
-      gap: 0.5rem; font-size: 0.8rem; margin-top: 0.5rem;
-      background: rgba(255, 255, 255, 0.15); padding: 0.25rem 0.75rem; border-radius: 20px;
-      .dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background-color: var(--ascelc-jaune);
-        box-shadow: 0 0 8px rgba(255, 221, 0, 0.6);
-      }
-    }
-  }
+  &__texte { margin: 0; font-size: 1rem; color: var(--asce-black); strong { font-size: 1.25rem; } }
 }
 
 .quick-actions {
   display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;
-  button { @extend %flex-center; gap: 0.5rem; border-radius: 8px; font-weight: 500; }
+  button { @extend %flex-center; gap: 0.625rem; border-radius: 8px; font-weight: 500; }
+  lucide-icon { margin-right: 0.5rem; }
 }
 
 /* ==========================================================================

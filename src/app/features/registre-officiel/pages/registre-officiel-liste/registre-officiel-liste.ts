@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,6 +29,8 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+import { referencePersonne } from '../../../../shared/utils/reference.util';
+import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 type FiltreType = 'TOUS' | 'PHYSIQUE' | 'MORALE';
 type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_DOSSIERS';
@@ -43,7 +45,7 @@ type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_DOSSIERS';
     MatDatepickerModule, MatExpansionModule,
     LucideAngularModule
   ],
-  providers: [provideFrenchDateAdapter()],
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }, provideFrenchDateAdapter()],
   templateUrl: './registre-officiel-liste.html',
   styleUrl: './registre-officiel-liste.scss'
 })
@@ -232,8 +234,7 @@ export class RegistreOfficielListe implements OnDestroy {
   }
 
   identifiantMetier(p: PersonneResumeResponse): string {
-    const prefix = p.typePersonne === 'PHYSIQUE' ? 'PERS' : 'ORG';
-    return `${prefix}-${p.id.substring(0, 6).toUpperCase()}`;
+    return referencePersonne(p.id, p.typePersonne);
   }
 
   libelleType(type: 'PHYSIQUE' | 'MORALE'): string {

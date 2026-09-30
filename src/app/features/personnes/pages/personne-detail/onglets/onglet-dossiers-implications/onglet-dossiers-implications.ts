@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import {
   LucideAngularModule,
   Plus, FolderOpen, Folder, Gavel, Eye, ExternalLink, MoreVertical,
@@ -23,6 +23,7 @@ import { AjouterPeineDialog } from '../../ajouter-peine-dialog/ajouter-peine-dia
 import { PersonnesDuDossierDialog } from '../../personnes-du-dossier-dialog/personnes-du-dossier-dialog';
 import { FaitsDuDossierDialog } from '../../../../dialogs/faits-du-dossier-dialog/faits-du-dossier-dialog';
 import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
+import { PaginatorFrancais } from '../../../../../../core/i18n/paginator-francais';
 
 interface GroupeDossier {
   dossier: DossierResponse;
@@ -40,6 +41,7 @@ interface ResumeStatut {
 
 @Component({
   selector: 'app-onglet-dossiers-implications',
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
   imports: [
     CommonModule, DatePipe, FormsModule,

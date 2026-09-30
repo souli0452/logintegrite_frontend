@@ -1,18 +1,18 @@
 <mat-toolbar class="topbar">
-  <div class="topbar__search">
+  <form class="topbar__search" role="search" (submit)="rechercher($event, champ.value)">
     <lucide-icon [name]="icons['Search']" [size]="18" class="topbar__search-icon"></lucide-icon>
-    <input type="text"
-           placeholder="Rechercher un dossier, une personne..."
+    <input #champ
+           type="search"
+           name="q"
+           autocomplete="off"
+           aria-label="Rechercher une personne par nom ou dénomination"
+           placeholder="Rechercher une personne par nom ou dénomination"
            class="topbar__search-input">
-  </div>
+  </form>
   <span class="topbar__spacer"></span>
 
-  <button mat-icon-button class="topbar__bell" [matBadge]="'3'" matBadgeColor="warn" matBadgeSize="small">
-    <lucide-icon [name]="icons['Bell']" [size]="20"></lucide-icon>
-  </button>
-
-  <button mat-button [matMenuTriggerFor]="userMenu" class="topbar__user">
-    <div class="topbar__user-avatar">
+  <button mat-button [matMenuTriggerFor]="userMenu" class="topbar__user" aria-label="Menu du compte">
+    <div class="topbar__user-avatar" aria-hidden="true">
       <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
     </div>
     <div class="topbar__user-info">
@@ -23,7 +23,7 @@
   <mat-menu #userMenu="matMenu">
     <button mat-menu-item (click)="auth.logout()">
       <lucide-icon [name]="icons['LogOut']" [size]="16"></lucide-icon>
-      <span>Deconnexion</span>
+      <span>Déconnexion</span>
     </button>
   </mat-menu>
 </mat-toolbar>

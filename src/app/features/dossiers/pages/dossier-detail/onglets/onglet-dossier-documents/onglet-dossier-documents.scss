@@ -44,7 +44,7 @@
   cursor: pointer;
   transition: background 0.15s;
 
-  &:hover { background: var(--asce-green-dark, #005a2b); }
+  &:hover { background: var(--asce-green-dark); }
 }
 
 .loader-zone {
@@ -139,8 +139,8 @@
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  background: var(--asce-green-light, #e6f4ea);
-  color: var(--asce-green-dark, #005a2b);
+  background: var(--asce-green-tint);
+  color: var(--asce-green-dark);
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   cursor: help;
@@ -166,8 +166,8 @@
   transition: all 0.15s;
 
   &:hover {
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
     border-color: var(--asce-green);
-    color: var(--asce-green-dark, #005a2b);
+    color: var(--asce-green-dark);
   }
 }

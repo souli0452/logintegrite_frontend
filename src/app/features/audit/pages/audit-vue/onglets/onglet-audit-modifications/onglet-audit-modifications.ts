@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { DatePipe, SlicePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -14,9 +14,11 @@ import { StatusBadge, StatusType } from '../../../../../../shared/ui/status-badg
 import { EmptyState } from '../../../../../../shared/ui/empty-state/empty-state';
 import { AuditService } from '../../../../services/audit.service';
 import { JournalAuditResponse } from '../../../../models/audit.models';
+import { PaginatorFrancais } from '../../../../../../core/i18n/paginator-francais';
 
 @Component({
   selector: 'app-onglet-audit-modifications',
+  providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
   imports: [
     DatePipe,SlicePipe,

@@ -32,6 +32,7 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+import { referencePersonne } from '../../../../shared/utils/reference.util';
 
 interface FaitLocal {
   typeInfractionId: string;
@@ -109,8 +110,7 @@ export class NouveauDossier implements OnInit {
   readonly identifiantMetier = computed(() => {
     const d = this.donnees();
     if (!d) return '-';
-    const prefix = d.resume.typePersonne === 'PHYSIQUE' ? 'PERS' : 'ORG';
-    return `${prefix}-${d.resume.id.substring(0, 6).toUpperCase()}`;
+    return referencePersonne(d.resume.id, d.resume.typePersonne);
   });
 
   readonly etapes = ['Dossier', 'Implication', 'Faits reproches', 'Recapitulatif'];

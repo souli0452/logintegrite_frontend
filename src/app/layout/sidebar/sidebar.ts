@@ -7,13 +7,16 @@ import {
   Search,
   FolderOpen,
   CheckSquare,
-  Settings,
-  ClipboardList,
   ShieldCheck,
   ChevronRight,
   ChevronDown,
   UserPlus,
   FileText,
+  Database,
+  UserCog,
+  ScrollText,
+  PanelLeftClose,
+  PanelLeftOpen,
   LucideIconData
 } from 'lucide-angular';
 import { AuthService } from '../../core/auth/auth.service';
@@ -25,7 +28,11 @@ interface MenuItem {
   icone: LucideIconData;
   roles?: string[];
   enfants?: MenuItem[];
-  principal?: boolean;   // Traitement visuel distinctif (entree principale de l'app)
+}
+
+interface MenuSection {
+  titre: string;
+  items: MenuItem[];
 }
 
 @Component({
@@ -40,91 +47,64 @@ export class Sidebar {
   private readonly auth = inject(AuthService);
   readonly state = inject(SidebarStateService);
 
-  readonly icons: Record<string, LucideIconData> = { ChevronRight, ChevronDown };
+  readonly icons: Record<string, LucideIconData> = { ChevronRight, ChevronDown, PanelLeftClose, PanelLeftOpen };
 
   private readonly groupesOuverts = signal<Set<string>>(new Set(['Gestion des personnes']));
 
-  private readonly menu: MenuItem[] = [
-  // ─── 1. Gestion des personnes (ex-"Fiches", devient parent avec 2 sous-menus) ───
-  {
-    label: 'Gestion des personnes',
-    icone: Users,
-    roles: ['AGENT', 'ADMIN'],
-    enfants: [
-      { route: '/personnes/nouveau', label: 'Nouvelle personne',        icone: UserPlus },
-      { route: '/personnes',         label: 'Identification personnes', icone: Users }
-    ]
-  },
-
-  // ─── 2. Répertoire officiel (ex-"Registre officiel", accessible à tous) ───
-  {
-    route: '/registre-officiel',
-    label: 'Répertoire officiel',
-    icone: ShieldCheck,
-    principal: true
-  },
-
-  // ─── 3. Gestion des dossiers (ex-"Dossiers") ───
-  {
-    route: '/dossiers',
-    label: 'Gestion des dossiers',
-    icone: FolderOpen,
-    roles: ['AGENT', 'ADMIN']
-  },
-
-  // ─── 4. Validation ───
-  {
-    route: '/validation',
-    label: 'Validation',
-    icone: CheckSquare,
-    roles: ['VALIDATEUR', 'ADMIN']
-  },
-
-  // ─── 5. Tableaux de bord (ex-"Tableau de bord") ───
-  {
-    route: '/tableau-de-bord',
-    label: 'Tableaux de bord',
-    icone: LayoutDashboard,
-    roles: ['AGENT', 'VALIDATEUR', 'ADMIN']
-  },
-
-  // ─── 6. Rapports ───
-  {
-    route: '/rapports',
-    label: 'Rapports',
-    icone: FileText,
-    roles: ['AGENT', 'VALIDATEUR', 'ADMIN']
-  },
-  
+  /** Le menu suit le parcours de travail : consulter le registre, traiter les dossiers, piloter, administrer. */
+  private readonly menu: MenuSection[] = [
     {
-    route: '/personnes/recherche',
-    label: 'Recherche avancée',
-    icone: Search
-  },
+      titre: 'Registre',
+      items: [
+        { route: '/registre-officiel', label: 'Répertoire officiel', icone: ShieldCheck },
+        {
+          label: 'Gestion des personnes',
+          icone: Users,
+          roles: ['AGENT', 'ADMIN'],
+          enfants: [
+            { route: '/personnes/nouveau', label: 'Nouvelle personne', icone: UserPlus },
+            { route: '/personnes', label: 'Identification personnes', icone: Users }
+          ]
+        },
+        { route: '/personnes/recherche', label: 'Recherche avancée', icone: Search }
+      ]
+    },
+    {
+      titre: 'Traitement',
+      items: [
+        { route: '/dossiers', label: 'Gestion des dossiers', icone: FolderOpen, roles: ['AGENT', 'ADMIN'] },
+        { route: '/validation', label: 'Validation', icone: CheckSquare, roles: ['VALIDATEUR', 'ADMIN'] }
+      ]
+    },
+    {
+      titre: 'Pilotage',
+      items: [
+        { route: '/tableau-de-bord', label: 'Tableaux de bord', icone: LayoutDashboard, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
+        { route: '/rapports', label: 'Rapports', icone: FileText, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] }
+      ]
+    },
+    {
+      titre: 'Administration',
+      items: [
+        { route: '/referentiels', label: 'Référentiels', icone: Database, roles: ['ADMIN'] },
+        { route: '/administration', label: 'Gestion des utilisateurs', icone: UserCog, roles: ['ADMIN'] },
+        { route: '/audit', label: 'Audit des actions', icone: ScrollText, roles: ['ADMIN'] }
+      ]
+    }
+  ];
 
-  // ─── 7. Référentiels ───
-  { route: '/referentiels',   label: 'Référentiels',            icone: Settings,      roles: ['ADMIN'] },
-
-  // ─── 8. Gestion des utilisateurs (ex-"Administration") ───
-  { route: '/administration', label: 'Gestion des utilisateurs', icone: Settings,      roles: ['ADMIN'] },
-
-  // ─── 9. Audit des actions (ex-"Audit") ───
-  { route: '/audit',          label: 'Audit des actions',        icone: ClipboardList, roles: ['ADMIN'] }
-];
-
-  readonly menuVisible = computed<MenuItem[]>(() => {
-    return this.menu
-      .filter((item) => !item.roles || this.auth.hasAnyRole(...item.roles))
-      .map((item) => {
-        if (item.enfants) {
-          return {
-            ...item,
-            enfants: item.enfants.filter((e) => !e.roles || this.auth.hasAnyRole(...e.roles))
-          };
-        }
-        return item;
-      });
-  });
+  readonly sectionsVisibles = computed<MenuSection[]>(() =>
+    this.menu
+      .map((section) => ({
+        titre: section.titre,
+        items: section.items
+          .filter((item) => !item.roles || this.auth.hasAnyRole(...item.roles))
+          .map((item) => item.enfants
+            ? { ...item, enfants: item.enfants.filter((e) => !e.roles || this.auth.hasAnyRole(...e.roles)) }
+            : item)
+      }))
+      .filter((section) => section.items.length > 0)
+  );
 
   estOuvert(label: string): boolean {
     return this.groupesOuverts().has(label);
@@ -137,14 +117,5 @@ export class Sidebar {
       else copie.add(label);
       return copie;
     });
-  }
-
-  // Repli au clavier uniquement quand le focus quitte reellement la sidebar
-  // (et pas simplement en passant d'un lien a l'autre a l'interieur).
-  onFocusOut(event: FocusEvent, hostElement: HTMLElement): void {
-    const cible = event.relatedTarget as Node | null;
-    if (!cible || !hostElement.contains(cible)) {
-      this.state.reduire();
-    }
   }
 }

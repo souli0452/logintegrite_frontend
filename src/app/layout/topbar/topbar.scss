@@ -7,29 +7,13 @@
   border-bottom: 1px solid var(--border-default);
   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      var(--asce-green) 0%,
-      var(--asce-green) 45%,
-      var(--asce-yellow) 65%,
-      var(--asce-yellow) 85%,
-      var(--asce-red) 100%
-    );
-  }
-
   &__search {
     position: relative;
     display: flex;
     align-items: center;
-    max-width: 400px;
+    max-width: 460px;
     flex: 1;
+    margin: 0;
   }
 
   &__search-icon {
@@ -49,23 +33,14 @@
     outline: none;
 
     &:focus {
-      border-color: var(--asce-green);
+      border-color: var(--asce-green-strong);
       background-color: var(--bg-surface);
+      box-shadow: 0 0 0 3px rgba(0, 165, 79, 0.18);
     }
   }
 
   &__spacer {
     flex: 1;
-  }
-
-  &__bell {
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border-radius: 8px;
-
-    &:hover {
-      background-color: rgba(227, 6, 19, 0.1);
-      color: var(--asce-red);
-    }
   }
 
   &__user {
@@ -81,10 +56,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-hover);
-    color: var(--text-secondary);
+    background-color: var(--asce-green-tint);
+    color: var(--asce-green-dark);
     border-radius: 50%;
-    border: 2px solid var(--asce-yellow);
   }
 
   &__user-info {
@@ -102,6 +76,13 @@
   }
 }
 
+/* Petit ecran : la recherche garde la place, seul l avatar du compte reste visible. */
+@media (max-width: 600px) {
+  .topbar__search { min-width: 0; }
+  .topbar__user-info { display: none; }
+  .topbar__search-input { min-width: 0; }
+}
+
 .role-badge {
   display: inline-flex;
   align-items: center;
@@ -112,17 +93,17 @@
   width: fit-content;
 
   &--admin {
-    background-color: rgba(255, 221, 0, 0.22);
-    color: var(--asce-black);
+    background-color: var(--asce-green-dark);
+    color: #ffffff;
   }
 
   &--validateur {
-    background-color: rgba(0, 150, 64, 0.12);
-    color: var(--asce-green);
+    background-color: var(--asce-green-tint);
+    color: var(--asce-green-dark);
   }
 
   &--agent {
-    background-color: rgba(29, 29, 27, 0.06);
-    color: var(--asce-black);
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
   }
 }

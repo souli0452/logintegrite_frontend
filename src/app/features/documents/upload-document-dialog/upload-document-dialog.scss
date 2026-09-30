@@ -107,7 +107,7 @@
 
   &:hover, &--survol {
     border-color: var(--asce-green);
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
   }
 
   &__icone {
@@ -150,7 +150,7 @@
 
   &--succes {
     border-color: var(--asce-green);
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
   }
 
   &--erreur {
@@ -294,7 +294,7 @@
   font-weight: 500;
   cursor: pointer;
 
-  &:hover:not(:disabled) { background: var(--asce-green-dark, #005a2b); }
+  &:hover:not(:disabled) { background: var(--asce-green-dark); }
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }

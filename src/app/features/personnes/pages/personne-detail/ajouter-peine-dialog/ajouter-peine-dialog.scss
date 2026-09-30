@@ -1,7 +1,7 @@
-$asce-vert: #009640;
-$asce-vert-fonce: #007a33;
+$asce-vert: var(--asce-green-strong);
+$asce-vert-fonce: var(--asce-green-strong);
 $asce-vert-clair: #e6f5ec;
-$asce-noir: #1D1D1B;
+$asce-noir: var(--asce-black);
 $asce-blanc: #FFFFFF;
 $gris-700: #4a4a48;
 $gris-500: #7a7a78;

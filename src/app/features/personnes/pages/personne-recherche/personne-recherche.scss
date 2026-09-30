@@ -1,10 +1,10 @@
 :host {
-  --asce-green: #009640;
-  --asce-green-hover: #007a34;
+  --asce-green: var(--asce-green-strong);
+  --asce-green-hover: var(--asce-green-strong);
   --asce-green-light: #e6f4ec;
-  --asce-red: #E30613;
-  --asce-yellow: #FFDD00;
-  --asce-black: #1D1D1B;
+  --asce-red: var(--asce-red);
+  --asce-yellow: var(--asce-yellow);
+  --asce-black: var(--asce-black);
   --asce-white: #FFFFFF;
   --asce-gray-bg: #f9fafb;
   --asce-gray-text: #6b7280;

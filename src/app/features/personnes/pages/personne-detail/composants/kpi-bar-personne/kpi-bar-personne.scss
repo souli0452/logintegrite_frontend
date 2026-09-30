@@ -1,10 +1,10 @@
 :host {
   display: block;
 
-  --ascelc-vert:       #009640;
-  --ascelc-vert-fonce: #007A34;
-  --ascelc-rouge:      #E30613;
-  --ascelc-noir:       #1D1D1B;
+  --ascelc-vert:       var(--asce-green-strong);
+  --ascelc-vert-fonce: var(--asce-green-strong);
+  --ascelc-rouge:      var(--asce-red);
+  --ascelc-noir:       var(--asce-black);
   --ascelc-blanc:      #FFFFFF;
 
   --neutre-50:  #FAFAF9;

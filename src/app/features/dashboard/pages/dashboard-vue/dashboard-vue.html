@@ -14,23 +14,20 @@
   </div>
 } @else if (donnees(); as d) {
 
-  <!-- Banniere executive -->
-  <section class="executive-banner">
-    <div class="executive-banner__left">
-      <div class="executive-badge">ASCE-LC</div>
-      <h1>Centre National de Supervision</h1>
-      <p>Pilotage global des signalements, dossiers d'intégrité et chaîne de validation.</p>
-    </div>
-    <div class="executive-banner__right">
-      <div class="executive-date">{{ today | date:'EEEE dd MMMM yyyy':'':'fr' }}</div>
-      <div class="executive-status">
-        <span class="dot"></span>
-        Système opérationnel
-      </div>
-    </div>
-  </section>
+  <!-- Ce qui demande une action -->
+  @if (d.totalDossiersEnAttente > 0) {
+    <section class="a-traiter" aria-label="Dossiers en attente">
+      <p class="a-traiter__texte">
+        <strong>{{ d.totalDossiersEnAttente | number:'1.0-0':'fr' }}</strong>
+        {{ d.totalDossiersEnAttente > 1 ? 'dossiers attendent' : 'dossier attend' }} une validation.
+      </p>
+      @if (auth.hasAnyRole('VALIDATEUR', 'ADMIN')) {
+        <a mat-flat-button color="primary" routerLink="/validation">Ouvrir la validation</a>
+      }
+    </section>
+  }
 
-  <!-- KPI executifs (5 cartes) -->
+  <!-- Indicateurs cles : la couleur indique le sens (vert = acquis, jaune = a traiter, rouge = refuse) -->
   <div class="dashboard-cartes">
     <app-stat-card-executif
       libelle="Personnes impliquées"
@@ -42,21 +39,24 @@
       [delta]="d.deltaDossiers" />
     <app-stat-card-executif
       libelle="Dossiers validés"
+      ton="succes"
       [valeur]="d.totalDossiersValides"
       [delta]="d.deltaValides" />
     <app-stat-card-executif
       libelle="En attente"
+      ton="attention"
       [valeur]="d.totalDossiersEnAttente"
       [delta]="d.deltaEnAttente" />
     <app-stat-card-executif
       libelle="Dossiers rejetés"
+      ton="danger"
       [valeur]="d.totalDossiersRejetes"
       [delta]="d.deltaRejetes" />
   </div>
 
   <!-- Actions rapides -->
   <div class="quick-actions">
-    <button mat-stroked-button color="primary" routerLink="/personnes">
+    <button mat-stroked-button color="primary" routerLink="/personnes/nouveau">
       <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
       <span>Nouvelle personne</span>
     </button>

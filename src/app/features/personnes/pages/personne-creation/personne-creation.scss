@@ -82,8 +82,8 @@
   }
 
   &--actif {
-    background: var(--asce-green-light, #e6f4ea);
-    color: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-tint);
+    color: var(--asce-green-dark);
     border-color: var(--asce-green);
     font-weight: 600;
   }
@@ -227,7 +227,7 @@
   font-weight: 500;
   cursor: pointer;
 
-  &:hover { background: var(--asce-green-dark, #005a2b); }
+  &:hover { background: var(--asce-green-dark); }
 }
 
 .btn-retirer {
@@ -366,7 +366,7 @@
   cursor: pointer;
   margin-top: var(--spacing-sm);
 
-  &:hover:not(:disabled) { background: var(--asce-green-dark, #005a2b); }
+  &:hover:not(:disabled) { background: var(--asce-green-dark); }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
@@ -450,6 +450,6 @@
   font-weight: 500;
   cursor: pointer;
 
-  &:hover:not(:disabled) { background: var(--asce-green-dark, #005a2b); }
+  &:hover:not(:disabled) { background: var(--asce-green-dark); }
   &:disabled { opacity: 0.6; cursor: not-allowed; }
 }

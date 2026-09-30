@@ -142,7 +142,7 @@
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    background: var(--asce-green-dark, #005a2b);
+    background: var(--asce-green-dark);
   }
 
   &:disabled {

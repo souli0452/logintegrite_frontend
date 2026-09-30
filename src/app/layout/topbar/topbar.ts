@@ -3,11 +3,10 @@ import { NgClass } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatBadgeModule } from '@angular/material/badge';
+import { Router } from '@angular/router';
 import {
   LucideAngularModule,
   Search,
-  Bell,
   LogOut,
   User,
   LucideIconData
@@ -29,13 +28,21 @@ const ROLES_CONNUES: Record<string, RoleAffichage> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-topbar',
   standalone: true,
-  imports: [MatToolbarModule, MatMenuModule, MatButtonModule, MatBadgeModule, LucideAngularModule, NgClass],
+  imports: [MatToolbarModule, MatMenuModule, MatButtonModule, LucideAngularModule, NgClass],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss'
 })
 export class Topbar {
   readonly auth = inject(AuthService);
-  readonly icons: Record<string, LucideIconData> = { Search, Bell, LogOut, User };
+  private readonly router = inject(Router);
+  readonly icons: Record<string, LucideIconData> = { Search, LogOut, User };
+
+  /** Ouvre la recherche avancee avec le terme saisi. */
+  rechercher(evenement: Event, terme: string): void {
+    evenement.preventDefault();
+    const q = terme.trim();
+    void this.router.navigate(['/personnes/recherche'], q ? { queryParams: { q } } : {});
+  }
 
   readonly roleAffiche = computed<RoleAffichage>(() => {
     const roles = this.auth.roles();

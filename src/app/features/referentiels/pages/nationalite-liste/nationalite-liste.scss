@@ -91,7 +91,7 @@
   cursor: pointer;
   transition: all 0.15s;
 
-  &:hover { background: var(--asce-green-dark, #005a2b); }
+  &:hover { background: var(--asce-green-dark); }
 }
 
 .etat-chargement, .etat-vide {

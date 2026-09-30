@@ -64,12 +64,12 @@
 
   &:hover:not(:disabled) {
     border-color: var(--asce-green);
-    background: var(--asce-green-light, #e6f4ea);
+    background: var(--asce-green-tint);
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 150, 64, 0.1);
 
     .action-btn__label strong {
-      color: var(--asce-green-dark, #005a2b);
+      color: var(--asce-green-dark);
     }
   }
 
@@ -89,8 +89,8 @@
     flex-shrink: 0;
 
     &--vert {
-      background: var(--asce-green-light, #e6f4ea);
-      color: var(--asce-green-dark, #005a2b);
+      background: var(--asce-green-tint);
+      color: var(--asce-green-dark);
     }
 
     &--rouge {
