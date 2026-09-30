@@ -1,10 +1,14 @@
 // Parcours metier complementaires (un scenario a la fois, pour limiter la memoire du navigateur) :
-//   SCENARIOS=documents,peine,rejet,morale,admin   (voir l'usage dans ui-check.mjs ; comptes agent.test, validateur.test, admin.test)
-//   documents : depot d'un PDF valide (HTTP 201) et refus d'un .exe (HTTP 400)
-//   peine     : le validateur valide le fait, puis l'agent saisit une peine (proposee seulement sur un fait valide)
-//   rejet     : le validateur rejette un fait avec un motif ; visible dans l'onglet Rejetes ; l'agent n'a pas acces a la validation
-//   morale    : creation d'une personne morale (assistant), retrouvee par la recherche
-//   admin     : creation d'un utilisateur par l'administrateur (Keycloak + base) — supprimer ensuite l'utilisateur cree
+//   SCENARIOS=documents,peine,rejet,morale,statut,modifier,exports,referentiel,admin   (usage : voir ui-check.mjs)
+//   documents   : depot d'un PDF valide (HTTP 201) et refus d'un .exe (HTTP 400)
+//   peine       : le validateur valide le fait, puis l'agent saisit une peine (proposee seulement sur un fait valide)
+//   rejet       : le validateur rejette un fait avec un motif ; visible dans l'onglet Rejetes ; l'agent n'a pas acces a la validation
+//   morale      : creation d'une personne morale (assistant), retrouvee par la recherche
+//   statut      : changement de statut judiciaire (autorite, reference, motif), visible en-tete et historique
+//   modifier    : modification de la fiche d'une personne
+//   exports     : PDF du dossier, registre officiel (PDF), liste des dossiers et personnes recensees (Excel) telecharges
+//   referentiel : creation puis suppression (avec confirmation) d'une categorie d'infraction
+//   admin       : regle des 12 caracteres du mot de passe, generation, creation d'un utilisateur — le supprimer ensuite
 // Parcours metier complementaires dans un vrai navigateur. Un scenario a la fois : SCENARIOS=documents,peine,rejet,morale,admin
 import { chromium } from 'playwright';
 import net from 'net';
@@ -218,6 +222,112 @@ const lancer = {
     await ctx.close();
   },
 
+  async statut() {
+    console.log('\n== Statut judiciaire');
+    const { NOM, id } = await fixture('UiStatut');
+    ok('prealable : le fait est valide', await validerViaInterface(NOM));
+    const { ctx, page, requetes, erreurs } = await session('agent.test');
+    await page.goto(`http://localhost:4200/personnes/${id}`); await pause(page, 1500);
+    await page.locator('.btn-modifier-statut').first().click(); await page.locator('mat-dialog-container').waitFor(); await pause(page, 1200);
+    await choisir(page, 'statutJudiciaireId', 'Inculpation');
+    await page.fill('[formcontrolname=dateStatut]', '25/09/2026');
+    await page.fill('[formcontrolname=autoriteCompetente]', 'Tribunal de grande instance de Ouagadougou');
+    await page.fill('[formcontrolname=referenceAffaire]', 'RG-2026-123');
+    await page.fill('[formcontrolname=motif]', 'Ouverture d\'une information judiciaire (test navigateur)');
+    await page.screenshot({ path: '/out/flow2-statut-01-rempli.png' });
+    requetes.length = 0;
+    await page.getByRole('button', { name: /Enregistrer le nouveau statut/ }).click(); await pause(page, 2000);
+    const put = requetes.find((r) => r.m === 'PUT' && /\/statut/.test(r.u));
+    ok('AGENT enregistre le nouveau statut judiciaire', put && put.s === 200, put ? `HTTP ${put.s}` : (await etat(page, 'statut'), 'aucune requete'));
+    await page.goto(`http://localhost:4200/personnes/${id}`); await pause(page, 1500);
+    ok('la fiche affiche le nouveau statut (en-tete)', /inculpation/i.test(await page.locator('body').innerText())); // libelle mis en majuscules par le CSS
+    await page.getByRole('tab', { name: /Historique/ }).click(); await pause(page, 900);
+    await page.screenshot({ path: '/out/flow2-statut-02-historique.png' });
+    const histo = await page.locator('body').innerText();
+    ok('l\'historique des statuts trace le changement (statut, autorite et reference)', /inculpation/i.test(histo) && /Tribunal de grande instance/i.test(histo) && /RG-2026-123/.test(histo),
+      `statut:${/inculpation/i.test(histo)} autorite:${/Tribunal de grande instance/i.test(histo)} reference:${/RG-2026-123/.test(histo)}`);
+    ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.slice(0, 2).join(' | '));
+    await ctx.close();
+  },
+
+  async modifier() {
+    console.log('\n== Modification d\'une fiche');
+    const { NOM, id } = await fixture('UiModif');
+    const { ctx, page, requetes, erreurs } = await session('agent.test');
+    await page.goto(`http://localhost:4200/personnes/${id}`); await pause(page, 1500);
+    await page.getByRole('button', { name: /^Actions$/ }).first().click(); await pause(page, 500);
+    await page.getByRole('menuitem', { name: /Modifier la fiche/ }).click();
+    await page.locator('mat-dialog-container').waitFor(); await pause(page, 1200);
+    await page.fill('[formcontrolname=lieuNaissance]', 'Bobo-Dioulasso');
+    await page.screenshot({ path: '/out/flow2-modif-01.png' });
+    requetes.length = 0;
+    await page.locator('mat-dialog-container').getByRole('button', { name: /Enregistrer|Modifier|Mettre/i }).last().click(); await pause(page, 2000);
+    const put = requetes.find((r) => r.m === 'PUT' && /\/personnes\/physiques/.test(r.u));
+    ok('AGENT modifie la fiche (lieu de naissance)', put && put.s === 200, put ? `HTTP ${put.s}` : (await etat(page, 'modif'), 'aucune requete'));
+    await page.goto(`http://localhost:4200/personnes/${id}`); await pause(page, 1500);
+    ok('la fiche affiche la nouvelle valeur', /Bobo-Dioulasso/.test(await page.locator('body').innerText()));
+    ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.slice(0, 2).join(' | '));
+    await ctx.close();
+  },
+
+  async exports() {
+    console.log('\n== Exports (PDF et Excel) depuis l\'interface');
+    const { NOM, id, dossierId } = await fixture('UiExport');
+    const { ctx, page, erreurs } = await session('agent.test');
+    const telecharger = async (declencheur) => {
+      const [dl] = await Promise.all([page.waitForEvent('download', { timeout: 20000 }), declencheur()]);
+      const chemin = '/tmp/' + dl.suggestedFilename(); await dl.saveAs(chemin);
+      return { nom: dl.suggestedFilename(), debut: fs.readFileSync(chemin).subarray(0, 4).toString('latin1'), taille: fs.statSync(chemin).size };
+    };
+    // PDF du dossier depuis la fiche du dossier
+    await page.goto(`http://localhost:4200/dossiers/${dossierId}`); await pause(page, 1500);
+    const pdf = await telecharger(() => page.getByRole('button', { name: /^PDF$/ }).first().click()).catch((e) => ({ erreur: e.message.split('\n')[0] }));
+    ok('le PDF du dossier se telecharge depuis la fiche du dossier', pdf.debut === '%PDF' && pdf.taille > 500, JSON.stringify(pdf));
+    // Ecran des rapports
+    await page.goto('http://localhost:4200/rapports'); await pause(page, 1500);
+    await page.screenshot({ path: '/out/flow2-exports-01-rapports.png' });
+    const boutons = (await page.locator('main button').allInnerTexts()).map((b) => b.replace(/\s+/g, ' ').trim()).filter(Boolean);
+    console.log('   boutons de l\'ecran Rapports :', boutons.join(' | '));
+    const carte = (titre) => page.locator("main div").filter({ has: page.getByText(titre, { exact: true }) }).filter({ has: page.getByRole("button") }).last();
+    const registre = await telecharger(() => carte("Registre officiel").getByRole("button", { name: /Télécharger/ }).click()).catch((e) => ({ erreur: e.message.split('\n')[0] }));
+    ok("export du registre officiel (PDF) depuis l'ecran Rapports", registre.debut === "%PDF" && /.pdf$/i.test(registre.nom || "") && registre.taille > 500, JSON.stringify(registre));
+    const dossiers = await telecharger(() => carte("Liste des dossiers").getByRole("button", { name: /Télécharger/ }).click()).catch((e) => ({ erreur: e.message.split('\n')[0] }));
+    ok("export de la liste des dossiers (Excel) depuis l'ecran Rapports", dossiers.debut === "PK" && /.xlsx$/i.test(dossiers.nom || "") && dossiers.taille > 1000, JSON.stringify(dossiers));
+    await carte("Personnes recensées").getByRole("button", { name: /Configurer/ }).click(); await pause(page, 700);
+    await page.screenshot({ path: "/out/flow2-exports-02-configurer-personnes.png" });
+    await page.locator("main input").filter({ hasNot: page.locator("nothing") }).nth(1).fill(NOM).catch(() => {});
+    const personnes = await telecharger(() => page.getByRole("button", { name: /Télécharger l.Excel/ }).click()).catch((e) => ({ erreur: e.message.split('\n')[0] }));
+    ok("export des personnes recensees (Excel) apres configuration", personnes.debut === "PK" && /.xlsx$/i.test(personnes.nom || "") && personnes.taille > 1000, JSON.stringify(personnes));
+    ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.slice(0, 2).join(' | '));
+    await ctx.close();
+  },
+
+  async referentiel() {
+    console.log('\n== Referentiel : creation puis suppression (ADMIN)');
+    const LIBELLE = 'Categorie UI ' + Date.now().toString().slice(-6);
+    const { ctx, page, requetes, erreurs } = await session('admin.test');
+    await page.goto('http://localhost:4200/referentiels/categories-infraction'); await pause(page, 1500);
+    await page.getByRole('button', { name: /Ajouter|Nouvelle|Cr[ée]er/i }).first().click(); await pause(page, 900);
+    await page.locator('mat-dialog-container input').first().fill(LIBELLE);
+    requetes.length = 0;
+    await page.locator('mat-dialog-container').getByRole('button', { name: /Enregistrer|Cr[ée]er|Ajouter/i }).last().click(); await pause(page, 1500);
+    const post = requetes.find((r) => r.m === 'POST' && /categories-infraction/.test(r.u));
+    ok('ADMIN cree une categorie d\'infraction', post && post.s === 201, post ? `HTTP ${post.s}` : (await etat(page, 'referentiel'), 'aucune requete'));
+    await page.goto('http://localhost:4200/referentiels/categories-infraction'); await pause(page, 1500);
+    const ligne = page.locator('tr, mat-card, li', { hasText: LIBELLE }).first();
+    ok('la categorie apparait dans la liste', (await ligne.count()) > 0);
+    requetes.length = 0;
+    await ligne.getByRole('button', { name: /Supprimer/ }).click(); await pause(page, 800);
+    await page.screenshot({ path: '/out/flow2-referentiel-01-confirmation.png' });
+    await page.locator('mat-dialog-container').getByRole('button', { name: /Supprimer|Confirmer|Oui/i }).last().click(); await pause(page, 1500);
+    const del = requetes.find((r) => r.m === 'DELETE' && /categories-infraction/.test(r.u));
+    ok('la suppression demande confirmation puis reussit', del && del.s === 204, del ? `HTTP ${del.s}` : 'aucune requete');
+    await page.goto('http://localhost:4200/referentiels/categories-infraction'); await pause(page, 1500);
+    ok('la categorie a disparu de la liste', !(await page.locator('body').innerText()).includes(LIBELLE));
+    ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.slice(0, 2).join(' | '));
+    await ctx.close();
+  },
+
   async admin() {
     console.log('\n== Administration des utilisateurs');
     const LOGIN = 'ui.utilisateur' + Date.now().toString().slice(-5);
@@ -231,6 +341,16 @@ const lancer = {
     const remplir = async (nom, valeur) => { const c = page.locator(`mat-dialog-container [formcontrolname=${nom}]`); if (await c.count()) await c.fill(valeur); };
     await remplir('nom', 'Ouedraogo'); await remplir('prenom', 'Salif'); await remplir('email', LOGIN + '@asce-lc.bf'); await remplir('telephone', '70000000');
     await choisir(page, 'roleInitial', 'Agent');
+    // Regle : mot de passe de 12 caracteres minimum (majuscule, minuscule, chiffre)
+    const champMdp = page.locator('mat-dialog-container [formcontrolname=motDePasseTemporaire]');
+    const boutonCreer = page.locator('mat-dialog-container').getByRole('button', { name: /Cr[ée]er l'utilisateur/ });
+    await champMdp.fill('Abcdefg1234'); await champMdp.blur(); await pause(page, 400);          // 11 caracteres
+    ok('un mot de passe de 11 caracteres est refuse (bouton desactive)', await boutonCreer.isDisabled());
+    ok('le message rappelle la regle des 12 caracteres', /12 caract/.test(await page.locator('mat-dialog-container').innerText()));
+    await champMdp.fill('abcdefghijkl1'); await pause(page, 300);                               // 13 sans majuscule
+    ok('un mot de passe sans majuscule est refuse', await boutonCreer.isDisabled());
+    await champMdp.fill('Abcdefgh1234'); await pause(page, 300);                                // exactement 12
+    ok('un mot de passe de 12 caracteres conforme est accepte', await boutonCreer.isEnabled());
     await page.locator('mat-dialog-container').getByRole('button', { name: /^G[ée]n[ée]rer/ }).click(); await pause(page, 500);
     const mdp = await page.locator('mat-dialog-container [formcontrolname=motDePasseTemporaire]').inputValue();
     ok('un mot de passe temporaire robuste est genere (12+ caracteres)', mdp.length >= 12, `${mdp.length} caracteres`);
