@@ -29,7 +29,7 @@
           <dt>Type</dt><dd>Personne physique</dd>
           <dt>Nom complet</dt><dd>{{ resume()?.nomAffichage }}</dd>
           <dt>Sexe</dt><dd>{{ p.sexe === 'M' ? 'Masculin' : 'Féminin' }}</dd>
-          <dt>Date de naissance</dt><dd>{{ p.dateNaissance }}</dd>
+          <dt>Date de naissance</dt><dd>{{ p.dateNaissance | date:'dd/MM/yyyy' }}</dd>
           <dt>Nationalité</dt><dd>{{ p.nationalite }}</dd>
           <dt>Profession</dt><dd>{{ p.profession || '—' }}</dd>
           <dt>Téléphone</dt><dd>{{ p.telephone || '—' }}</dd>

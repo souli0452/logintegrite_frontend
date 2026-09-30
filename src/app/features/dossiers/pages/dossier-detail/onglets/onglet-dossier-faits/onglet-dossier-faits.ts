@@ -5,11 +5,12 @@ import { MatTableModule } from '@angular/material/table';
 import { StatusBadge, StatusType } from '../../../../../../shared/ui/status-badge/status-badge';
 import { EmptyState } from '../../../../../../shared/ui/empty-state/empty-state';
 import { FaitReprocheResponse } from '../../../../models/dossier.models';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-onglet-dossier-faits',
   standalone: true,
-  imports: [DecimalPipe, MatTableModule, StatusBadge, EmptyState],
+  imports: [DatePipe, DecimalPipe, MatTableModule, StatusBadge, EmptyState],
   templateUrl: './onglet-dossier-faits.html',
   styleUrl: './onglet-dossier-faits.scss'
 })

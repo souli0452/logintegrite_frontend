@@ -373,7 +373,7 @@
                         <span>💰 {{ fait.montantPrejudice | number:'1.0-0' }} {{ fait.devise }}</span>
                       }
                       @if (fait.dateFaits) {
-                        <span>📅 {{ fait.dateFaits }}</span>
+                        <span>📅 {{ fait.dateFaits | date:'dd/MM/yyyy' }}</span>
                       }
                     </div>
                   </div>

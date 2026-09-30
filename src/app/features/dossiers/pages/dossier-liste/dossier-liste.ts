@@ -15,12 +15,13 @@ import { DossierService } from '../../services/dossier.service';
 import { DossierResponse, StatutDossier } from '../../models/dossier.models';
 import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dossier-liste',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
-  imports: [
+  imports: [DatePipe, 
     MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, StatusBadge, EmptyState

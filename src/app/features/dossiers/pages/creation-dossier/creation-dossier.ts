@@ -32,6 +32,7 @@ import {
 import { FaitReprocheRequest } from '../../models/dossier.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+import { DatePipe } from '@angular/common';
 
 interface OptionPersonne { id: string; nomAffichage: string; }
 interface FichierEnAttente { fichier: File; typeDocumentId: string; }
@@ -39,7 +40,7 @@ interface FichierEnAttente { fichier: File; typeDocumentId: string; }
 @Component({
   selector: 'app-creation-dossier',
   standalone: true,
-  imports: [
+  imports: [DatePipe, 
     RouterLink, ReactiveFormsModule, CurrencyPipe,
     MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatDatepickerModule, MatStepperModule, MatProgressSpinnerModule,

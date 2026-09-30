@@ -134,7 +134,7 @@
                         <tbody>
                           @for (fait of dossier.faitsEnAttente; track fait.id) {
                             <tr>
-                              <td class="cellule-date">{{ fait.dateFaits }}</td>
+                              <td class="cellule-date">{{ fait.dateFaits | date:'dd/MM/yyyy' }}</td>
                               <td class="cellule-infraction">{{ fait.typeInfractionLibelle }}</td>
                               <td class="cellule-description">{{ fait.description }}</td>
                               <td class="col-montant">

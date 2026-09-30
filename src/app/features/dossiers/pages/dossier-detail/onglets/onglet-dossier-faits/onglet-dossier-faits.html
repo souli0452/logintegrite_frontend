@@ -3,7 +3,7 @@
     <table mat-table [dataSource]="faits()" class="onglet-table">
       <ng-container matColumnDef="dateFaits">
         <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let f">{{ f.dateFaits }}</td>
+        <td mat-cell *matCellDef="let f">{{ f.dateFaits | date:'dd/MM/yyyy' }}</td>
       </ng-container>
       <ng-container matColumnDef="infraction">
         <th mat-header-cell *matHeaderCellDef>Infraction</th>
