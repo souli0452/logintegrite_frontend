@@ -29,7 +29,6 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
-import { referencePersonne } from '../../../../shared/utils/reference.util';
 import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 type FiltreType = 'TOUS' | 'PHYSIQUE' | 'MORALE';
@@ -234,7 +233,7 @@ export class RegistreOfficielListe implements OnDestroy {
   }
 
   identifiantMetier(p: PersonneResumeResponse): string {
-    return referencePersonne(p.id, p.typePersonne);
+    return p.numeroPersonne;
   }
 
   libelleType(type: 'PHYSIQUE' | 'MORALE'): string {

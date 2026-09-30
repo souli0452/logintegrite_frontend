@@ -4,7 +4,6 @@ export type StatutValidationFait = 'EN_ATTENTE' | 'VALIDEE' | 'REJETEE';
 // ---- Dossier ----
 
 export interface DossierRequest {
-  numeroDossier?: string;
   intitule?: string;
   sourceSignalementId: string;
   descriptionContexte?: string;

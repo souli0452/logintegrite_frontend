@@ -32,7 +32,6 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
-import { referencePersonne } from '../../../../shared/utils/reference.util';
 
 interface FaitLocal {
   typeInfractionId: string;
@@ -110,14 +109,13 @@ export class NouveauDossier implements OnInit {
   readonly identifiantMetier = computed(() => {
     const d = this.donnees();
     if (!d) return '-';
-    return referencePersonne(d.resume.id, d.resume.typePersonne);
+    return d.resume.numeroPersonne;
   });
 
   readonly etapes = ['Dossier', 'Implication', 'Faits reproches', 'Recapitulatif'];
 
   // Formulaire etape 1 : informations du dossier
   readonly formDossier = this.fb.group({
-    numeroDossier: [''],
     intitule: ['', [Validators.required, Validators.maxLength(255)]],
     descriptionContexte: ['', Validators.maxLength(5000)],  // large mais pas illimité
     sourceSignalementId: ['', Validators.required]
@@ -230,7 +228,6 @@ export class NouveauDossier implements OnInit {
 
     const request: AjouterDossierPersonneRequest = {
       dossier: {
-        numeroDossier: d.numeroDossier || undefined,
         intitule: d.intitule!,
         descriptionContexte: d.descriptionContexte || undefined,
         sourceSignalementId: d.sourceSignalementId!

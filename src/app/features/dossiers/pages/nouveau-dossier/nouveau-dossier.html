@@ -143,12 +143,7 @@
           </div>
 
           <form [formGroup]="formDossier" class="etape-form">
-            <div class="champ-groupe">
-              <label class="champ-label">Numéro du dossier</label>
-              <mat-form-field appearance="outline" class="champ-full">
-                <input matInput formControlName="numeroDossier" placeholder="Saisir le numéro du dossier (si manuel)">
-              </mat-form-field>
-            </div>
+            <p class="note-numero">Le numéro du dossier est attribué automatiquement à l'enregistrement.</p>
 
             <div class="champ-groupe">
               <label class="champ-label">Intitulé du dossier <span class="requis">*</span></label>
@@ -403,9 +398,6 @@
             <h3 class="recap-bloc__titre">Dossier</h3>
             <div class="recap-lignes">
               <div class="recap-ligne"><span>Intitulé</span><strong>{{ formDossier.value.intitule }}</strong></div>
-              @if (formDossier.value.numeroDossier) {
-                <div class="recap-ligne"><span>Numéro</span><strong>{{ formDossier.value.numeroDossier }}</strong></div>
-              }
               <div class="recap-ligne"><span>Source</span><strong>{{ libelleSource(formDossier.value.sourceSignalementId!) }}</strong></div>
             </div>
           </div>

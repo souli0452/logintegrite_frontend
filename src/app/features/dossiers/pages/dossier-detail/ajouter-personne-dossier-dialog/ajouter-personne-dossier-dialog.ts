@@ -334,6 +334,7 @@ export class AjouterPersonneDossierDialog implements OnInit {
       next: (created) => {
         const resume: PersonneResumeResponse = {
           id: created.id,
+          numeroPersonne: created.numeroPersonne,
           typePersonne: 'PHYSIQUE',
           nomAffichage: created.nomAffichage || `${v.nomNaissance} ${v.prenoms}`,
           statutAncrage: 'EN_INSTRUCTION',
@@ -391,6 +392,7 @@ export class AjouterPersonneDossierDialog implements OnInit {
       next: (created) => {
         const resume: PersonneResumeResponse = {
           id: created.id,
+          numeroPersonne: created.numeroPersonne,
           typePersonne: 'MORALE',
           nomAffichage: created.nomAffichage || v.denominationSociale!,
           statutAncrage: 'EN_INSTRUCTION',

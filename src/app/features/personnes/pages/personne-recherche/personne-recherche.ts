@@ -33,7 +33,6 @@ import {
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
 import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
-import { referencePersonne } from '../../../../shared/utils/reference.util';
 import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 @Component({
@@ -169,7 +168,7 @@ export class PersonneRecherche {
   }
 
   identifiantMetier(p: PersonneResumeResponse): string {
-    return referencePersonne(p.id, p.typePersonne);
+    return p.numeroPersonne;
   }
 
   private formaterDate(date: Date | null | undefined): string | undefined {

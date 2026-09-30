@@ -63,10 +63,7 @@
 
       <mat-step label="Dossier" [completed]="formDossier.valid">
         <form [formGroup]="formDossier" class="form-grille">
-          <mat-form-field appearance="outline">
-            <mat-label>Numéro du dossier</mat-label>
-            <input matInput formControlName="numeroDossier" placeholder="Si manuel">
-          </mat-form-field>
+          <p class="note-numero">Le numéro du dossier est attribué automatiquement à l'enregistrement.</p>
           <mat-form-field appearance="outline">
             <mat-label>Intitulé du dossier</mat-label>
             <input matInput formControlName="intitule">

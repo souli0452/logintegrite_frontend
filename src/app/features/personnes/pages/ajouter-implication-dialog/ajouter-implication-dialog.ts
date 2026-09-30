@@ -82,7 +82,6 @@ export class AjouterImplicationDialog {
     intitule: ['', Validators.required],
     sourceSignalementId: ['', Validators.required],
     dateOuverture: [new Date(), Validators.required],
-    numeroDossier: [''],
     descriptionContexte: ['']
   });
 
@@ -147,7 +146,6 @@ export class AjouterImplicationDialog {
           intitule: v.intitule!,
           sourceSignalementId: v.sourceSignalementId!,
           dateOuverture: (v.dateOuverture as Date).toISOString().substring(0, 10),
-          numeroDossier: v.numeroDossier || undefined,
           descriptionContexte: v.descriptionContexte || undefined
         };
         const dossier = await firstValueFrom(this.dossierService.creer(dossierRequest));

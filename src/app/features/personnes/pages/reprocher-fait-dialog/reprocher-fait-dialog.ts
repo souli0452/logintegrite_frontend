@@ -83,7 +83,6 @@ export class ReprocherFaitDialog {
     intitule: ['', Validators.required],
     sourceSignalementId: ['', Validators.required],
     dateOuverture: [new Date(), Validators.required],
-    numeroDossier: [''],
     descriptionContexte: ['']
   });
 
@@ -154,7 +153,6 @@ export class ReprocherFaitDialog {
           intitule: v.intitule!,
           sourceSignalementId: v.sourceSignalementId!,
           dateOuverture: (v.dateOuverture as Date).toISOString().substring(0, 10),
-          numeroDossier: v.numeroDossier || undefined,
           descriptionContexte: v.descriptionContexte || undefined
         }));
         dossierId = dossier.id;

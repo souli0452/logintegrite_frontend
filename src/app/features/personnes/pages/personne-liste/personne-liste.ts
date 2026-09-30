@@ -25,7 +25,6 @@ import { PersonneDetailService, PersonneDetailComplet } from '../../services/per
 import { PersonneResumeResponse, PersonnePhysiqueResponse, PersonneMoraleResponse } from '../../models/personne.models';
 import { PersonnePhysiqueFormDialog } from '../personne-physique-form-dialog/personne-physique-form-dialog';
 import { PersonneMoraleFormDialog } from '../personne-morale-form-dialog/personne-morale-form-dialog';
-import { referencePersonne } from '../../../../shared/utils/reference.util';
 import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 
 type FiltreType = 'TOUS' | 'PHYSIQUE' | 'MORALE';
@@ -265,7 +264,7 @@ export class PersonneListe implements OnDestroy {
 
   // Identifiant metier lisible construit a partir de l'UUID
   identifiantMetier(personne: PersonneResumeResponse): string {
-    return referencePersonne(personne.id, personne.typePersonne);
+    return personne.numeroPersonne;
   }
 
   estDeveloppee(personne: PersonneResumeResponse): boolean {

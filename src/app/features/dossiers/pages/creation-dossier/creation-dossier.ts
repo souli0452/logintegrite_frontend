@@ -113,7 +113,6 @@ export class CreationDossier {
 
   // ===== Etape 1 : Dossier =====
   readonly formDossier = this.fb.group({
-    numeroDossier: [''],
     intitule: ['', Validators.required],
     dateOuverture: [new Date(), Validators.required],
     sourceSignalementId: ['', Validators.required],
@@ -275,7 +274,6 @@ export class CreationDossier {
         intitule: v.intitule!,
         sourceSignalementId: v.sourceSignalementId!,
         dateOuverture: (v.dateOuverture as Date).toISOString().substring(0, 10),
-        numeroDossier: v.numeroDossier || undefined,
         descriptionContexte: v.descriptionContexte || undefined
       }));
       dossierId = dossier.id;

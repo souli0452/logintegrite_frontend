@@ -5,7 +5,6 @@ import { environment } from '../../../../environments/environment';
 
 export interface AjouterDossierPersonneRequest {
   dossier: {
-    numeroDossier?: string;
     intitule: string;
     descriptionContexte?: string;
     sourceSignalementId: string;

@@ -11,6 +11,8 @@ export type { PeineRequest, PeineResponse, TypePeine, NatureSanction } from './p
 // Réponse minimale servie par /personnes (vue polymorphe)
 export interface PersonneResumeResponse {
   id: string;
+  /** Reference officielle attribuee par le serveur (PERS-2026-00001, ORG-2026-00001). */
+  numeroPersonne: string;
   typePersonne: 'PHYSIQUE' | 'MORALE';
   nomAffichage: string;
   statutAncrage: 'EN_INSTRUCTION' | 'REGISTRE_OFFICIEL';
@@ -41,6 +43,7 @@ export interface PersonnePhysiqueRequest {
 
 export interface PersonnePhysiqueResponse extends MetadonneesFiche {
   id: string;
+  numeroPersonne: string;
   nomAffichage: string;
   nomNaissance: string;
   nomUsage?: string;
@@ -84,6 +87,7 @@ export interface PersonneMoraleRequest {
 
 export interface PersonneMoraleResponse extends Omit<PersonneMoraleRequest, never>, MetadonneesFiche {
   id: string;
+  numeroPersonne: string;
   nomAffichage: string;
   representantLegalNomComplet?: string;
   aUnLogo: boolean;

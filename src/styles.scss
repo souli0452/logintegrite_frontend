@@ -179,3 +179,15 @@ a {
   align-items: center;
   gap: 0.5rem;
 }
+
+/* Information : le numero est attribue par le serveur. */
+.note-numero {
+  grid-column: 1 / -1;
+  margin: 0 0 var(--spacing-md);
+  padding: 0.6rem 0.9rem;
+  background: var(--asce-green-tint);
+  border-left: 3px solid var(--asce-green-strong);
+  border-radius: var(--radius-md);
+  color: var(--asce-green-dark);
+  font-size: 0.8125rem;
+}

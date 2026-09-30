@@ -61,7 +61,7 @@ export class HeroDossier {
   // ─── Numéro de fiche formaté ───────────────────────────────────────────────
   readonly numeroFicheDisplay = computed(() => {
     const d = this.dossier();
-    return d.numeroDossier || `DOSS-${d.id.substring(0, 6).toUpperCase()}`;
+    return d.numeroDossier || '—';
   });
 
   // ─── Durée d'instruction (âge du dossier) ──────────────────────────────────

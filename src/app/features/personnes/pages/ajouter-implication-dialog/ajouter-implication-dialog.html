@@ -20,10 +20,6 @@
           <input matInput formControlName="intitule" placeholder="Détournement de fonds - Marchés 2024">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Numéro de dossier</mat-label>
-          <input matInput formControlName="numeroDossier" placeholder="DOS-2026-001 (optionnel)">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
           <mat-label>Source du signalement</mat-label>
           <mat-select formControlName="sourceSignalementId">
             @for (s of sources(); track s.id) {
