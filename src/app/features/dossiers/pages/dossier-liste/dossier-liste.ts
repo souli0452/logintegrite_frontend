@@ -13,12 +13,13 @@ import { StatusBadge, StatusType } from '../../../../shared/ui/status-badge/stat
 import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
 import { DossierService } from '../../services/dossier.service';
 import { DossierResponse, StatutDossier } from '../../models/dossier.models';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-dossier-liste',
   standalone: true,
   imports: [
-    MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],

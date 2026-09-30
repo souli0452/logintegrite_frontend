@@ -17,6 +17,7 @@ import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
 import { ReferentielCrudService } from '../../services/referentiel-crud.interface';
 import { ReferentielSimpleDialog } from '../referentiel-simple-dialog/referentiel-simple-dialog';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 interface ItemGenerique {
   id: string;
@@ -28,7 +29,7 @@ interface ItemGenerique {
   selector: 'app-referentiel-simple-liste',
   standalone: true,
   imports: [
-    MatTableModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],

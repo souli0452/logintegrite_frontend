@@ -15,6 +15,7 @@ import {
   PersonnePhysiqueResponse, PersonneMoraleResponse,
   AliasResponse, PieceIdentiteResponse
 } from '../../../../models/personne.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Onglet Fiche identitaire — vue détaillée de l'état civil.
@@ -28,7 +29,7 @@ import {
   standalone: true,
   imports: [
     CommonModule, DatePipe, DecimalPipe,
-    MatTooltipModule, MatMenuModule, LucideAngularModule
+    MatTooltipModule, NomAccessibleInfobulle, MatMenuModule, LucideAngularModule
   ],
   templateUrl: './onglet-infos.html',
   styleUrl: './onglet-infos.scss'

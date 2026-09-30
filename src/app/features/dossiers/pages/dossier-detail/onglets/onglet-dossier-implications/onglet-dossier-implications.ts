@@ -14,11 +14,12 @@ import {
   AjouterPersonneDossierDialog,
   DonneesDialogAjoutPersonne
 } from '../../ajouter-personne-dossier-dialog/ajouter-personne-dossier-dialog';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-onglet-dossier-implications',
   standalone: true,
-  imports: [RouterLink, MatTableModule, MatButtonModule, MatTooltipModule, LucideAngularModule],
+  imports: [RouterLink, MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './onglet-dossier-implications.html',
   styleUrl: './onglet-dossier-implications.scss'
 })

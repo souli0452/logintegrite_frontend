@@ -17,6 +17,7 @@ import {
 } from 'lucide-angular';
 
 import { EtatChaineResponse, VerificationChaineResponse } from '../../../../models/audit.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Bandeau d'intégrité cryptographique — pièce maîtresse du haut d'écran.
@@ -31,7 +32,7 @@ import { EtatChaineResponse, VerificationChaineResponse } from '../../../../mode
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-bandeau-integrite',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './bandeau-integrite.html',
   styleUrl: './bandeau-integrite.scss'
 })

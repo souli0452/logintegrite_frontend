@@ -13,12 +13,13 @@ import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 import { ReferentielCrudService } from '../../services/referentiel-crud.interface';
 import { HierarchieDialog, ItemHierarchique } from '../hierarchie-dialog/hierarchie-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-referentiel-hierarchique',
   standalone: true,
   imports: [
-    MatTableModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],

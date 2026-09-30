@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -70,7 +70,7 @@ interface StatutJudiciaireCourant {
   selector: 'app-personne-detail',
   standalone: true,
   imports: [
-    CommonModule, DatePipe, DecimalPipe,
+    CommonModule, DatePipe,
     MatTabsModule, MatProgressSpinnerModule,
     LucideAngularModule,
     HeroPersonne, KpiBarPersonne,

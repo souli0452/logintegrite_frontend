@@ -12,6 +12,7 @@ import {
 import { DossierService } from '../../../dossiers/services/dossier.service';
 import { FaitReprocheResponse, ImplicationResponse } from '../../../dossiers/models/dossier.models';
 import { ReprocherFaitDialog } from '../../pages/reprocher-fait-dialog/reprocher-fait-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 export interface DonneesDialogFaitsDossier {
   dossierId: string;
@@ -31,7 +32,7 @@ export interface DonneesDialogFaitsDossier {
   standalone: true,
   imports: [
     CommonModule, DatePipe, CurrencyPipe,
-    MatDialogModule, MatProgressSpinnerModule, MatTooltipModule,
+    MatDialogModule, MatProgressSpinnerModule, MatTooltipModule, NomAccessibleInfobulle,
     LucideAngularModule
   ],
   templateUrl: './faits-du-dossier-dialog.html',

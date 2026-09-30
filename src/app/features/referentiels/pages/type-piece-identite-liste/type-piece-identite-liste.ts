@@ -26,13 +26,14 @@ import {
   TypePieceIdentiteFormDialog,
   DonneesTypePieceIdentiteDialog
 } from './type-piece-identite-form-dialog/type-piece-identite-form-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 @Component({
   selector: 'app-type-piece-identite-liste',
   standalone: true,
   imports: [
     CommonModule,
     MatTableModule, MatButtonModule, MatIconModule,
-    MatProgressSpinnerModule, MatTooltipModule, MatSlideToggleModule,
+    MatProgressSpinnerModule, MatTooltipModule, NomAccessibleInfobulle, MatSlideToggleModule,
     LucideAngularModule
   ],
   templateUrl: './type-piece-identite-liste.html',

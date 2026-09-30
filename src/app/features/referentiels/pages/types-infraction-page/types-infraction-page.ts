@@ -14,12 +14,13 @@ import { TypeInfractionService } from '../../services/type-infraction.service';
 import { TypeInfractionResponse } from '../../models/referentiel.models';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 import { TypeInfractionDialog } from '../type-infraction-dialog/type-infraction-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-types-infraction-page',
   standalone: true,
   imports: [
-    MatTableModule, MatButtonModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],

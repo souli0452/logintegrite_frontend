@@ -8,6 +8,7 @@ import {
 } from 'lucide-angular';
 
 import { FaitReprocheResponse } from '../../../../models/dossier.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Barre horizontale de 4 KPI du dossier : personnes, faits, préjudice total, documents.
@@ -16,7 +17,7 @@ import { FaitReprocheResponse } from '../../../../models/dossier.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-kpi-bar-dossier',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './kpi-bar-dossier.html',
   styleUrl: './kpi-bar-dossier.scss'
 })

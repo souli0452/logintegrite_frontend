@@ -120,7 +120,8 @@
 
             <!-- Actions -->
             <div class="ligne-utilisateur__actions">
-              <button class="btn-actions" [matMenuTriggerFor]="menu">
+              <button class="btn-actions" [matMenuTriggerFor]="menu"
+                      [attr.aria-label]="'Actions pour ' + u.prenom + ' ' + u.nom">
                 <lucide-icon [name]="icons['MoreVertical']" [size]="16"></lucide-icon>
               </button>
 

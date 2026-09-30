@@ -9,6 +9,7 @@ import {
 } from 'lucide-angular';
 
 import { PersonneDetailComplet } from '../../../../services/personne-detail.service';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 export type TypeActionRapide =
   | 'dossier'
@@ -27,7 +28,7 @@ export type TypeActionRapide =
 @Component({
   selector: 'app-actions-rapides',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './actions-rapides.html',
   styleUrl: './actions-rapides.scss'
 })

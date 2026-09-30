@@ -6,6 +6,7 @@ import {
   FolderOpen, FileText, Gavel, Paperclip, Clock,
   LucideIconData
 } from 'lucide-angular';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Barre horizontale des 5 KPIs clés de la fiche personne.
@@ -16,7 +17,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-kpi-bar-personne',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './kpi-bar-personne.html',
   styleUrl: './kpi-bar-personne.scss'
 })

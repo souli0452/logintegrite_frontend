@@ -22,6 +22,7 @@ import { ReprocherFaitDialog } from '../../../reprocher-fait-dialog/reprocher-fa
 import { AjouterPeineDialog } from '../../ajouter-peine-dialog/ajouter-peine-dialog';
 import { PersonnesDuDossierDialog } from '../../personnes-du-dossier-dialog/personnes-du-dossier-dialog';
 import { FaitsDuDossierDialog } from '../../../../dialogs/faits-du-dossier-dialog/faits-du-dossier-dialog';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 interface GroupeDossier {
   dossier: DossierResponse;
@@ -42,7 +43,7 @@ interface ResumeStatut {
   standalone: true,
   imports: [
     CommonModule, DatePipe, FormsModule,
-    MatTooltipModule, MatMenuModule, MatPaginatorModule,
+    MatTooltipModule, NomAccessibleInfobulle, MatMenuModule, MatPaginatorModule,
     LucideAngularModule
   ],
   templateUrl: './onglet-dossiers-implications.html',

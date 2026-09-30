@@ -12,6 +12,7 @@ import {
 } from 'lucide-angular';
 
 import { DossierResponse, StatutDossier } from '../../../../models/dossier.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Hero de la fiche dossier — style "Dossier officiel ASCE-LC" cohérent avec la fiche personne.
@@ -21,7 +22,7 @@ import { DossierResponse, StatutDossier } from '../../../../models/dossier.model
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-hero-dossier',
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatMenuModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './hero-dossier.html',
   styleUrl: './hero-dossier.scss'
 })

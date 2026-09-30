@@ -28,6 +28,7 @@ import {
 } from '../../../dossiers/models/dossier.models';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 import { MotifRejetDialog } from '../motif-rejet-dialog/motif-rejet-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_FAITS';
 type OngletActif = 'EN_ATTENTE' | 'REJETES';
@@ -38,7 +39,7 @@ type OngletActif = 'EN_ATTENTE' | 'REJETES';
   standalone: true,
   imports: [
     CommonModule, DatePipe, DecimalPipe,
-    MatButtonModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     MatFormFieldModule, MatInputModule, MatSelectModule, MatTabsModule,
     LucideAngularModule,
     PageHeader, EmptyState

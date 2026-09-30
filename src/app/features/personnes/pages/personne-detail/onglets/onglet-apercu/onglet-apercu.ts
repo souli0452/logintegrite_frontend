@@ -16,6 +16,7 @@ import {
   DossierResponse, PeineResponse,
   AliasResponse, PieceIdentiteResponse
 } from '../../../../models/personne.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 /**
  * Onglet Aperçu : vitrine à 3 colonnes de la fiche personne.
@@ -31,7 +32,7 @@ import {
   standalone: true,
   imports: [
     CommonModule, DatePipe, DecimalPipe,
-    MatTooltipModule, LucideAngularModule
+    MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule
   ],
   templateUrl: './onglet-apercu.html',
   styleUrl: './onglet-apercu.scss'

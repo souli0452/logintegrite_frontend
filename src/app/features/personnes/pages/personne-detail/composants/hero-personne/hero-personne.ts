@@ -16,12 +16,13 @@ import {
 
 import { PersonneDetailComplet } from '../../../../services/personne-detail.service';
 import { PersonnePhysiqueResponse, PersonneMoraleResponse } from '../../../../models/personne.models';
+import { NomAccessibleInfobulle } from '../../../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-hero-personne',
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatTooltipModule, LucideAngularModule],
+  imports: [CommonModule, MatMenuModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule],
   templateUrl: './hero-personne.html',
   styleUrl: './hero-personne.scss'
 })

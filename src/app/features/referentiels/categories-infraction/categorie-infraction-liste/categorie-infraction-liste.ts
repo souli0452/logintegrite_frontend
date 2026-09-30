@@ -14,12 +14,13 @@ import { CategorieInfractionService } from '../../services/categorie-infraction.
 import { CategorieInfractionResponse } from '../../models/referentiel.models';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 import { CategorieInfractionFormDialog } from '../categorie-infraction-form-dialog/categorie-infraction-form-dialog';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-categorie-infraction-liste',
   standalone: true,
   imports: [
-    MatTableModule, MatButtonModule, MatIconButton, MatTooltipModule, MatProgressSpinnerModule,
+    MatTableModule, MatButtonModule, MatIconButton, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, EmptyState
   ],

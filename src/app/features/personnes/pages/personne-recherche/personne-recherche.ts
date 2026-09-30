@@ -31,6 +31,7 @@ import {
 } from '../../../referentiels/models/referentiel.models';
 
 import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-infobulle';
 
 @Component({
   selector: 'app-personne-recherche',
@@ -40,7 +41,7 @@ import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adap
     MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule,
     MatExpansionModule, // <-- AJOUT ICI
     MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule,
-    MatTooltipModule, MatProgressSpinnerModule,
+    MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
     LucideAngularModule,
     PageHeader, EmptyState
   ],
