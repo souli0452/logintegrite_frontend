@@ -17,6 +17,7 @@ import {
   Database,
   UserCog,
   ScrollText,
+  Settings,
   PanelLeftClose,
   PanelLeftOpen,
   LucideIconData
@@ -61,6 +62,13 @@ export class Sidebar {
   /** Le menu suit le parcours de travail : consulter le registre, traiter les dossiers, piloter, administrer. */
   private readonly menu: MenuSection[] = [
     {
+      // Accueil : toujours en premier, sans titre de rubrique
+      titre: '',
+      items: [
+        { route: '/tableau-de-bord', label: 'Tableaux de bord', icone: LayoutDashboard, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] }
+      ]
+    },
+    {
       titre: 'Registre',
       items: [
         { route: '/registre-officiel', label: 'Répertoire officiel', icone: ShieldCheck },
@@ -77,25 +85,27 @@ export class Sidebar {
       ]
     },
     {
-      titre: 'Traitement',
+      titre: 'Traitement et suivi',
       items: [
         { route: '/dossiers', label: 'Gestion des dossiers', icone: FolderOpen, roles: ['AGENT', 'ADMIN'] },
-        { route: '/validation', label: 'Validation', icone: CheckSquare, roles: ['VALIDATEUR', 'ADMIN'] }
-      ]
-    },
-    {
-      titre: 'Pilotage',
-      items: [
-        { route: '/tableau-de-bord', label: 'Tableaux de bord', icone: LayoutDashboard, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
+        { route: '/validation', label: 'Validation', icone: CheckSquare, roles: ['VALIDATEUR', 'ADMIN'] },
         { route: '/rapports', label: 'Rapports', icone: FileText, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] }
       ]
     },
     {
-      titre: 'Administration',
+      // Tout ce qui releve de la configuration, reuni en un seul groupe repliable (le groupe porte deja son nom)
+      titre: '',
       items: [
-        { route: '/referentiels', label: 'Référentiels', icone: Database, roles: ['ADMIN'] },
-        { route: '/administration', label: 'Gestion des utilisateurs', icone: UserCog, roles: ['ADMIN'] },
-        { route: '/audit', label: 'Audit des actions', icone: ScrollText, roles: ['ADMIN'] }
+        {
+          label: 'Paramètres',
+          icone: Settings,
+          roles: ['ADMIN'],
+          enfants: [
+            { route: '/referentiels', label: 'Référentiels', icone: Database },
+            { route: '/administration', label: 'Gestion des utilisateurs', icone: UserCog },
+            { route: '/audit', label: 'Audit des actions', icone: ScrollText }
+          ]
+        }
       ]
     }
   ];

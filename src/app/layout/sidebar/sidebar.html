@@ -8,9 +8,9 @@
   <div class="sidebar__drapeau" aria-hidden="true"></div>
 
   <nav class="sidebar__nav">
-    @for (section of sectionsVisibles(); track section.titre) {
+    @for (section of sectionsVisibles(); track $index) {
       <div class="sidebar__section">
-        @if (!state.pliee()) {
+        @if (!state.pliee() && section.titre) {
           <p class="sidebar__section-titre">{{ section.titre }}</p>
         }
         @for (item of section.items; track item.label) {
