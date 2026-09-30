@@ -151,13 +151,13 @@
 }
 
 .statut-libelle {
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .statut-detail {
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   color: rgba(255, 255, 255, 0.82);
   line-height: 1.4;
 }
@@ -172,7 +172,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: rgba(255, 255, 255, 0.75);
@@ -203,7 +203,7 @@
 
   &__mono {
     font-family: var(--mono-font);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     letter-spacing: 0.02em;
   }
@@ -226,7 +226,7 @@
   @media (max-width: 900px) { align-items: flex-start; }
 
   &__valeur {
-    font-size: 1.35rem;
+    font-size: var(--text-lg);
     font-weight: 700;
     line-height: 1;
     font-variant-numeric: tabular-nums;
@@ -238,7 +238,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     color: rgba(255, 255, 255, 0.75);
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -256,7 +256,7 @@
   color: var(--ascelc-vert-fonce);
   border: none;
   border-radius: 10px;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;

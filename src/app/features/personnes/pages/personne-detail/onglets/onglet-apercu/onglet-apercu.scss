@@ -74,7 +74,7 @@
     align-items: center;
     gap: 0.4rem;
     margin: 0;
-    font-size: 0.87rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--ascelc-noir);
     flex: 1;
@@ -89,7 +89,7 @@
   &__compteur {
     color: var(--neutre-500);
     font-weight: 500;
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
   }
 
   &__corps {
@@ -126,14 +126,14 @@
 
     dt {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: var(--text-xs);
       color: var(--neutre-500);
       font-weight: 500;
     }
 
     dd {
       margin: 0;
-      font-size: 0.82rem;
+      font-size: var(--text-sm);
       color: var(--ascelc-noir);
       font-weight: 600;
       line-height: 1.35;
@@ -141,7 +141,7 @@
 
       &.mono {
         font-family: var(--mono-font);
-        font-size: 0.76rem;
+        font-size: var(--text-xs);
       }
     }
   }
@@ -150,7 +150,7 @@
 .age-suffix {
   color: var(--neutre-500);
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   margin-left: 0.2rem;
 }
 
@@ -166,7 +166,7 @@
   border: 1px solid var(--ascelc-vert);
   border-radius: 6px;
   color: var(--ascelc-vert-fonce);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms;
@@ -190,7 +190,7 @@
   border: 1px solid var(--neutre-200);
   border-radius: 6px;
   color: var(--ascelc-noir);
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms;
@@ -209,7 +209,7 @@
   background: transparent;
   border: none;
   color: var(--ascelc-vert-fonce);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   cursor: pointer;
   padding: 0.15rem 0.35rem;
@@ -277,13 +277,13 @@
   }
 
   &__nom {
-    font-size: 0.83rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     color: var(--ascelc-noir);
   }
 
   &__commentaire {
-    font-size: 0.74rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500);
     font-style: italic;
     margin-left: auto;
@@ -305,7 +305,7 @@
 .badge-mini {
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
-  font-size: 0.65rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -334,20 +334,20 @@
 
     dt {
       margin: 0;
-      font-size: 0.7rem;
+      font-size: var(--text-xs);
       color: var(--neutre-500);
       font-weight: 500;
     }
 
     dd {
       margin: 0;
-      font-size: 0.82rem;
+      font-size: var(--text-sm);
       color: var(--ascelc-noir);
       font-weight: 600;
 
       &.mono {
         font-family: var(--mono-font);
-        font-size: 0.76rem;
+        font-size: var(--text-xs);
       }
     }
   }
@@ -370,20 +370,20 @@
   }
 
   &__label {
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500);
     font-weight: 500;
   }
 
   &__valeur {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--ascelc-noir);
     font-weight: 600;
     line-height: 1.3;
 
     &.mono {
       font-family: var(--mono-font);
-      font-size: 0.76rem;
+      font-size: var(--text-xs);
     }
   }
 }
@@ -394,7 +394,7 @@
   align-items: center;
   padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.65rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.04em;
   align-self: flex-start;
@@ -431,7 +431,7 @@
     align-items: center;
     gap: 0.55rem;
     padding: 0.4rem 0;
-    font-size: 0.83rem;
+    font-size: var(--text-sm);
   }
 
   &__libelle {
@@ -459,19 +459,19 @@
   }
 
   &__label {
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500);
     font-weight: 500;
   }
 
   &__valeur {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--ascelc-noir);
     font-weight: 600;
     line-height: 1.3;
 
     .devise {
-      font-size: 0.7rem;
+      font-size: var(--text-xs);
       color: var(--neutre-500);
       font-weight: 500;
     }
@@ -484,7 +484,7 @@
 .etat-vide {
   margin: 0;
   padding: 0.5rem 0;
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--neutre-500);
   font-style: italic;
   text-align: center;

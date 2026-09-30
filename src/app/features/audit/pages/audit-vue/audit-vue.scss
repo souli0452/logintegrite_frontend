@@ -31,7 +31,7 @@
   color: var(--ascelc-blanc);
   border: none;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms;

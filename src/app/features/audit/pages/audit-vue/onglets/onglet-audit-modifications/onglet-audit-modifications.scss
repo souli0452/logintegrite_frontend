@@ -22,7 +22,7 @@
 
 .cellule-date {
   font-family: 'Menlo', 'Courier New', monospace;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -32,7 +32,7 @@
 }
 
 .cellule-souligne {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--text-muted);
   font-family: 'Menlo', 'Courier New', monospace;
   margin-top: 2px;
@@ -40,7 +40,7 @@
 
 .cellule-hash {
   font-family: 'Menlo', 'Courier New', monospace;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
   display: flex;
   align-items: center;

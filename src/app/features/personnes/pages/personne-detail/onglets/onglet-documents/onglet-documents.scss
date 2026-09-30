@@ -17,14 +17,14 @@
 
   &__titre {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 600;
     color: var(--text-primary);
   }
 
   &__sous {
     margin: 4px 0 0 0;
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     color: var(--text-secondary);
   }
 }
@@ -46,14 +46,14 @@
 
   &__titre {
     margin: 0 0 4px 0;
-    font-size: 0.9375rem;
+    font-size: var(--text-base);
     font-weight: 600;
     color: var(--asce-green-dark);
   }
 
   &__sous {
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     color: var(--text-secondary);
   }
 
@@ -85,12 +85,12 @@
   &__numero {
     font-family: 'Menlo', 'Courier New', monospace;
     font-weight: 600;
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
   }
 
   &__intitule {
     color: var(--text-secondary);
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -106,7 +106,7 @@
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
@@ -120,7 +120,7 @@
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
 
@@ -134,7 +134,7 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   cursor: pointer;
 
   &:hover {
@@ -185,7 +185,7 @@
   thead th {
     text-align: left;
     padding: 12px var(--spacing-md);
-    font-size: 0.6875rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -196,7 +196,7 @@
 
   tbody td {
     padding: 12px var(--spacing-md);
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--text-primary);
     border-bottom: 1px solid var(--border-default);
     vertical-align: middle;
@@ -236,7 +236,7 @@
   background: var(--bg-hover);
   color: var(--text-secondary);
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 500;
 }
 
@@ -247,7 +247,7 @@
   color: var(--text-secondary);
   cursor: help;
   font-family: 'Menlo', 'Courier New', monospace;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
 
   &__icone {
     color: var(--text-muted);
@@ -258,7 +258,7 @@
 .cellule-date {
   font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
 }
 
 .hash-badge {
@@ -269,7 +269,7 @@
   background: var(--asce-green-tint);
   color: var(--asce-green-dark);
   border-radius: var(--radius-sm);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   cursor: help;
 
   &__valeur {

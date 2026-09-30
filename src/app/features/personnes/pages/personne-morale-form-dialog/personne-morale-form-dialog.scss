@@ -35,7 +35,7 @@
 
     h1 {
       margin: 0;
-      font-size: 1.375rem;
+      font-size: var(--text-lg);
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.3;
@@ -43,7 +43,7 @@
 
     p {
       margin: 4px 0 0;
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
       color: var(--text-secondary);
     }
   }
@@ -133,7 +133,7 @@
 
   &__titre {
     margin: 0;
-    font-size: 1.0625rem;
+    font-size: var(--text-md);
     font-weight: 600;
     color: var(--text-primary);
   }
@@ -183,7 +183,7 @@
   color: white;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
@@ -202,7 +202,7 @@
   color: var(--asce-red);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
@@ -235,7 +235,7 @@
 }
 
 .champ-label {
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text-primary);
 }
@@ -326,7 +326,7 @@
     gap: 6px;
     flex: 1;
     min-width: 0;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
   }
 
   &__type {
@@ -379,7 +379,7 @@
   color: var(--asce-green-strong);
   border: 1px dashed var(--asce-green-strong);
   border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
@@ -404,7 +404,7 @@
   background: var(--asce-green-tint);
   border: 1px solid #b7e4c7;
   border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   color: var(--asce-green-dark);
 
   lucide-icon {
@@ -426,7 +426,7 @@
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
@@ -447,7 +447,7 @@
   color: white;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;

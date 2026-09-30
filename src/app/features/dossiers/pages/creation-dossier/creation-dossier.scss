@@ -16,7 +16,7 @@
   margin-bottom: var(--spacing-md);
 
   &__entete { font-weight: 600; color: var(--status-success); margin-bottom: var(--spacing-xs); }
-  &__texte { font-size: 0.8125rem; color: var(--text-secondary); margin: 0; }
+  &__texte { font-size: var(--text-sm); color: var(--text-secondary); margin: 0; }
 }
 
 .carte-personne {
@@ -38,7 +38,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--spacing-xs) var(--spacing-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   margin: 0;
 
   dt { color: var(--text-muted); }
@@ -51,7 +51,7 @@
   background: var(--status-success-bg);
   color: var(--status-success);
   border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   text-align: center;
 }
 
@@ -82,7 +82,7 @@
 .liste-accumulee { display: flex; flex-direction: column; gap: var(--spacing-xs); margin-top: var(--spacing-sm); }
 .ligne-accumulee {
   display: flex; align-items: center; justify-content: space-between;
-  padding: var(--spacing-sm); background: var(--bg-hover); border-radius: var(--radius-sm); font-size: 0.8125rem;
+  padding: var(--spacing-sm); background: var(--bg-hover); border-radius: var(--radius-sm); font-size: var(--text-sm);
 }
 
 .carte-implication {
@@ -95,7 +95,7 @@
 }
 
 .badge-origine {
-  font-size: 0.8125rem; font-weight: 500;
+  font-size: var(--text-sm); font-weight: 500;
   background: var(--status-success-bg); color: var(--status-success);
   padding: 4px 10px; border-radius: 999px;
 }
@@ -107,18 +107,18 @@
 }
 .resultat-item {
   text-align: left; padding: var(--spacing-sm); background: var(--bg-surface); border: none;
-  cursor: pointer; font-size: 0.8125rem;
+  cursor: pointer; font-size: var(--text-sm);
   &:hover { background: var(--bg-hover); }
 }
 
 .champ-fichier { display: flex; align-items: center; }
-.aide-etape { font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--spacing-sm); }
+.aide-etape { font-size: var(--text-sm); color: var(--text-muted); margin-top: var(--spacing-sm); }
 
 .recap {
   background: var(--status-success-bg);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
 
-  &__ligne { font-size: 0.875rem; color: var(--text-primary); margin-bottom: var(--spacing-xs); }
-  &__aide { font-size: 0.8125rem; color: var(--text-secondary); margin: var(--spacing-sm) 0 0; }
+  &__ligne { font-size: var(--text-sm); color: var(--text-primary); margin-bottom: var(--spacing-xs); }
+  &__aide { font-size: var(--text-sm); color: var(--text-secondary); margin: var(--spacing-sm) 0 0; }
 }

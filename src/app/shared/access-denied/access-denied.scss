@@ -15,7 +15,7 @@
   }
 
   &__title {
-    font-size: 1.5rem;
+    font-size: var(--text-xl);
     margin-bottom: var(--spacing-sm);
     color: var(--asce-red);
   }

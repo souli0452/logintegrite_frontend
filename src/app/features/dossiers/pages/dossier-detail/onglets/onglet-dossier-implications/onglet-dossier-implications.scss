@@ -41,14 +41,14 @@
 
   &__titre {
     margin: 0 0 0.2rem;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--ascelc-noir, var(--asce-black));
   }
 
   &__count {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500, #78716C);
   }
 }
@@ -62,7 +62,7 @@
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   cursor: pointer;
   transition: all 150ms;
@@ -76,7 +76,7 @@
 
   &--principal {
     padding: 0.7rem 1.35rem;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     margin-top: 0.5rem;
   }
 }
@@ -96,14 +96,14 @@
 
   &__titre {
     margin: 0.5rem 0 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--ascelc-noir, var(--asce-black));
   }
 
   &__msg {
     margin: 0 0 0.5rem;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     max-width: 340px;
     line-height: 1.5;
   }

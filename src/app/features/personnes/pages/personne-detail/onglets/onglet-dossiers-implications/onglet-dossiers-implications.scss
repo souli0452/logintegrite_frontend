@@ -77,7 +77,7 @@
     align-items: center;
     gap: 0.4rem;
     margin: 0;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--ascelc-noir);
     flex: 1;
@@ -87,7 +87,7 @@
   &__titre-sous {
     font-weight: 500;
     color: var(--neutre-500);
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
   }
 
   &__icone {
@@ -131,7 +131,7 @@
 
     h3 {
       margin: 0;
-      font-size: 1rem;
+      font-size: var(--text-base);
       font-weight: 700;
       color: var(--ascelc-noir);
     }
@@ -146,7 +146,7 @@
     background: rgba(0, 150, 64, 0.1);
     color: var(--ascelc-vert-fonce);
     border-radius: 999px;
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     font-weight: 700;
   }
 
@@ -176,7 +176,7 @@
     background: transparent;
     border: none;
     color: var(--neutre-600);
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
     font-weight: 500;
     cursor: pointer;
     transition: all 150ms;
@@ -222,7 +222,7 @@
     background: transparent;
     border: none;
     outline: none;
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--ascelc-noir);
     width: 200px;
 
@@ -248,7 +248,7 @@
   border: 1px solid var(--neutre-200);
   border-radius: 6px;
   color: var(--neutre-600);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   cursor: pointer;
   transition: all 150ms;
@@ -278,7 +278,7 @@
     }
     th {
       padding: 0.75rem 0.85rem;
-      font-size: 0.7rem;
+      font-size: var(--text-xs);
       font-weight: 600;
       color: var(--neutre-500);
       text-transform: uppercase;
@@ -307,7 +307,7 @@
 
     td {
       padding: 0.85rem;
-      font-size: 0.85rem;
+      font-size: var(--text-sm);
       color: var(--ascelc-noir);
       vertical-align: middle;
 
@@ -324,7 +324,7 @@
 
       &.cellule-fonction {
         color: var(--neutre-600);
-        font-size: 0.82rem;
+        font-size: var(--text-sm);
       }
 
       &.th-numerique {
@@ -348,7 +348,7 @@
   background: rgba(255, 220, 1, 0.12);
   color: var(--ambre-500);
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 700;
 }
 
@@ -390,7 +390,7 @@
   align-items: center;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.04em;
 
@@ -452,7 +452,7 @@
   color: var(--ascelc-blanc);
   border: none;
   border-radius: 6px;
-  font-size: 0.87rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms;
@@ -472,7 +472,7 @@
   color: var(--neutre-600);
   border: 1px solid var(--neutre-300);
   border-radius: 6px;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 150ms;
@@ -518,14 +518,14 @@
   }
 
   &__numero {
-    font-size: 0.76rem;
+    font-size: var(--text-xs);
     font-weight: 600;
     color: var(--neutre-500);
     letter-spacing: -0.01em;
   }
 
   &__intitule {
-    font-size: 0.87rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--ascelc-noir);
     line-height: 1.3;
@@ -535,7 +535,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.76rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500);
     margin-top: auto;
   }
@@ -559,13 +559,13 @@
   border-bottom: 1px solid var(--neutre-100);
 
   &__label {
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
     color: var(--neutre-600);
     font-weight: 500;
   }
 
   &__valeur {
-    font-size: 1.15rem;
+    font-size: var(--text-md);
     font-weight: 700;
     color: var(--ascelc-noir);
     font-variant-numeric: tabular-nums;
@@ -605,12 +605,12 @@
 
   &__label {
     flex: 1;
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     color: var(--neutre-700);
   }
 
   &__valeur {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--ascelc-noir);
     font-variant-numeric: tabular-nums;
@@ -650,21 +650,21 @@
   }
 
   &__label {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     color: var(--neutre-500);
     font-weight: 500;
     min-width: 30px;
   }
 
   &__valeur {
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     font-weight: 600;
     color: var(--ascelc-noir);
     flex: 1;
 
     &.mono {
       font-family: var(--mono-font);
-      font-size: 0.76rem;
+      font-size: var(--text-xs);
     }
   }
 }
@@ -673,7 +673,7 @@
 // PAGINATION
 // ═══════════════════════════════════════════════════════════════════════════
 .pagination-info {
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   color: var(--neutre-500);
 }
 
@@ -704,14 +704,14 @@
 
   h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--ascelc-noir);
   }
 
   p {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     color: var(--neutre-500);
     max-width: 320px;
   }
@@ -724,7 +724,7 @@
 // Mono
 .mono {
   font-family: var(--mono-font);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: -0.01em;
 }

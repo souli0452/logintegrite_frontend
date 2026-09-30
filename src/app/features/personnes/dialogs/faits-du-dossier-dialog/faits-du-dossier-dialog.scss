@@ -63,7 +63,7 @@
 
   &__titre {
     margin: 0 0 0.15rem;
-    font-size: 1.05rem;
+    font-size: var(--text-md);
     font-weight: 700;
     color: var(--ascelc-noir);
     line-height: 1.3;
@@ -72,13 +72,13 @@
   &__count {
     color: var(--neutre-500);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: var(--text-base);
     margin-left: 0.35rem;
   }
 
   &__sous-titre {
     margin: 0;
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--neutre-600);
     display: inline-flex;
     align-items: center;
@@ -148,7 +148,7 @@
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: background 150ms;
@@ -167,7 +167,7 @@
   border: 1px solid var(--ascelc-vert);
   border-radius: 6px;
   color: var(--ascelc-vert-fonce);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   cursor: pointer;
   transition: all 150ms;
@@ -190,7 +190,7 @@
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
   transition: background 150ms;
@@ -215,7 +215,7 @@
   lucide-icon { color: var(--neutre-300); }
   p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     color: var(--neutre-500);
   }
 }
@@ -235,14 +235,14 @@
 
   h4 {
     margin: 0.5rem 0 0;
-    font-size: 1rem;
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--ascelc-noir);
   }
 
   p {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     color: var(--neutre-500);
     max-width: 340px;
     line-height: 1.5;
@@ -295,7 +295,7 @@
 
   &__type {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--ascelc-noir);
     line-height: 1.3;
@@ -303,7 +303,7 @@
 
   &__description {
     margin: 0;
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--neutre-600);
     line-height: 1.5;
   }
@@ -357,7 +357,7 @@
   background: var(--neutre-100);
   color: var(--neutre-700);
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 500;
 
   &--montant {

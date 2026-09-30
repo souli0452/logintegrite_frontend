@@ -70,7 +70,7 @@ $transition: 200ms ease;
   background: $asce-vert-clair;
   color: $asce-vert-fonce;
   border-radius: 10px;
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 
@@ -106,7 +106,7 @@ $transition: 200ms ease;
 .filtre-vide {
   padding: 40px 20px;
   text-align: center;
-  font-size: 14px;
+  font-size: var(--text-base);
   color: $gris-500;
   background: $asce-blanc;
   border: 1px dashed $gris-300;
@@ -164,13 +164,13 @@ $transition: 200ms ease;
   }
 
   &__numero {
-    font-size: 14px;
+    font-size: var(--text-base);
     font-weight: 700;
     color: $asce-noir;
   }
 
   &__intitule {
-    font-size: 13px;
+    font-size: var(--text-base);
     color: $gris-700;
   }
 
@@ -199,7 +199,7 @@ $transition: 200ms ease;
   background: $asce-vert-clair;
   color: $asce-vert-fonce;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--text-sm);
 
   strong { font-weight: 600; }
 
@@ -218,7 +218,7 @@ $transition: 200ms ease;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
+  font-size: var(--text-sm);
   color: $gris-500;
 
   lucide-icon { color: $gris-500; }
@@ -230,7 +230,7 @@ $transition: 200ms ease;
   background: $asce-jaune;
   color: color.adjust($asce-jaune, $lightness: -45%);
   border-radius: 12px;
-  font-size: 12px;
+  font-size: var(--text-sm);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -251,7 +251,7 @@ $transition: 200ms ease;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  font-size: 12.5px;
+  font-size: var(--text-sm);
   font-weight: 500;
   color: $gris-700;
   background: transparent;
@@ -277,7 +277,7 @@ $transition: 200ms ease;
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
-  font-size: 12.5px;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: $asce-blanc;
   background: $asce-vert;
@@ -303,7 +303,7 @@ $transition: 200ms ease;
 .table-faits {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--text-base);
 
   thead {
     background: $gris-50;
@@ -314,7 +314,7 @@ $transition: 200ms ease;
       font-weight: 600;
       color: $gris-700;
       border-bottom: 1px solid $gris-200;
-      font-size: 12px;
+      font-size: var(--text-sm);
       text-transform: uppercase;
       letter-spacing: 0.04em;
 
@@ -354,7 +354,7 @@ $transition: 200ms ease;
   .cellule-date {
     white-space: nowrap;
     color: $gris-700;
-    font-size: 12.5px;
+    font-size: var(--text-sm);
   }
 
   .cellule-infraction {
@@ -469,13 +469,13 @@ $transition: 200ms ease;
   }
 
   &__numero {
-    font-size: 14px;
+    font-size: var(--text-base);
     font-weight: 700;
     color: $asce-noir;
   }
 
   &__intitule {
-    font-size: 13px;
+    font-size: var(--text-base);
     color: $gris-700;
   }
 
@@ -484,7 +484,7 @@ $transition: 200ms ease;
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
-    font-size: 12px;
+    font-size: var(--text-sm);
     color: $gris-500;
   }
 
@@ -499,7 +499,7 @@ $transition: 200ms ease;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 12px;
+    font-size: var(--text-sm);
     color: $gris-500;
     margin-bottom: 8px;
     flex-wrap: wrap;
@@ -525,7 +525,7 @@ $transition: 200ms ease;
 
   &__description {
     margin: 0;
-    font-size: 13px;
+    font-size: var(--text-base);
     color: $asce-noir;
     line-height: 1.5;
   }
@@ -541,7 +541,7 @@ $transition: 200ms ease;
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 700;
     color: $asce-rouge-fonce;
     text-transform: uppercase;
@@ -553,7 +553,7 @@ $transition: 200ms ease;
 
   &__motif-texte {
     margin: 0;
-    font-size: 13px;
+    font-size: var(--text-base);
     color: $asce-noir;
     line-height: 1.5;
     font-style: italic;
@@ -572,5 +572,5 @@ $transition: 200ms ease;
 
   .carte-rejet__entete { flex-direction: column; }
 
-  .table-wrapper { font-size: 12px; }
+  .table-wrapper { font-size: var(--text-sm); }
 }

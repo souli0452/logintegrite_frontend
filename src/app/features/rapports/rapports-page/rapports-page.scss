@@ -50,7 +50,7 @@ $transition: 200ms ease;
 
   &__titre {
     margin: 0;
-    font-size: 22px;
+    font-size: var(--text-xl);
     font-weight: 600;
     color: $asce-noir;
     letter-spacing: -0.02em;
@@ -58,7 +58,7 @@ $transition: 200ms ease;
 
   &__sous-titre {
     margin: 2px 0 0 0;
-    font-size: 13px;
+    font-size: var(--text-base);
     color: $gris-500;
   }
 }
@@ -72,7 +72,7 @@ $transition: 200ms ease;
     align-items: center;
     gap: 8px;
     margin: 0 0 14px 0;
-    font-size: 13px;
+    font-size: var(--text-base);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -140,14 +140,14 @@ $transition: 200ms ease;
 
   &__titre {
     margin: 0 0 4px 0;
-    font-size: 15px;
+    font-size: var(--text-md);
     font-weight: 600;
     color: $asce-noir;
   }
 
   &__description {
     margin: 0;
-    font-size: 12.5px;
+    font-size: var(--text-sm);
     color: $gris-700;
     line-height: 1.5;
   }
@@ -157,7 +157,7 @@ $transition: 200ms ease;
     align-items: center;
     gap: 5px;
     padding: 7px 12px;
-    font-size: 12.5px;
+    font-size: var(--text-sm);
     font-weight: 500;
     color: $gris-700;
     background: transparent;
@@ -207,7 +207,7 @@ $transition: 200ms ease;
   justify-content: center;
   gap: 6px;
   padding: 9px 16px;
-  font-size: 13px;
+  font-size: var(--text-base);
   font-weight: 600;
   color: $asce-blanc;
   background: $asce-vert;

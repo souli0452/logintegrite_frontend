@@ -52,14 +52,14 @@
 
   &__titre {
     margin: 0 0 3px;
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     color: #78350F;
   }
 
   &__detail {
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     color: #92400E;
     line-height: 1.4;
   }
@@ -89,7 +89,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--asce-green-dark);
   padding: 4px 0;
 

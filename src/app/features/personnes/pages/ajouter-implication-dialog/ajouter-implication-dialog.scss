@@ -14,7 +14,7 @@ mat-dialog-content {
   margin-bottom: var(--spacing-md);
 
   &__titre {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;

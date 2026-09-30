@@ -35,7 +35,7 @@
   }
 
   &__titre {
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     color: var(--asce-black);
     margin: 0;
@@ -85,7 +85,7 @@
   }
 
   mat-panel-title {
-    font-size: 0.8125rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     color: var(--asce-black);
   }
@@ -112,7 +112,7 @@
   color: var(--asce-white);
   padding: 8px 12px;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -134,7 +134,7 @@
   border: 1px solid var(--asce-border);
   padding: 8px 12px;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -155,7 +155,7 @@
 }
 
 .resultats-count {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--asce-black);
   padding: 10px 16px;
   background-color: var(--asce-white);
@@ -179,7 +179,7 @@
   width: 100%;
 
   th.mat-mdc-header-cell {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     color: var(--asce-gray-text);
     border-bottom: 1px solid var(--asce-border);
@@ -191,14 +191,14 @@
   td.mat-mdc-cell {
     padding: 12px 16px;
     border-bottom: 1px solid #f3f4f6;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--asce-black);
   }
 }
 
 .cellule-identifiant {
   font-family: 'Menlo', 'Consolas', monospace;
-  font-size: 0.8125rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--asce-green-strong);
 }
@@ -213,7 +213,7 @@
   align-items: center;
   padding: 2px 10px;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 600;
 
   &--pp {
