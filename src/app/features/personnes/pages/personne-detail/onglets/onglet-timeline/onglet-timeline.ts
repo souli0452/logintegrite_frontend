@@ -58,7 +58,7 @@ export class OngletTimeline {
         date: d.dateOuverture,
         heure: '00:00',
         type: 'CREATION_DOSSIER',
-        titre: 'Creation du dossier ' + (d.numeroDossier ?? d.id.substring(0, 8)),
+        titre: 'Création du dossier ' + (d.numeroDossier ?? d.id.substring(0, 8)),
         description: d.intitule ?? 'Sans intitule',
         badge: 'Creation'
       });
@@ -70,7 +70,7 @@ export class OngletTimeline {
         date: f.dateFaits,
         heure: '00:00',
         type: 'INFRACTION',
-        titre: 'Nouvelle infraction enregistree',
+        titre: 'Nouvelle infraction enregistrée',
         description: f.typeInfractionLibelle,
         badge: 'Infraction'
       });
@@ -106,7 +106,7 @@ export class OngletTimeline {
         date: imp.dateDebut,
         heure: '00:00',
         type: 'ENQUETE',
-        titre: 'Implication enregistree',
+        titre: 'Implication enregistrée',
         description: `${imp.roleImplicationLibelle}${imp.fonctionOccupee ? ' - ' + imp.fonctionOccupee : ''}`,
         badge: 'Enquete'
       });

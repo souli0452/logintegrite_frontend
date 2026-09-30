@@ -3,14 +3,14 @@
 <mat-dialog-content>
   <form [formGroup]="formulaire" class="form-motif">
     <p class="explication">
-      Precisez la raison du rejet. Ce motif sera visible dans l'historique du fait.
+      Précisez la raison du rejet. Ce motif sera visible dans l'historique du fait.
     </p>
     <mat-form-field appearance="outline" class="pleine-largeur">
       <mat-label>Motif *</mat-label>
       <textarea matInput formControlName="motif" rows="4"
                 placeholder="Informations insuffisantes, montant non justifie, doublon..."></textarea>
       @if (formulaire.controls.motif.hasError('minlength')) {
-        <mat-error>Le motif doit contenir au moins 5 caracteres</mat-error>
+        <mat-error>Le motif doit contenir au moins 5 caractères</mat-error>
       }
     </mat-form-field>
   </form>

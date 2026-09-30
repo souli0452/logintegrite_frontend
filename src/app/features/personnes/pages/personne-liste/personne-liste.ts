@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,6 +53,9 @@ type FiltreAncrage = 'TOUS' | 'EN_INSTRUCTION' | 'REGISTRE_OFFICIEL';
 })
 export class PersonneListe implements OnDestroy {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  /** Arrive depuis "Nouveau dossier" : un dossier se cree depuis la fiche de la personne concernee. */
+  readonly pourDossier = this.route.snapshot.queryParamMap.get('pour') === 'dossier';
   private readonly service = inject(PersonneService);
   private readonly servicePhysique = inject(PersonnePhysiqueService);
   private readonly serviceMorale = inject(PersonneMoraleService);

@@ -50,7 +50,7 @@ export class CategorieInfractionListe {
         this.chargement.set(false);
       },
       error: () => {
-        this.toastr.error('Impossible de charger les categories');
+        this.toastr.error('Impossible de charger les catégories');
         this.chargement.set(false);
       }
     });
@@ -74,14 +74,14 @@ export class CategorieInfractionListe {
           this.toastr.success(categorie ? 'Categorie modifiee' : 'Categorie creee');
           this.charger();
         },
-        error: () => this.toastr.error("Echec de l'operation")
+        error: () => this.toastr.error("Échec de l'opération")
       });
     });
   }
 
   supprimer(categorie: CategorieInfractionResponse): void {
     this.confirmation.demander({
-      titre: 'Supprimer la categorie',
+      titre: 'Supprimer la catégorie',
       message: `Supprimer la categorie "${categorie.libelle}" ?`,
       libelleConfirmer: 'Supprimer',
       danger: true
@@ -89,7 +89,7 @@ export class CategorieInfractionListe {
       if (!confirme) return;
       this.service.supprimer(categorie.id).subscribe({
         next: () => {
-          this.toastr.success('Categorie supprimee');
+          this.toastr.success('Catégorie supprimée');
           this.charger();
         },
         error: () => this.toastr.error('Suppression impossible')

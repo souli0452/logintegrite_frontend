@@ -1,7 +1,7 @@
 <div class="onglet-panel">
   <div class="filtres">
     <mat-form-field appearance="outline" class="filtres__champ">
-      <mat-label>Filtrer par entite</mat-label>
+      <mat-label>Filtrer par entité</mat-label>
       <mat-select [value]="filtreEntite()" (selectionChange)="changerFiltreEntite($event.value)">
         @for (e of entitesDisponibles; track e) {
           <mat-option [value]="e">{{ e || 'Toutes les entites' }}</mat-option>
@@ -17,7 +17,7 @@
   } @else if (entries().length === 0) {
     <app-empty-state
       titre="Aucune modification"
-      message="Aucune trace d'audit ne correspond a vos criteres." />
+      message="Aucune trace d'audit ne correspond à vos critères." />
   } @else {
     <table mat-table [dataSource]="entries()" class="audit-table">
       <ng-container matColumnDef="dateAction">
@@ -35,7 +35,7 @@
       </ng-container>
 
       <ng-container matColumnDef="entite">
-        <th mat-header-cell *matHeaderCellDef>Entite</th>
+        <th mat-header-cell *matHeaderCellDef>Entité</th>
         <td mat-cell *matCellDef="let e" class="cellule-strong">
           {{ e.entiteCible }}
           <div class="cellule-souligne">{{ e.entiteCibleId | slice:0:8 }}...</div>

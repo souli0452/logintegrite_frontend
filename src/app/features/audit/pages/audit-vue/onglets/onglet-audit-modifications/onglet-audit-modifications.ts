@@ -93,7 +93,7 @@ export class OngletAuditModifications {
     return 'warning'; // MODIFICATION, TAG_DOCUMENT, MODIFICATION_STATUT_JUDICIAIRE...
   }
 
-  // Format court du hash pour affichage tabulaire (8 premiers caracteres)
+  // Format court du hash pour affichage tabulaire (8 premiers caractères)
   hashCourt(hash: string): string {
     return hash.substring(0, 8) + '...';
   }

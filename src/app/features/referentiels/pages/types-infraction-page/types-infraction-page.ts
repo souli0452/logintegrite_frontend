@@ -68,7 +68,7 @@ export class TypesInfractionPage {
           this.toastr.success(item ? 'Type modifie' : 'Type cree');
           this.charger();
         },
-        error: () => this.toastr.error("Echec de l'operation")
+        error: () => this.toastr.error("Échec de l'opération")
       });
     });
   }

@@ -174,7 +174,7 @@ export class NouveauDossier implements OnInit {
       return;
     }
     if (this.etapeActive() === 2 && this.faitsLocaux().length === 0) {
-      this.toastr.warning('Ajoutez au moins un fait reproche');
+      this.toastr.warning('Ajoutez au moins un fait reproché');
       return;
     }
     this.etapeActive.update((e) => Math.min(e + 1, this.etapes.length - 1));
@@ -253,7 +253,7 @@ export class NouveauDossier implements OnInit {
 
     this.workflowService.ajouterDossierAPersonne(id, request).subscribe({
       next: () => {
-        this.toastr.success('Dossier cree et enregistre avec succes');
+        this.toastr.success('Dossier créé et enregistré avec succès');
         this.router.navigate(['/personnes', id]);
       },
       error: (err) => {

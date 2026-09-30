@@ -125,7 +125,7 @@ export class ReferentielSimpleListe {
       if (!confirme) return;
       this.service().supprimer(item.id).subscribe({
         next: () => {
-          this.toastr.success('Supprime avec succes');
+          this.toastr.success('Supprimé avec succès');
           this.charger();
         },
         error: (err) => {

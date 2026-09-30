@@ -2,8 +2,8 @@
 
   @if (evenements().length === 0) {
     <app-empty-state
-      titre="Aucun evenement"
-      message="La timeline se remplira au fur et a mesure des activites enregistrees." />
+      titre="Aucun événement"
+      message="La timeline se remplira au fur et à mesure des activités enregistrées." />
   } @else {
 
     <div class="timeline">
@@ -36,11 +36,11 @@
 
     <!-- Resume en bas -->
     <div class="resume-bas">
-      <div class="resume-bas__titre">Resultats croises</div>
+      <div class="resume-bas__titre">Résultats croisés</div>
       <div class="resume-bas__grille">
         <div class="resume-item">
           <div class="resume-item__valeur">{{ resume().evenements }}</div>
-          <div class="resume-item__label">Evenements</div>
+          <div class="resume-item__label">Événements</div>
         </div>
         <div class="resume-item">
           <div class="resume-item__valeur">{{ resume().documents }}</div>
@@ -52,7 +52,7 @@
         </div>
         <div class="resume-item">
           <div class="resume-item__valeur">{{ resume().validees }}</div>
-          <div class="resume-item__label">Validees</div>
+          <div class="resume-item__label">Validées</div>
         </div>
       </div>
     </div>

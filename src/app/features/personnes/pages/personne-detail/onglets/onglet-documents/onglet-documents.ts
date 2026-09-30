@@ -101,7 +101,7 @@ export class OngletDocuments implements OnInit {
   // Etape 1 : afficher le mini-dialogue de selection du dossier
   ouvrirSelectionDossier(): void {
     if (this.dossiersDeLaPersonne().length === 0) {
-      this.toastr.warning('Cette personne n\'est impliquee dans aucun dossier. Ajoutez d\'abord un dossier.');
+      this.toastr.warning('Cette personne n\'est impliquée dans aucun dossier. Ajoutez d\'abord un dossier.');
       return;
     }
     // Si un seul dossier, on saute la selection et on ouvre directement le dialogue
@@ -162,7 +162,7 @@ export class OngletDocuments implements OnInit {
         a.click();
         URL.revokeObjectURL(objectUrl);
       },
-      error: () => this.toastr.error('Echec du telechargement')
+      error: () => this.toastr.error('Échec du téléchargement')
     });
   }
 

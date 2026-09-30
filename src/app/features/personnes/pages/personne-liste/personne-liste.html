@@ -4,7 +4,7 @@
   <div class="en-tete-section">
     <div class="en-tete-section__gauche">
       <h1 class="titre-page">Identification des personnes</h1>
-      <p class="sous-titre">{{ totalElements() }} personne(s) enregistree(s) au total.</p>
+      <p class="sous-titre">{{ totalElements() }} personne(s) enregistrée(s) au total.</p>
     </div>
 
     <div class="actions-groupe">
@@ -14,6 +14,13 @@
       </button>
     </div>
   </div>
+
+  @if (pourDossier) {
+    <p class="bandeau-parcours" role="status">
+      Pour ouvrir un dossier, choisissez d'abord la personne concernée, puis utilisez
+      <strong>Actions</strong> &rsaquo; <strong>Nouveau dossier</strong> sur sa fiche.
+    </p>
+  }
 
   @if (chargement()) {
     <div class="loader-zone">
@@ -65,7 +72,7 @@
           type="text"
           [value]="termeRecherche()"
           (input)="changerRecherche($any($event.target).value)"
-          placeholder="Rechercher par nom ou denomination..."
+          placeholder="Rechercher par nom ou dénomination..."
           class="champ-recherche">
       </div>
 

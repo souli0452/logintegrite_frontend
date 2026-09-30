@@ -12,7 +12,7 @@
     </div>
   } @else {
     <div class="info-message">
-      Cette personne n'apparait dans aucun dossier. Un nouveau dossier va etre cree.
+      Cette personne n'apparaît dans aucun dossier. Un nouveau dossier va être créé.
     </div>
   }
 
@@ -22,7 +22,7 @@
       <h3 class="section__titre">Choisir le dossier</h3>
       <form [formGroup]="formDossierExistant">
         <mat-form-field appearance="outline" class="pleine-largeur">
-          <mat-label>Dossier ou {{ data.personneNomAffichage }} est deja implique *</mat-label>
+          <mat-label>Dossier où {{ data.personneNomAffichage }} est déjà impliqué *</mat-label>
           <mat-select formControlName="dossierId">
             @for (d of dossiersDejaImpliques(); track d.id) {
               <mat-option [value]="d.id">
@@ -41,11 +41,11 @@
       <h3 class="section__titre">Informations du nouveau dossier</h3>
       <form [formGroup]="formNouveauDossier" class="grille">
         <mat-form-field appearance="outline" class="grille__full">
-          <mat-label>Intitule *</mat-label>
+          <mat-label>Intitulé *</mat-label>
           <input matInput formControlName="intitule">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Numero de dossier</mat-label>
+          <mat-label>Numéro de dossier</mat-label>
           <input matInput formControlName="numeroDossier">
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -69,7 +69,7 @@
       <h3 class="section__titre">Implication de {{ data.personneNomAffichage }}</h3>
       <form [formGroup]="formImplication" class="grille">
         <mat-form-field appearance="outline">
-          <mat-label>Role *</mat-label>
+          <mat-label>Rôle *</mat-label>
           <mat-select formControlName="roleImplicationId">
             @for (r of roles(); track r.id) {
               <mat-option [value]="r.id">{{ r.libelle }}</mat-option>
@@ -77,11 +77,11 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Fonction occupee</mat-label>
+          <mat-label>Fonction occupée</mat-label>
           <input matInput formControlName="fonctionOccupee">
         </mat-form-field>
         <mat-form-field appearance="outline" class="grille__full">
-          <mat-label>Entite a l'epoque</mat-label>
+          <mat-label>Entité à l'époque</mat-label>
           <input matInput formControlName="entiteLibelleALEpoque">
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -102,7 +102,7 @@
 
   <!-- Fait reproche (toujours affiche) -->
   <section class="section">
-    <h3 class="section__titre">Fait reproche</h3>
+    <h3 class="section__titre">Fait reproché</h3>
     <form [formGroup]="formFait" class="grille">
       <mat-form-field appearance="outline">
         <mat-label>Type d'infraction *</mat-label>
@@ -113,7 +113,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Zone geographique</mat-label>
+        <mat-label>Zone géographique</mat-label>
         <mat-select formControlName="zoneGeographiqueId">
           <mat-option value="">Non specifiee</mat-option>
           @for (z of zones(); track z.id) {

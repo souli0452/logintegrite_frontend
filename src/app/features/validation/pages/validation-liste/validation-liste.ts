@@ -136,7 +136,7 @@ export class ValidationListe {
         this.chargement.set(false);
       },
       error: () => {
-        this.toastr.error('Impossible de charger les donnees de validation');
+        this.toastr.error('Impossible de charger les données de validation');
         this.chargement.set(false);
       }
     });

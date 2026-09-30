@@ -152,7 +152,7 @@ export class UploadDocumentDialog {
   // Upload de tous les fichiers en parallele
   uploaderTout(): void {
     if (!this.tousPrets()) {
-      this.toastr.warning('Selectionnez un type pour chaque document');
+      this.toastr.warning('Sélectionnez un type pour chaque document');
       return;
     }
     this.enCoursDenvoi.set(true);

@@ -60,7 +60,7 @@
       <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
       <span>Nouvelle personne</span>
     </button>
-    <button mat-stroked-button routerLink="/dossiers/nouveau">
+    <button mat-stroked-button routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
       <lucide-icon [name]="icons['FolderPlus']" [size]="16"></lucide-icon>
       <span>Nouveau dossier</span>
     </button>

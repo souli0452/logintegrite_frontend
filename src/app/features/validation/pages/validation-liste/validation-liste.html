@@ -23,14 +23,14 @@
         @if (dossiers().length === 0) {
           <app-empty-state
             titre="Aucun fait à valider"
-            message="Tous les faits reproches ont ete traites. Beau travail."
+            message="Tous les faits reprochés ont été traités. Beau travail."
             [icone]="icons['Shield']" />
         } @else {
 
           <!-- Filtres -->
           <div class="barre-filtres">
             <mat-form-field appearance="outline" class="barre-filtres__recherche">
-              <mat-label>Rechercher (numero, intitule, personne...)</mat-label>
+              <mat-label>Rechercher (numéro, intitulé, personne...)</mat-label>
               <input matInput
                      [value]="termeRecherche()"
                      (input)="changerRecherche($any($event.target).value)"
@@ -41,7 +41,7 @@
             <mat-form-field appearance="outline" class="barre-filtres__tri">
               <mat-label>Trier par</mat-label>
               <mat-select [value]="ordreTri()" (selectionChange)="changerTri($event.value)">
-                <mat-option value="RECENT">Dossier le plus recent</mat-option>
+                <mat-option value="RECENT">Dossier le plus récent</mat-option>
                 <mat-option value="ANCIEN">Dossier le plus ancien</mat-option>
                 <mat-option value="PLUS_DE_FAITS">Plus de faits en attente</mat-option>
               </mat-select>
