@@ -41,7 +41,7 @@
       <h3 class="section__titre">Informations du nouveau dossier</h3>
       <form [formGroup]="formNouveauDossier" class="grille">
         <mat-form-field appearance="outline" class="grille__full">
-          <mat-label>Intitulé *</mat-label>
+          <mat-label>Intitulé</mat-label>
           <input matInput formControlName="intitule">
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -49,7 +49,7 @@
           <input matInput formControlName="numeroDossier">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Source du signalement *</mat-label>
+          <mat-label>Source du signalement</mat-label>
           <mat-select formControlName="sourceSignalementId">
             @for (s of sources(); track s.id) {
               <mat-option [value]="s.id">{{ s.libelle }}</mat-option>
@@ -57,7 +57,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Date d'ouverture *</mat-label>
+          <mat-label>Date d'ouverture</mat-label>
           <input matInput [matDatepicker]="pickerOuverture" formControlName="dateOuverture">
           <mat-datepicker-toggle matIconSuffix [for]="pickerOuverture"></mat-datepicker-toggle>
           <mat-datepicker #pickerOuverture></mat-datepicker>
@@ -69,7 +69,7 @@
       <h3 class="section__titre">Implication de {{ data.personneNomAffichage }}</h3>
       <form [formGroup]="formImplication" class="grille">
         <mat-form-field appearance="outline">
-          <mat-label>Rôle *</mat-label>
+          <mat-label>Rôle</mat-label>
           <mat-select formControlName="roleImplicationId">
             @for (r of roles(); track r.id) {
               <mat-option [value]="r.id">{{ r.libelle }}</mat-option>
@@ -85,7 +85,7 @@
           <input matInput formControlName="entiteLibelleALEpoque">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Date de debut *</mat-label>
+          <mat-label>Date de debut</mat-label>
           <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut">
           <mat-datepicker-toggle matIconSuffix [for]="pickerDebut"></mat-datepicker-toggle>
           <mat-datepicker #pickerDebut></mat-datepicker>
@@ -105,7 +105,7 @@
     <h3 class="section__titre">Fait reproché</h3>
     <form [formGroup]="formFait" class="grille">
       <mat-form-field appearance="outline">
-        <mat-label>Type d'infraction *</mat-label>
+        <mat-label>Type d'infraction</mat-label>
         <mat-select formControlName="typeInfractionId">
           @for (t of typesInfraction(); track t.id) {
             <mat-option [value]="t.id">{{ t.libelle }}</mat-option>
@@ -122,7 +122,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Date des faits *</mat-label>
+        <mat-label>Date des faits</mat-label>
         <input matInput [matDatepicker]="pickerFaits" formControlName="dateFaits">
         <mat-datepicker-toggle matIconSuffix [for]="pickerFaits"></mat-datepicker-toggle>
         <mat-datepicker #pickerFaits></mat-datepicker>
@@ -132,15 +132,15 @@
         <input matInput formControlName="lieuPrecis">
       </mat-form-field>
       <mat-form-field appearance="outline" class="grille__full">
-        <mat-label>Description du fait *</mat-label>
+        <mat-label>Description du fait</mat-label>
         <textarea matInput formControlName="description" rows="3"></textarea>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Montant prejudice *</mat-label>
+        <mat-label>Montant prejudice</mat-label>
         <input matInput type="number" formControlName="montantPrejudice">
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Devise *</mat-label>
+        <mat-label>Devise</mat-label>
         <mat-select formControlName="devise">
           <mat-option value="XOF">XOF</mat-option>
           <mat-option value="EUR">EUR</mat-option>

@@ -68,17 +68,17 @@
             <input matInput formControlName="numeroDossier" placeholder="Si manuel">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Intitulé du dossier *</mat-label>
+            <mat-label>Intitulé du dossier</mat-label>
             <input matInput formControlName="intitule">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Date d'ouverture *</mat-label>
+            <mat-label>Date d'ouverture</mat-label>
             <input matInput [matDatepicker]="pOuverture" formControlName="dateOuverture">
             <mat-datepicker-toggle matIconSuffix [for]="pOuverture"></mat-datepicker-toggle>
             <mat-datepicker #pOuverture></mat-datepicker>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Source du signalement *</mat-label>
+            <mat-label>Source du signalement</mat-label>
             <mat-select formControlName="sourceSignalementId">
               @for (s of sources(); track s.id) { <mat-option [value]="s.id">{{ s.libelle }}</mat-option> }
             </mat-select>
@@ -96,13 +96,13 @@
       <mat-step label="Faits reprochés">
         <form [formGroup]="formFaitCourant" class="form-grille">
           <mat-form-field appearance="outline">
-            <mat-label>Type d'infraction *</mat-label>
+            <mat-label>Type d'infraction</mat-label>
             <mat-select formControlName="typeInfractionId">
               @for (t of typesInfraction(); track t.id) { <mat-option [value]="t.id">{{ t.libelle }}</mat-option> }
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Date des faits *</mat-label>
+            <mat-label>Date des faits</mat-label>
             <input matInput [matDatepicker]="pFaits" formControlName="dateFaits">
             <mat-datepicker-toggle matIconSuffix [for]="pFaits"></mat-datepicker-toggle>
             <mat-datepicker #pFaits></mat-datepicker>
@@ -118,15 +118,15 @@
             <input matInput formControlName="lieuPrecis">
           </mat-form-field>
           <mat-form-field appearance="outline" class="form-grille__full">
-            <mat-label>Description *</mat-label>
+            <mat-label>Description</mat-label>
             <textarea matInput formControlName="description" rows="2"></textarea>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Montant du préjudice *</mat-label>
+            <mat-label>Montant du préjudice</mat-label>
             <input matInput type="number" formControlName="montantPrejudice">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Devise *</mat-label>
+            <mat-label>Devise</mat-label>
             <input matInput formControlName="devise">
           </mat-form-field>
         </form>
@@ -179,7 +179,7 @@
 
             <div class="form-grille">
               <mat-form-field appearance="outline">
-                <mat-label>Rôle d'implication *</mat-label>
+                <mat-label>Rôle d'implication</mat-label>
                 <mat-select formControlName="roleImplicationId">
                   @for (r of roles(); track r.id) { <mat-option [value]="r.id">{{ r.libelle }}</mat-option> }
                 </mat-select>
@@ -189,7 +189,7 @@
                 <input matInput formControlName="fonctionOccupee">
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>Date de début *</mat-label>
+                <mat-label>Date de début</mat-label>
                 <input matInput [matDatepicker]="pDebut" formControlName="dateDebut">
                 <mat-datepicker-toggle matIconSuffix [for]="pDebut"></mat-datepicker-toggle>
                 <mat-datepicker #pDebut></mat-datepicker>
@@ -215,7 +215,7 @@
       <mat-step label="Documents">
         <form [formGroup]="formDocumentCourant" class="form-grille">
           <mat-form-field appearance="outline">
-            <mat-label>Type de document *</mat-label>
+            <mat-label>Type de document</mat-label>
             <mat-select formControlName="typeDocumentId">
               @for (t of typesDocument(); track t.id) { <mat-option [value]="t.id">{{ t.libelle }}</mat-option> }
             </mat-select>

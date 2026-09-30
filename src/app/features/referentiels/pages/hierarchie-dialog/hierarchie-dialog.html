@@ -3,7 +3,7 @@
 <mat-dialog-content>
   <form [formGroup]="formulaire" class="form-hierarchie">
     <mat-form-field appearance="outline" class="pleine-largeur">
-      <mat-label>Niveau *</mat-label>
+      <mat-label>Niveau</mat-label>
       <mat-select formControlName="niveau">
         @for (n of data.niveaux; track n.valeur) {
           <mat-option [value]="n.valeur">{{ n.libelle }}</mat-option>
@@ -12,7 +12,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="pleine-largeur">
-      <mat-label>Libellé *</mat-label>
+      <mat-label>Libellé</mat-label>
       <input matInput formControlName="libelle">
       @if (formulaire.controls.libelle.invalid && formulaire.controls.libelle.touched) {
         <mat-error>Libellé obligatoire</mat-error>

@@ -22,7 +22,7 @@
   <form [formGroup]="formulaire" class="peine-dialog__body">
     <div class="grille-2col">
       <mat-form-field appearance="outline">
-        <mat-label>Type de peine *</mat-label>
+        <mat-label>Type de peine</mat-label>
         <mat-select formControlName="typePeine">
           @for (t of typesPeine; track t.valeur) {
             <mat-option [value]="t.valeur">{{ t.libelle }}</mat-option>
