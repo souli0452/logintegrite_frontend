@@ -33,7 +33,7 @@ async function session(utilisateur, viewport = { width: 1366, height: 1000 }) {
   await page.goto('http://localhost:4200');
   await page.waitForURL(/8180.*openid-connect\/auth/);
   await page.fill('#username', utilisateur); await page.fill('#password', PW); await page.click('#kc-login');
-  await page.waitForURL(/localhost:4200/); await page.waitForLoadState('networkidle');
+  await page.waitForURL(/localhost:4200/); await page.locator('app-topbar').waitFor({ timeout: 30000 });
   return { ctx, page, requetes, erreurs };
 }
 const choisir = async (page, nom, texte) => {

@@ -45,7 +45,7 @@ async function parcours(nom, viewport) {
   await page.fill('#username', USER);
   await page.fill('#password', PW);
   await page.click('#kc-login');
-  await page.waitForURL(/localhost:4200/, { timeout: 30000 });
+  await page.waitForURL(/localhost:4200/, { timeout: 30000 }); await page.locator('app-topbar').waitFor({ timeout: 30000 });
   await page.waitForLoadState('networkidle');
 
   const lignes = [];
