@@ -298,8 +298,8 @@
   flex-shrink: 0;
 
   &--vert   { background: var(--ascelc-vert); }
-  &--orange { background: #D97706; }
-  &--bleu   { background: #2563EB; }
+  &--orange { background: var(--asce-yellow-dark); }
+  &--bleu   { background: var(--asce-green-strong); }
 }
 
 .badge-mini {

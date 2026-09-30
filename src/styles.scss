@@ -30,6 +30,15 @@ html {
   --mat-sys-secondary: #005A2B;
   --mat-sys-tertiary: #EE1D23;
   --mat-sys-surface-tint: #00843D;
+
+  /* Champs de formulaire : contour et libelle verts au focus (et non noirs) */
+  --mat-form-field-outlined-focus-outline-color: #00843D;
+  --mat-form-field-outlined-focus-label-text-color: #00843D;
+  --mat-form-field-outlined-caret-color: #00843D;
+  --mat-form-field-outlined-hover-outline-color: #005A2B;
+  --mat-form-field-filled-focus-active-indicator-color: #00843D;
+  --mat-form-field-filled-focus-label-text-color: #00843D;
+  --mat-form-field-filled-caret-color: #00843D;
 }
 
 /* ===============================================
@@ -46,6 +55,7 @@ html {
   --asce-green-tint: #E6F5EC;     /* fond teinte de vert */
   --asce-red: #EE1D23;
   --asce-yellow: #FFDC01;
+  --asce-yellow-dark: #8F7700;    /* jaune fonce : icones et textes sur fond clair (le jaune pur y est illisible) */
   --asce-black: #231F20;
 
   /* Fonds neutres */

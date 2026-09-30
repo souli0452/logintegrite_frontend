@@ -109,7 +109,7 @@
   &__valeur {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #2563eb;
+    color: var(--asce-green-strong);
     margin-bottom: 4px;
   }
 
@@ -157,7 +157,7 @@
 
 .lien-plus {
   font-size: 0.875rem;
-  color: #2563eb;
+  color: var(--asce-green-strong);
   text-align: center;
   cursor: pointer;
   margin: 16px 0 0 0;

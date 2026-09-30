@@ -58,9 +58,9 @@
     z-index: 1;
 
     &[data-couleur='vert'] { background: #10B981; color: white; }
-    &[data-couleur='bleu'] { background: #3B82F6; color: white; }
+    &[data-couleur='bleu'] { background: var(--asce-green); color: white; }
     &[data-couleur='orange'] { background: #F59E0B; color: white; }
-    &[data-couleur='violet'] { background: #8B5CF6; color: white; }
+    &[data-couleur='violet'] { background: var(--asce-green); color: white; }
     &[data-couleur='jaune'] { background: #EAB308; color: white; }
     &[data-couleur='gris'] { background: #64748B; color: white; }
   }
@@ -114,9 +114,9 @@
     white-space: nowrap;
 
     &[data-couleur='vert'] { background: #D1FAE5; color: #059669; }
-    &[data-couleur='bleu'] { background: #DBEAFE; color: #2563EB; }
-    &[data-couleur='orange'] { background: #FEF3C7; color: #D97706; }
-    &[data-couleur='violet'] { background: #EDE9FE; color: #7C3AED; }
+    &[data-couleur='bleu'] { background: var(--asce-green-tint); color: var(--asce-green-strong); }
+    &[data-couleur='orange'] { background: #FEF3C7; color: var(--asce-yellow-dark); }
+    &[data-couleur='violet'] { background: var(--asce-green-tint); color: var(--asce-green-dark); }
     &[data-couleur='jaune'] { background: #FEF9C3; color: #A16207; }
     &[data-couleur='gris'] { background: #F1F5F9; color: #475569; }
   }

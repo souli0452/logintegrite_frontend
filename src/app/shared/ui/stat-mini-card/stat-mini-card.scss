@@ -27,8 +27,8 @@
     color: var(--status-warning);
   }
   &[data-couleur='blue'] .stat-mini__icone {
-    background-color: #DBEAFE;
-    color: #1E40AF;
+    background-color: var(--asce-green-tint);
+    color: var(--asce-green-dark);
   }
   &[data-couleur='gray'] .stat-mini__icone {
     background-color: var(--status-neutral-bg);

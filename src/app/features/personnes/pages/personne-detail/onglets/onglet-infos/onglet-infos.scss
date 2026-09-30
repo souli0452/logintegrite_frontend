@@ -183,7 +183,7 @@
 
 // ─── Icônes sexe ─────────────────────────────────────────────────────────
 .icone-sexe {
-  &--m { color: #2563EB; }  // Bleu masculin
+  &--m { color: var(--asce-green-strong); }  // Bleu masculin
   &--f { color: #EC4899; }  // Rose féminin
 }
 

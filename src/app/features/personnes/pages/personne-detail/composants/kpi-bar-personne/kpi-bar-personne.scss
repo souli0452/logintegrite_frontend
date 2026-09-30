@@ -106,10 +106,10 @@
 // COULEURS PAR TYPE
 // ═══════════════════════════════════════════════════════════════════════════
 .kpi-item--dossiers  { color: var(--ascelc-vert); }
-.kpi-item--faits     { color: #D97706; }        // Ambre-orange
+.kpi-item--faits     { color: var(--asce-yellow-dark); }        // Ambre-orange
 .kpi-item--peines    { color: #DC2626; }        // Rouge
-.kpi-item--documents { color: #2563EB; }        // Bleu
-.kpi-item--maj       { color: #7C3AED; }        // Violet
+.kpi-item--documents { color: var(--asce-green-strong); }        // Bleu
+.kpi-item--maj       { color: var(--asce-green-dark); }        // Violet
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ICÔNE
@@ -131,20 +131,20 @@
   color: var(--ascelc-vert);
 }
 .kpi-item--faits .kpi-item__icone {
-  background: rgba(217, 119, 6, 0.1);
-  color: #D97706;
+  background: rgba(255, 220, 1, 0.1);
+  color: var(--asce-yellow-dark);
 }
 .kpi-item--peines .kpi-item__icone {
   background: rgba(220, 38, 38, 0.1);
   color: #DC2626;
 }
 .kpi-item--documents .kpi-item__icone {
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563EB;
+  background: rgba(0, 132, 61, 0.1);
+  color: var(--asce-green-strong);
 }
 .kpi-item--maj .kpi-item__icone {
-  background: rgba(124, 58, 237, 0.1);
-  color: #7C3AED;
+  background: rgba(0, 90, 43, 0.1);
+  color: var(--asce-green-dark);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
