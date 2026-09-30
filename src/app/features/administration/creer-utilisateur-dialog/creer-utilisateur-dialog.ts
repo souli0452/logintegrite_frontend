@@ -10,6 +10,9 @@ import {
   LucideAngularModule, UserPlus, X, Info, Eye, EyeOff, LucideIconData
 } from 'lucide-angular';
 
+import {
+  genererMotDePasseSecurise, MOT_DE_PASSE_CONSIGNE, validerMotDePasse
+} from '../../../shared/utils/mot-de-passe.util';
 import { UtilisateurService } from '../services/utilisateur.service';
 import { RoleHabilitationResponse, CodeRole } from '../models/utilisateur.models';
 
@@ -40,13 +43,14 @@ export class CreerUtilisateurDialog {
 
   readonly enCours = signal(false);
   readonly afficherMotDePasse = signal(false);
+  readonly consigneMotDePasse = MOT_DE_PASSE_CONSIGNE;
 
   readonly formulaire = this.fb.group({
     nom: ['', [Validators.required, Validators.minLength(2)]],
     prenom: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
     telephone: [''],
-    motDePasseTemporaire: ['', [Validators.required, Validators.minLength(8)]],
+    motDePasseTemporaire: ['', [Validators.required, validerMotDePasse]],
     roleInitial: ['' as CodeRole | '', Validators.required]
   });
 
@@ -55,13 +59,7 @@ export class CreerUtilisateurDialog {
   }
 
   genererMotDePasse(): void {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-    const special = '!@#$%*';
-    let mdp = '';
-    for (let i = 0; i < 10; i++) mdp += chars[Math.floor(Math.random() * chars.length)];
-    mdp += special[Math.floor(Math.random() * special.length)];
-    mdp += Math.floor(Math.random() * 100);
-    this.formulaire.patchValue({ motDePasseTemporaire: mdp });
+    this.formulaire.patchValue({ motDePasseTemporaire: genererMotDePasseSecurise() });
     this.afficherMotDePasse.set(true);
   }
 

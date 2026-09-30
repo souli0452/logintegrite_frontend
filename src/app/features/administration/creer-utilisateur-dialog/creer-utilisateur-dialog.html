@@ -73,7 +73,9 @@
           <lucide-icon [name]="afficherMotDePasse() ? icons['EyeOff'] : icons['Eye']" [size]="16"></lucide-icon>
         </button>
         @if (formulaire.controls.motDePasseTemporaire.touched && formulaire.controls.motDePasseTemporaire.invalid) {
-          <mat-error>Mot de passe requis (min. 8 caractères)</mat-error>
+          <mat-error>{{ consigneMotDePasse }}</mat-error>
+        } @else {
+          <mat-hint>{{ consigneMotDePasse }}</mat-hint>
         }
       </mat-form-field>
 
