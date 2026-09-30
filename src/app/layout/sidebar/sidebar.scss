@@ -1,4 +1,4 @@
-/* Petit ecran : la barre reste reservee a 72px dans la mise en page et, une fois depliee, passe PAR-DESSUS le contenu. */
+/* Petit ecran (largeur) : la barre reste reservee a 72px dans la mise en page et, une fois depliee, passe PAR-DESSUS le contenu. */
 @media (max-width: 900px) {
   :host {
     display: block;
@@ -18,28 +18,46 @@
   }
 }
 
+/*
+ * Menu lateral. Conception :
+ *  - il doit tenir SANS defiler sur les ecrans courants (portable 1366x768, Windows a 125 % ou 150 % : 600 a 730 px utiles) ;
+ *  - texte en graisse normale, le gras est reserve a l'element actif ;
+ *  - quand la hauteur manque, les titres de section deviennent de simples filets et le logo se reduit.
+ */
 .sidebar {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background-color: var(--asce-green-deep);
   color: #ffffff;
   transition: width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 264px;
+  width: 256px;
+  font-size: 0.84rem;           /* ~13,5 px */
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
 
   &--pliee {
-    width: 72px;
+    width: 68px;
 
     .sidebar__item,
     .sidebar__group-header,
     .sidebar__bascule {
       justify-content: center;
-      padding: 12px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .sidebar__section + .sidebar__section {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
   }
 
   /* Logo : sur fond blanc pour rester fidele a la charte (le noir du logo est illisible sur le vert). */
   &__brand {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,13 +72,12 @@
     display: block;
     transition: max-width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &--pliee {
-      max-width: 44px;
-    }
+    &--pliee { max-width: 40px; }
   }
 
   /* Filet aux couleurs du drapeau : aplats nets, comme dans le logo. */
   &__drapeau {
+    flex: 0 0 auto;
     height: 4px;
     background: linear-gradient(90deg,
       var(--asce-red) 0 33.33%,
@@ -69,52 +86,61 @@
   }
 
   &__nav {
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px 10px;
+    padding: 10px 8px 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    /* Barre de defilement fine et discrete, seulement si l'ecran est vraiment tres petit */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+
+    &::-webkit-scrollbar { width: 6px; }
+    &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.28); border-radius: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
   }
 
   &__section {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
   }
 
   &__section-titre {
-    margin: 0 0 4px;
-    padding: 0 14px;
-    font-size: 0.75rem;
+    margin: 0 0 3px;
+    padding: 0 12px;
+    font-size: 0.72rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.62);
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.55);
   }
 
   &__item,
   &__group-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
     width: 100%;
-    padding: 8px 14px;
+    min-height: 36px;
+    padding: 7px 12px;
     background: transparent;
     border: none;
-    border-left: 3px solid transparent;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.86);
     font: inherit;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 400;
     text-align: left;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.09);
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
       text-decoration: none;
     }
 
@@ -125,8 +151,8 @@
   }
 
   &__item--active {
-    background-color: rgba(0, 165, 79, 0.24);
-    border-left-color: var(--asce-green);
+    background-color: rgba(0, 165, 79, 0.26);
+    box-shadow: inset 3px 0 0 var(--asce-green);
     color: #ffffff;
     font-weight: 600;
 
@@ -136,52 +162,86 @@
   &__item-icone,
   &__group-icone {
     flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(255, 255, 255, 0.72);
   }
 
   &__group-header--ouvert { color: #ffffff; }
-
   &__group-label { flex: 1; }
-
-  &__group-chevron { color: rgba(255, 255, 255, 0.6); }
+  &__group-chevron { color: rgba(255, 255, 255, 0.55); }
 
   &__enfants {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    margin: 2px 0 4px 22px;
+    gap: 1px;
+    margin: 1px 0 3px 23px;
     padding-left: 10px;
-    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
   }
 
   &__item--enfant {
-    padding: 6px 12px;
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.82);
-    border-left: none;
+    min-height: 32px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Pied : reduire / deplier, discret, ne recouvre jamais le menu. */
+  &__pied {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   &__bascule {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin: 0 10px 12px;
-    padding: 10px 14px;
+    gap: 11px;
+    width: 100%;
+    min-height: 34px;
+    padding: 6px 12px;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: none;
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.7);
     font: inherit;
-    font-size: 0.8125rem;
+    font-size: 0.78rem;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
-    &:hover { background-color: rgba(255, 255, 255, 0.09); }
+    &:hover { background-color: rgba(255, 255, 255, 0.08); color: #ffffff; }
 
     &:focus-visible {
       outline: 2px solid var(--asce-yellow);
       outline-offset: 1px;
     }
+  }
+}
+
+/* Ecrans peu hauts (portables, Windows agrandi a 125 % / 150 %) : on gagne de la place sans rien retirer. */
+@media (max-height: 780px) {
+  .sidebar {
+    &__brand { padding: 6px 14px; }
+    &__logo-img { max-width: 124px; &--pliee { max-width: 38px; } }
+    &__nav { gap: 0; padding-top: 8px; }
+
+    /* Les titres de section deviennent des filets : meme structure, moins de hauteur */
+    &__section-titre { display: none; }
+    &__section + &__section {
+      margin-top: 7px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    &__item, &__group-header { min-height: 34px; padding-top: 6px; padding-bottom: 6px; }
+    &__item--enfant { min-height: 30px; padding-top: 4px; padding-bottom: 4px; }
+  }
+}
+
+@media (max-height: 640px) {
+  .sidebar {
+    &__logo-img { max-width: 104px; }
+    &__item, &__group-header { min-height: 32px; padding-top: 5px; padding-bottom: 5px; }
+    &__section + &__section { margin-top: 5px; padding-top: 5px; }
+    &__bascule { min-height: 30px; padding-top: 4px; padding-bottom: 4px; }
   }
 }
 

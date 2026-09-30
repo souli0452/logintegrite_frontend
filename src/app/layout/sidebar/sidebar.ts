@@ -1,5 +1,7 @@
 import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
 import {
   LucideAngularModule,
   LayoutDashboard,
@@ -49,7 +51,12 @@ export class Sidebar {
 
   readonly icons: Record<string, LucideIconData> = { ChevronRight, ChevronDown, PanelLeftClose, PanelLeftOpen };
 
-  private readonly groupesOuverts = signal<Set<string>>(new Set(['Gestion des personnes']));
+  private readonly router = inject(Router);
+  /** Groupes ouverts a la main ; un groupe s'ouvre aussi tout seul quand on est dans l'une de ses pages. */
+  private readonly groupesOuverts = signal<Set<string>>(new Set());
+  private readonly urlCourante = toSignal(
+    this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd), map((e) => e.urlAfterRedirects), startWith(this.router.url)),
+    { initialValue: this.router.url });
 
   /** Le menu suit le parcours de travail : consulter le registre, traiter les dossiers, piloter, administrer. */
   private readonly menu: MenuSection[] = [
@@ -106,16 +113,34 @@ export class Sidebar {
       .filter((section) => section.items.length > 0)
   );
 
+  /** Groupe que l'utilisateur vient de refermer alors qu'il contient la page courante : reste ferme jusqu'a la prochaine navigation. */
+  private readonly fermeManuellement = signal<{ label: string; url: string } | null>(null);
+
   estOuvert(label: string): boolean {
-    return this.groupesOuverts().has(label);
+    const ferme = this.fermeManuellement();
+    if (ferme && ferme.label === label && ferme.url === this.urlCourante()) return false;
+    return this.groupesOuverts().has(label) || this.groupeContientLaPage(label);
+  }
+
+  /** Vrai si la page courante appartient a ce groupe (la route du menu la plus precise gagne : /personnes/recherche n'est pas dans "Gestion des personnes"). */
+  private groupeContientLaPage(label: string): boolean {
+    const url = this.urlCourante().split('?')[0];
+    const routes = this.menu.flatMap((section) => section.items.flatMap((item) => item.enfants ? item.enfants : [item]));
+    const correspond = routes
+      .filter((r) => r.route && (url === r.route || url.startsWith(r.route + '/')))
+      .sort((a, b) => (b.route?.length ?? 0) - (a.route?.length ?? 0))[0];
+    if (!correspond) return false;
+    const groupe = this.menu.flatMap((section) => section.items).find((item) => item.label === label);
+    return !!groupe?.enfants?.some((e) => e.route === correspond.route);
   }
 
   basculerGroupe(label: string): void {
-    this.groupesOuverts.update((s) => {
-      const copie = new Set(s);
-      if (copie.has(label)) copie.delete(label);
-      else copie.add(label);
-      return copie;
-    });
+    if (this.estOuvert(label)) {
+      this.groupesOuverts.update((s) => { const copie = new Set(s); copie.delete(label); return copie; });
+      this.fermeManuellement.set({ label, url: this.urlCourante() });
+    } else {
+      this.fermeManuellement.set(null);
+      this.groupesOuverts.update((s) => new Set(s).add(label));
+    }
   }
 }
