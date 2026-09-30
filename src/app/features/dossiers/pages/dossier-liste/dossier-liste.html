@@ -1,20 +1,55 @@
 <app-page-header
   titre="Dossiers"
-  [sousTitre]="totalElements() + ' dossier(s) enregistré(s).'">
-  
+  [sousTitre]="totalElements() + (filtreActif() ? ' dossier(s) correspondant(s).' : ' dossier(s) enregistré(s).')">
+  @if (auth.hasAnyRole('AGENT', 'ADMIN')) {
+    <a mat-flat-button color="primary" routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
+      <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
+      <span>Nouveau dossier</span>
+    </a>
+  }
 </app-page-header>
+
+<div class="filtres">
+  <div class="filtres__recherche">
+    <lucide-icon [name]="icons['Search']" [size]="16" class="filtres__icone"></lucide-icon>
+    <input #champ
+           type="search"
+           class="filtres__champ"
+           autocomplete="off"
+           placeholder="Rechercher par numéro ou intitulé"
+           aria-label="Rechercher un dossier par numéro ou intitulé"
+           (input)="saisir(champ.value)">
+  </div>
+  <div class="filtres__statuts" role="group" aria-label="Filtrer par statut">
+    @for (s of statuts; track s.valeur) {
+      <button type="button"
+              class="puce"
+              [class.puce--active]="statut() === s.valeur"
+              [attr.aria-pressed]="statut() === s.valeur"
+              (click)="choisirStatut(s.valeur)">{{ s.libelle }}</button>
+    }
+  </div>
+</div>
 
 @if (chargement()) {
   <div class="liste-loading">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
 } @else if (dossiers().length === 0) {
-  <app-empty-state
-    titre="Aucun dossier"
-    message="Ouvrez le premier dossier pour commencer."
-    [icone]="icons['FolderOpen']">
-    
-  </app-empty-state>
+  @if (filtreActif()) {
+    <app-empty-state
+      titre="Aucun dossier ne correspond"
+      message="Modifiez la recherche ou le statut pour élargir les résultats."
+      [icone]="icons['Search']">
+      <button mat-stroked-button type="button" (click)="effacerFiltres(champ)">Effacer les filtres</button>
+    </app-empty-state>
+  } @else {
+    <app-empty-state
+      titre="Aucun dossier"
+      message="Ouvrez le premier dossier pour commencer."
+      [icone]="icons['FolderOpen']">
+    </app-empty-state>
+  }
 } @else {
   <div class="liste-table">
     <table mat-table [dataSource]="dossiers()">

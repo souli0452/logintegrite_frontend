@@ -172,3 +172,10 @@ a {
 .mat-mdc-menu-item {
   min-height: 44px;
 }
+
+/* Boutons Material : icone et libelle separes par un espace regulier (l'icone touchait le texte). */
+.mat-mdc-button-base .mdc-button__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}

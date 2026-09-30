@@ -6,7 +6,7 @@ import {
   DossierRequest, DossierResponse,
   ImplicationRequest, ImplicationResponse,
   FaitReprocheRequest, FaitRejeteResponse, FaitReprocheResponse,
-  PageResponse,
+  PageResponse, StatutDossier,
   DossierAValiderResponse // Import ajouté ici
 } from '../models/dossier.models';
 
@@ -17,8 +17,11 @@ export class DossierService {
 
   // ---- CRUD dossier ----
 
-  lister(page = 0, size = 20): Observable<PageResponse<DossierResponse>> {
-    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+  /** Liste paginee (du plus recent au plus ancien) ; `recherche` porte sur le numero et l'intitule, `statut` filtre. */
+  lister(page = 0, size = 20, recherche = '', statut: StatutDossier | '' = ''): Observable<PageResponse<DossierResponse>> {
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    if (recherche.trim()) params = params.set('q', recherche.trim());
+    if (statut) params = params.set('statut', statut);
     return this.http.get<PageResponse<DossierResponse>>(this.baseUrl, { params });
   }
 
