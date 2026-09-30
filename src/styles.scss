@@ -36,6 +36,10 @@ html {
   --mat-form-field-outlined-focus-label-text-color: #00843D;
   --mat-form-field-outlined-caret-color: #00843D;
   --mat-form-field-outlined-hover-outline-color: #005A2B;
+
+  /* Menus deroulants : fond blanc et lignes de meme hauteur */
+  --mat-menu-container-color: #ffffff;
+  --mat-menu-item-label-text-size: 0.875rem;
   --mat-form-field-filled-focus-active-indicator-color: #00843D;
   --mat-form-field-filled-focus-label-text-color: #00843D;
   --mat-form-field-filled-caret-color: #00843D;
@@ -156,4 +160,15 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
+
+/* Menus deroulants : icone et libelle alignes avec un espace regulier, lignes de hauteur identique. */
+.mat-mdc-menu-item .mat-mdc-menu-item-text {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mat-mdc-menu-item {
+  min-height: 44px;
 }
