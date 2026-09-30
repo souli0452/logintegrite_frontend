@@ -27,7 +27,7 @@
     color: var(--text-primary);
 
     lucide-icon {
-      color: var(--asce-green);
+      color: var(--asce-green-strong);
     }
   }
 
@@ -63,7 +63,7 @@
   min-height: 62px;
 
   &:hover:not(:disabled) {
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     background: var(--asce-green-tint);
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 150, 64, 0.1);

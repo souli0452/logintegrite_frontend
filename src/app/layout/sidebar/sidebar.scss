@@ -82,7 +82,7 @@
     background: linear-gradient(90deg,
       var(--asce-red) 0 33.33%,
       var(--asce-yellow) 33.33% 66.66%,
-      var(--asce-green) 66.66% 100%);
+      var(--asce-flag-green) 66.66% 100%);
   }
 
   &__nav {
@@ -151,12 +151,12 @@
   }
 
   &__item--active {
-    background-color: rgba(0, 165, 79, 0.26);
+    background-color: rgba(72, 186, 101, 0.26);
     box-shadow: inset 3px 0 0 var(--asce-green);
     color: #ffffff;
     font-weight: 600;
 
-    .sidebar__item-icone { color: #ffffff; }
+    .sidebar__item-icone { color: var(--asce-green); }
   }
 
   &__item-icone,

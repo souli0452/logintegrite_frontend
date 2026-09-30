@@ -189,7 +189,7 @@ export class AdministrationPage implements OnDestroy {
   couleurAvatar(u: UtilisateurResponse): string {
     // Couleur deterministe basee sur l'id
     const hash = u.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-    const couleurs = ['#00A54F', '#EE1D23', '#FFDC01', '#4a4a48', '#007a33'];
+    const couleurs = ['#48BA65', '#EE1D23', '#FFDC01', '#4a4a48', '#007a33'];
     return couleurs[hash % couleurs.length];
   }
 

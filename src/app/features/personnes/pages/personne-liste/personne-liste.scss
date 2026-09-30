@@ -41,7 +41,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -63,7 +63,7 @@
   gap: 6px;
   padding: 8px 14px;
   background: transparent;
-  border: 1px solid var(--asce-green);
+  border: 1px solid var(--asce-green-strong);
   border-radius: var(--radius-md);
   color: var(--asce-green-dark);
   font-size: 0.8125rem;
@@ -139,7 +139,7 @@
   transition: border-color 0.15s;
 
   &:focus {
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
   }
 }
 
@@ -165,8 +165,8 @@
   transition: all 0.15s;
 
   &:hover {
-    border-color: var(--asce-green);
-    color: var(--asce-green);
+    border-color: var(--asce-green-strong);
+    color: var(--asce-green-strong);
   }
 
   &--actif {
@@ -186,7 +186,7 @@
     &.filtre-chip--officiel.filtre-chip--actif {
       background: var(--asce-green-tint);
       color: var(--asce-green-dark);
-      border-color: var(--asce-green);
+      border-color: var(--asce-green-strong);
     }
   }
 }
@@ -329,7 +329,7 @@
   min-width: 28px;
   height: 28px;
   padding: 0 10px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border-radius: 999px;
   font-size: 0.875rem;
@@ -371,7 +371,7 @@
 
   &:hover {
     background: var(--asce-green-tint);
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     color: var(--asce-green-dark);
   }
 
@@ -447,7 +447,7 @@
   gap: 10px;
 
   lucide-icon {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 
   &__texte {

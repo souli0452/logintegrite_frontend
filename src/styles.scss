@@ -23,26 +23,88 @@ html {
   @include mat.all-component-themes($asce-theme);
 
   /* Couleurs de la charte ASCE-LC pour les composants Material */
-  --mat-sys-primary: #00843D;
+  --mat-sys-primary: #257F3E;
   --mat-sys-on-primary: #ffffff;
-  --mat-sys-primary-container: #E6F5EC;
-  --mat-sys-on-primary-container: #005A2B;
-  --mat-sys-secondary: #005A2B;
+  --mat-sys-primary-container: #EAF6EE;
+  --mat-sys-on-primary-container: #19592B;
+  --mat-sys-secondary: #19592B;
   --mat-sys-tertiary: #EE1D23;
-  --mat-sys-surface-tint: #00843D;
+  --mat-sys-surface-tint: #257F3E;
 
   /* Champs de formulaire : contour et libelle verts au focus (et non noirs) */
-  --mat-form-field-outlined-focus-outline-color: #00843D;
-  --mat-form-field-outlined-focus-label-text-color: #00843D;
-  --mat-form-field-outlined-caret-color: #00843D;
-  --mat-form-field-outlined-hover-outline-color: #005A2B;
+  --mat-form-field-outlined-focus-outline-color: #257F3E;
+  --mat-form-field-outlined-focus-label-text-color: #257F3E;
+  --mat-form-field-outlined-caret-color: #257F3E;
+  --mat-form-field-outlined-hover-outline-color: #19592B;
 
   /* Menus deroulants : fond blanc et lignes de meme hauteur */
   --mat-menu-container-color: #ffffff;
   --mat-menu-item-label-text-size: 0.875rem;
-  --mat-form-field-filled-focus-active-indicator-color: #00843D;
-  --mat-form-field-filled-focus-label-text-color: #00843D;
-  --mat-form-field-filled-caret-color: #00843D;
+  --mat-form-field-filled-focus-active-indicator-color: #257F3E;
+  --mat-form-field-filled-focus-label-text-color: #257F3E;
+  --mat-form-field-filled-caret-color: #257F3E;
+
+  /* Composants Material : vert du projet (boutons, selections, onglets, calendrier, chargements) */
+  --mat-button-filled-container-color: #257F3E;
+  --mat-button-filled-label-text-color: #ffffff;
+  --mat-button-filled-state-layer-color: #ffffff;
+  --mat-button-filled-ripple-color: rgba(255, 255, 255, 0.16);
+  --mat-button-outlined-label-text-color: #257F3E;
+  --mat-button-outlined-state-layer-color: #257F3E;
+  --mat-button-outlined-ripple-color: rgba(37, 127, 62, 0.14);
+  --mat-button-text-label-text-color: #257F3E;
+  --mat-button-text-state-layer-color: #257F3E;
+  --mat-button-text-ripple-color: rgba(37, 127, 62, 0.14);
+  --mat-button-tonal-container-color: #EAF6EE;
+  --mat-button-tonal-label-text-color: #19592B;
+  --mat-button-tonal-state-layer-color: #19592B;
+  --mat-button-protected-label-text-color: #257F3E;
+  --mat-checkbox-selected-icon-color: #257F3E;
+  --mat-checkbox-selected-focus-icon-color: #257F3E;
+  --mat-checkbox-selected-hover-icon-color: #257F3E;
+  --mat-checkbox-selected-pressed-icon-color: #257F3E;
+  --mat-checkbox-selected-focus-state-layer-color: #257F3E;
+  --mat-checkbox-selected-hover-state-layer-color: #257F3E;
+  --mat-checkbox-unselected-pressed-state-layer-color: #257F3E;
+  --mat-checkbox-selected-checkmark-color: #ffffff;
+  --mat-pseudo-checkbox-full-selected-icon-color: #257F3E;
+  --mat-pseudo-checkbox-minimal-selected-checkmark-color: #257F3E;
+  --mat-radio-selected-icon-color: #257F3E;
+  --mat-radio-selected-focus-icon-color: #257F3E;
+  --mat-radio-selected-hover-icon-color: #257F3E;
+  --mat-radio-selected-pressed-icon-color: #257F3E;
+  --mat-radio-checked-ripple-color: #257F3E;
+  --mat-slide-toggle-selected-track-color: #257F3E;
+  --mat-slide-toggle-selected-hover-track-color: #257F3E;
+  --mat-slide-toggle-selected-focus-track-color: #257F3E;
+  --mat-slide-toggle-selected-pressed-track-color: #257F3E;
+  --mat-tab-active-indicator-color: #257F3E;
+  --mat-tab-active-focus-indicator-color: #257F3E;
+  --mat-tab-active-hover-indicator-color: #257F3E;
+  --mat-progress-spinner-active-indicator-color: #257F3E;
+  --mat-progress-bar-active-indicator-color: #257F3E;
+  --mat-option-selected-state-label-text-color: #19592B;
+  --mat-option-selected-state-layer-color: #EAF6EE;
+  --mat-select-focused-arrow-color: #257F3E;
+  --mat-form-field-focus-select-arrow-color: #257F3E;
+  --mat-chip-elevated-selected-container-color: #EAF6EE;
+  --mat-chip-selected-label-text-color: #19592B;
+  --mat-chip-selected-focus-state-layer-color: #19592B;
+  --mat-chip-selected-hover-state-layer-color: #19592B;
+  --mat-datepicker-calendar-date-selected-state-background-color: #257F3E;
+  --mat-datepicker-calendar-date-selected-state-text-color: #ffffff;
+  --mat-datepicker-calendar-date-today-outline-color: #257F3E;
+  --mat-datepicker-calendar-date-today-selected-state-outline-color: #257F3E;
+  --mat-datepicker-calendar-date-preview-state-outline-color: #257F3E;
+  --mat-datepicker-toggle-active-state-icon-color: #257F3E;
+  --mat-datepicker-calendar-date-in-range-state-background-color: #EAF6EE;
+  --mat-stepper-header-done-state-icon-background-color: #257F3E;
+  --mat-stepper-header-edit-state-icon-background-color: #257F3E;
+  --mat-stepper-header-selected-state-icon-background-color: #257F3E;
+  --mat-slider-active-track-color: #257F3E;
+  --mat-slider-handle-color: #257F3E;
+  --mat-slider-focus-handle-color: #257F3E;
+  --mat-slider-hover-handle-color: #257F3E;
 }
 
 /* ===============================================
@@ -52,11 +114,12 @@ html {
 
 :root {
   /* Charte graphique ASCE-LC (couleurs mesurees sur le logo officiel) */
-  --asce-green: #00A54F;          /* vert de la charte : grandes surfaces, accents, graphiques */
-  --asce-green-strong: #00843D;   /* vert des boutons, liens et textes (contraste 4,8:1 sur blanc) */
-  --asce-green-dark: #005A2B;     /* vert fonce : titres, etats survol */
-  --asce-green-deep: #06331F;     /* vert tres fonce : menu lateral */
-  --asce-green-tint: #E6F5EC;     /* fond teinte de vert */
+  --asce-green: #48BA65;          /* vert clair : reperes, icones, graphiques, survols (sur fonds sombres et en aplats) */
+  --asce-green-strong: #257F3E;   /* vert des boutons, liens et textes (contraste 5:1 sur blanc) */
+  --asce-green-dark: #19592B;     /* vert fonce : titres, etats survol */
+  --asce-green-deep: #0F2E1A;     /* vert tres fonce : menu lateral */
+  --asce-green-tint: #EAF6EE;     /* fond teinte de vert */
+  --asce-flag-green: #00A54F;     /* vert OFFICIEL du logo : filet du drapeau uniquement */
   --asce-red: #EE1D23;
   --asce-yellow: #FFDC01;
   --asce-yellow-dark: #8F7700;    /* jaune fonce : icones et textes sur fond clair (le jaune pur y est illisible) */

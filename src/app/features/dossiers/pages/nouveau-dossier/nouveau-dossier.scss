@@ -26,7 +26,7 @@
     }
 
     lucide-icon {
-      color: var(--asce-green);
+      color: var(--asce-green-strong);
     }
   }
 }
@@ -50,20 +50,20 @@
     flex-shrink: 0;
 
     &--actif .stepper__cercle {
-      background: var(--asce-green);
+      background: var(--asce-green-strong);
       color: white;
-      border-color: var(--asce-green);
+      border-color: var(--asce-green-strong);
     }
 
     &--actif .stepper__label {
-      color: var(--asce-green);
+      color: var(--asce-green-strong);
       font-weight: 600;
     }
 
     &--fait .stepper__cercle {
-      background: var(--asce-green);
+      background: var(--asce-green-strong);
       color: white;
-      border-color: var(--asce-green);
+      border-color: var(--asce-green-strong);
     }
   }
 
@@ -97,7 +97,7 @@
     transition: background 0.2s;
 
     &--fait {
-      background: var(--asce-green);
+      background: var(--asce-green-strong);
     }
   }
 }
@@ -237,7 +237,7 @@
   gap: 6px;
   padding: var(--spacing-sm);
   background: var(--asce-green-tint);
-  border: 1px solid var(--asce-green);
+  border: 1px solid var(--asce-green-strong);
   border-radius: var(--radius-sm);
   color: var(--asce-green-dark);
   font-size: 0.8125rem;
@@ -261,8 +261,8 @@
   cursor: pointer;
 
   &:hover {
-    border-color: var(--asce-green);
-    color: var(--asce-green);
+    border-color: var(--asce-green-strong);
+    color: var(--asce-green-strong);
     background: var(--asce-green-tint);
   }
 }
@@ -289,7 +289,7 @@
   }
 
   &__icone {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 
   &__titre {
@@ -358,7 +358,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -455,7 +455,7 @@
   &__titre {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 0 0 var(--spacing-sm) 0;
@@ -515,8 +515,8 @@
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    border-color: var(--asce-green);
-    color: var(--asce-green);
+    border-color: var(--asce-green-strong);
+    color: var(--asce-green-strong);
   }
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -527,7 +527,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 24px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);

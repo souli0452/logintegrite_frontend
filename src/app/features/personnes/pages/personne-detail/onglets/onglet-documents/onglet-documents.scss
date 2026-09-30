@@ -32,7 +32,7 @@
 /* Mini-dialogue inline de selection du dossier destinataire */
 .carte-selection {
   background: var(--asce-green-tint);
-  border: 1px solid var(--asce-green);
+  border: 1px solid var(--asce-green-strong);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
 
@@ -102,7 +102,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -116,7 +116,7 @@
 
 .btn-principal {
   padding: 8px 16px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -138,8 +138,8 @@
   cursor: pointer;
 
   &:hover {
-    border-color: var(--asce-green);
-    color: var(--asce-green);
+    border-color: var(--asce-green-strong);
+    color: var(--asce-green-strong);
   }
 }
 
@@ -158,7 +158,7 @@
 
   &:hover {
     background: var(--asce-green-tint);
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     color: var(--asce-green-dark);
   }
 }

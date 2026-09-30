@@ -23,7 +23,7 @@
     align-items: flex-start;
 
     lucide-icon {
-      color: var(--asce-green);
+      color: var(--asce-green-strong);
       margin-top: 2px;
     }
   }
@@ -106,12 +106,12 @@
   transition: all 0.15s;
 
   &:hover, &--survol {
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     background: var(--asce-green-tint);
   }
 
   &__icone {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 
   &__titre {
@@ -149,7 +149,7 @@
   gap: var(--spacing-sm);
 
   &--succes {
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     background: var(--asce-green-tint);
   }
 
@@ -243,7 +243,7 @@
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border-radius: 999px;
   font-size: 0.75rem;
@@ -274,8 +274,8 @@
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    border-color: var(--asce-green);
-    color: var(--asce-green);
+    border-color: var(--asce-green-strong);
+    color: var(--asce-green-strong);
   }
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -286,7 +286,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);

@@ -70,7 +70,7 @@
     box-shadow: none !important;
 
     &.mat-expanded {
-      border-color: var(--asce-green) !important;
+      border-color: var(--asce-green-strong) !important;
     }
   }
 
@@ -108,7 +108,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background-color: var(--asce-green);
+  background-color: var(--asce-green-strong);
   color: var(--asce-white);
   padding: 8px 12px;
   border-radius: 6px;
@@ -163,7 +163,7 @@
   border-radius: 6px;
 
   strong {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 }
 
@@ -200,7 +200,7 @@
   font-family: 'Menlo', 'Consolas', monospace;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--asce-green);
+  color: var(--asce-green-strong);
 }
 
 .cellule-strong {
@@ -218,7 +218,7 @@
 
   &--pp {
     background-color: var(--asce-green-light);
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 
   &--pm {
@@ -283,11 +283,11 @@
     .mdc-text-field--focused .mdc-notched-outline__leading,
     .mdc-text-field--focused .mdc-notched-outline__notch,
     .mdc-text-field--focused .mdc-notched-outline__trailing {
-      border-color: var(--asce-green) !important;
+      border-color: var(--asce-green-strong) !important;
     }
 
     .mdc-field--focused .mat-mdc-floating-label {
-      color: var(--asce-green) !important;
+      color: var(--asce-green-strong) !important;
     }
   }
 }

@@ -49,7 +49,7 @@
   }
 
   &__icone {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
     flex-shrink: 0;
     width: 28px;
     height: 28px;
@@ -128,7 +128,7 @@
   }
 
   &__icone {
-    color: var(--asce-green);
+    color: var(--asce-green-strong);
   }
 
   &__titre {
@@ -150,7 +150,7 @@
     height: 100px;
     border-radius: var(--radius-md);
     background: var(--asce-green-tint);
-    border: 3px solid var(--asce-green);
+    border: 3px solid var(--asce-green-strong);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,7 +179,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-sm);
@@ -317,7 +317,7 @@
   transition: border-color 0.15s;
 
   &:hover {
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
   }
 
   &__contenu {
@@ -376,8 +376,8 @@
   gap: 6px;
   padding: 8px 16px;
   background: transparent;
-  color: var(--asce-green);
-  border: 1px dashed var(--asce-green);
+  color: var(--asce-green-strong);
+  border: 1px dashed var(--asce-green-strong);
   border-radius: var(--radius-sm);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -443,7 +443,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-sm);

@@ -115,7 +115,7 @@ export class DashboardVue implements OnDestroy {
 
   private configCourbe(ctx: CanvasRenderingContext2D, data: DashboardExecutifResponse): ChartConfiguration<'line'> {
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    // Utilisation du Vert ASCE-LC avec transparence (#00A54F)
+    // Utilisation du Vert ASCE-LC avec transparence (#48BA65)
     gradient.addColorStop(0, 'rgba(0, 150, 64, 0.25)');
     gradient.addColorStop(1, 'rgba(0, 150, 64, 0.0)');
 
@@ -126,12 +126,12 @@ export class DashboardVue implements OnDestroy {
         datasets: [{
           label: 'Dossiers ouverts',
           data: data.evolutionDossiers.map((p) => p.valeur),
-          borderColor: '#00A54F', // Vert ASCE-LC
+          borderColor: '#48BA65', // Vert ASCE-LC
           backgroundColor: gradient,
           borderWidth: 2.5,
           fill: true,
           tension: 0.35,
-          pointBackgroundColor: '#00A54F',
+          pointBackgroundColor: '#48BA65',
           pointBorderColor: '#FFFFFF', // Blanc ASCE-LC
           pointBorderWidth: 2,
           pointRadius: 5,
@@ -208,7 +208,7 @@ export class DashboardVue implements OnDestroy {
    */
   private genererCouleursDynamiques(count: number): string[] {
     const paletteOfficielle = [
-      '#00A54F', // Vert
+      '#48BA65', // Vert
       '#EE1D23', // Rouge
       '#FFDC01', // Jaune
       '#1D1D1B'  // Noir

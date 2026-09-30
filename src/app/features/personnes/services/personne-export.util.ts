@@ -171,7 +171,7 @@ export class PersonneExportUtil {
       line-height: 1.4;
     }
     .header {
-      border-bottom: 3px solid #00843D;
+      border-bottom: 3px solid #257F3E;
       padding-bottom: 10px;
       margin-bottom: 20px;
       display: flex;
@@ -181,7 +181,7 @@ export class PersonneExportUtil {
     .header-gauche h1 {
       font-size: 18pt;
       margin: 0;
-      color: #00843D;
+      color: #257F3E;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
@@ -196,7 +196,7 @@ export class PersonneExportUtil {
       color: #57534E;
     }
     .numero-fiche {
-      background: #00843D;
+      background: #257F3E;
       color: white;
       padding: 3px 8px;
       border-radius: 4px;
@@ -207,7 +207,7 @@ export class PersonneExportUtil {
     }
     h2 {
       font-size: 14pt;
-      color: #00843D;
+      color: #257F3E;
       border-bottom: 2px solid #E7E5E4;
       padding-bottom: 4px;
       margin: 15px 0 10px 0;
@@ -294,13 +294,13 @@ export class PersonneExportUtil {
     .chiffre-carte {
       padding: 8px 12px;
       background: #F5F5F4;
-      border-left: 3px solid #00843D;
+      border-left: 3px solid #257F3E;
       border-radius: 3px;
     }
     .chiffre-nombre {
       font-size: 16pt;
       font-weight: bold;
-      color: #00843D;
+      color: #257F3E;
       display: block;
       line-height: 1.2;
     }

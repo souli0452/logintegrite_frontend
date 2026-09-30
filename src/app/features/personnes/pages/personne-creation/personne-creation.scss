@@ -30,7 +30,7 @@
       color: var(--text-secondary);
     }
 
-    lucide-icon { color: var(--asce-green); }
+    lucide-icon { color: var(--asce-green-strong); }
   }
 }
 
@@ -46,7 +46,7 @@
   font-size: 0.875rem;
   cursor: pointer;
 
-  &:hover { border-color: var(--asce-green); color: var(--asce-green); }
+  &:hover { border-color: var(--asce-green-strong); color: var(--asce-green-strong); }
 }
 
 /* Sélecteur type */
@@ -84,7 +84,7 @@
   &--actif {
     background: var(--asce-green-tint);
     color: var(--asce-green-dark);
-    border-color: var(--asce-green);
+    border-color: var(--asce-green-strong);
     font-weight: 600;
   }
 }
@@ -109,13 +109,13 @@
 
     &--actif .stepper__cercle,
     &--fait .stepper__cercle {
-      background: var(--asce-green);
+      background: var(--asce-green-strong);
       color: white;
-      border-color: var(--asce-green);
+      border-color: var(--asce-green-strong);
     }
 
     &--actif .stepper__label {
-      color: var(--asce-green);
+      color: var(--asce-green-strong);
       font-weight: 600;
     }
   }
@@ -149,7 +149,7 @@
     margin: 0 var(--spacing-sm);
     transition: background 0.2s;
 
-    &--fait { background: var(--asce-green); }
+    &--fait { background: var(--asce-green-strong); }
   }
 }
 
@@ -220,7 +220,7 @@
   justify-content: center;
   gap: 6px;
   padding: 8px 12px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border-radius: var(--radius-md);
   font-size: 0.8125rem;
@@ -287,7 +287,7 @@
     border-bottom: 1px solid var(--border-default);
   }
 
-  &__icone { color: var(--asce-green); }
+  &__icone { color: var(--asce-green-strong); }
 
   &__titre {
     margin: 0;
@@ -357,7 +357,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -432,7 +432,7 @@
   font-size: 0.875rem;
   cursor: pointer;
 
-  &:hover:not(:disabled) { border-color: var(--asce-green); color: var(--asce-green); }
+  &:hover:not(:disabled) { border-color: var(--asce-green-strong); color: var(--asce-green-strong); }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
@@ -441,7 +441,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 24px;
-  background: var(--asce-green);
+  background: var(--asce-green-strong);
   color: white;
   border: none;
   border-radius: var(--radius-md);
