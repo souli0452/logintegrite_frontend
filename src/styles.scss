@@ -323,3 +323,23 @@ a {
 .mat-mdc-icon-button:hover lucide-icon { color: var(--asce-green-dark); }
 .mat-mdc-icon-button lucide-icon.icone-danger { color: var(--text-secondary); }
 .mat-mdc-icon-button:hover lucide-icon.icone-danger { color: #b91c1c; }
+
+/* Protection des donnees affichees : pas de selection, de glisser ni de menu d'appui long (mobile).
+   Les champs de saisie et les zones marquees data-copiable restent utilisables. */
+.app-shell {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+.app-shell input, .app-shell textarea, .app-shell select, .app-shell [contenteditable="true"], .app-shell [data-copiable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.app-shell img { -webkit-user-drag: none; pointer-events: auto; }
+
+/* Impression : rien n'est imprime depuis le navigateur */
+@media print {
+  body * { display: none !important; }
+  body::after { content: "Impression interdite depuis le navigateur."; display: block; font: 16px sans-serif; padding: 40px; }
+}

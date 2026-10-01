@@ -43,3 +43,13 @@
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
+
+.pagination-simple {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 4px 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}

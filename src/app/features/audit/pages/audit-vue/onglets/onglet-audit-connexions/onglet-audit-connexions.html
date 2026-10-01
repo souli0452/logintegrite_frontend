@@ -1,0 +1,49 @@
+<div class="onglet-panel">
+  <div class="filtres">
+    <mat-form-field appearance="outline" class="filtres__champ">
+      <mat-label>Type d'événement</mat-label>
+      <mat-select [value]="filtre()" (selectionChange)="changerFiltre($event.value)">
+        @for (t of types; track t.valeur) {
+          <mat-option [value]="t.valeur">{{ t.libelle }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (chargement()) {
+    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+  } @else if (entries().length === 0) {
+    <app-empty-state titre="Aucun événement" message="Aucune connexion ne correspond à ces critères." />
+  } @else {
+    <table mat-table [dataSource]="entries()" class="audit-table">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let e" class="cellule-date">{{ e.date | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Événement</th>
+        <td mat-cell *matCellDef="let e" class="cellule-strong">{{ libelleType(e.type) }}</td>
+      </ng-container>
+      <ng-container matColumnDef="utilisateur">
+        <th mat-header-cell *matHeaderCellDef>Compte</th>
+        <td mat-cell *matCellDef="let e">{{ e.utilisateur }}</td>
+      </ng-container>
+      <ng-container matColumnDef="adresseIp">
+        <th mat-header-cell *matHeaderCellDef>Adresse IP</th>
+        <td mat-cell *matCellDef="let e" class="cellule-mono">{{ e.adresseIp ?? '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="motif">
+        <th mat-header-cell *matHeaderCellDef>Motif</th>
+        <td mat-cell *matCellDef="let e">{{ libelleMotif(e.motif) }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnes;"></tr>
+    </table>
+
+    <div class="pagination-simple">
+      <button mat-stroked-button type="button" (click)="precedent()" [disabled]="page() === 0">Précédent</button>
+      <span>Page {{ page() + 1 }}</span>
+      <button mat-stroked-button type="button" (click)="suivant()" [disabled]="!encore()">Suivant</button>
+    </div>
+  }
+</div>

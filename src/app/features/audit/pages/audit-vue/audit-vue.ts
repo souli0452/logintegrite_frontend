@@ -8,12 +8,16 @@ import {
   Search,
   ClipboardList,
   Eye,
+  LogIn,
+  ShieldAlert,
   LucideIconData
 } from 'lucide-angular';
 
 import { PageHeader } from '../../../../shared/ui/page-header/page-header';
 import { OngletAuditModifications } from './onglets/onglet-audit-modifications/onglet-audit-modifications';
 import { OngletAuditConsultations } from './onglets/onglet-audit-consultations/onglet-audit-consultations';
+import { OngletAuditConnexions } from './onglets/onglet-audit-connexions/onglet-audit-connexions';
+import { OngletAuditPoste } from './onglets/onglet-audit-poste/onglet-audit-poste';
 
 import { BandeauIntegrite } from './composants/bandeau-integrite/bandeau-integrite';
 import { KpiForensique } from './composants/kpi-forensique/kpi-forensique';
@@ -38,6 +42,8 @@ import {
     PageHeader,
     OngletAuditModifications,
     OngletAuditConsultations,
+    OngletAuditConnexions,
+    OngletAuditPoste,
     BandeauIntegrite,
     KpiForensique,
     VerificationHashDrawer
@@ -64,7 +70,7 @@ export class AuditVue implements OnInit {
   // ─── Drawer ────────────────────────────────────────────────────────────────
   readonly drawerOuvert = signal(false);
 
-  readonly icons: Record<string, LucideIconData> = { Search, ClipboardList, Eye };
+  readonly icons: Record<string, LucideIconData> = { Search, ClipboardList, Eye, LogIn, ShieldAlert };
 
   ngOnInit(): void {
     this.chargerEtat();

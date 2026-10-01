@@ -7,3 +7,12 @@
     </main>
   </div>
 </div>
+
+<app-filigrane />
+
+@if (securite.masque()) {
+  <div class="masque-confidentiel" role="alert">
+    <p>Contenu masqué : la fenêtre n'est plus au premier plan.</p>
+    <p class="masque-confidentiel__aide">Revenez sur cette fenêtre pour reprendre.</p>
+  </div>
+}

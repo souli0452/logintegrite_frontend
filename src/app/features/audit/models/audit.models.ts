@@ -114,3 +114,23 @@ export interface KpiForensiqueResponse {
   actionsHorsHoraire24h: number;
   ipsMultiples24h: number;
 }
+
+export interface EvenementConnexion {
+  date: string;
+  type: string;
+  utilisateur: string;
+  adresseIp: string | null;
+  motif: string | null;
+  session: string | null;
+}
+
+export interface EvenementSecurite {
+  id: string;
+  date: string;
+  type: string;
+  utilisateur: string;
+  page: string | null;
+  detail: string | null;
+  adresseIp: string | null;
+  userAgent: string | null;
+}

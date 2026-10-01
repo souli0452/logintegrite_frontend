@@ -26,3 +26,24 @@
     }
   }
 }
+
+/* Masque posé quand la fenetre perd le focus (outil de capture, autre application, onglet cache) */
+.masque-confidentiel {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(5, 46, 22, 0.88);
+  backdrop-filter: blur(18px);
+  color: #ffffff;
+  text-align: center;
+  font-size: var(--text-md);
+  font-weight: 600;
+
+  p { margin: 0; }
+  &__aide { font-size: var(--text-sm); font-weight: 400; opacity: 0.8; }
+}

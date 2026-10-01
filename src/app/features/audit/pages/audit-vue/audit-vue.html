@@ -48,6 +48,26 @@
           <app-onglet-audit-consultations />
         </div>
       </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['LogIn']" [size]="16"></lucide-icon>
+          <span>Connexions</span>
+        </ng-template>
+        <div class="onglet-contenu">
+          <ng-template matTabContent><app-onglet-audit-connexions /></ng-template>
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <lucide-icon [name]="icons['ShieldAlert']" [size]="16"></lucide-icon>
+          <span>Poste de travail</span>
+        </ng-template>
+        <div class="onglet-contenu">
+          <ng-template matTabContent><app-onglet-audit-poste /></ng-template>
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </section>
 
