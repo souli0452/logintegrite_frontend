@@ -31,8 +31,8 @@ $transition: 200ms ease;
 // PAGE
 // ============================================================================
 .registre-page {
-  padding: 20px 32px 40px;
-  background: $gris-50;
+  padding: 0;
+  background: transparent;
   min-height: 100%;
   position: relative;
 }
@@ -115,16 +115,16 @@ $transition: 200ms ease;
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: $asce-rouge;
-    box-shadow: 0 0 0 2px rgba($asce-rouge, 0.15);
+    background: $asce-vert;
+    box-shadow: 0 0 0 2px rgba($asce-vert, 0.15);
     animation: pulseRouge 2.5s ease-in-out infinite;
     flex-shrink: 0;
   }
 }
 
 @keyframes pulseRouge {
-  0%, 100% { box-shadow: 0 0 0 2px rgba($asce-rouge, 0.15); }
-  50%      { box-shadow: 0 0 0 4px rgba($asce-rouge, 0.05); }
+  0%, 100% { box-shadow: 0 0 0 2px rgba($asce-vert, 0.15); }
+  50%      { box-shadow: 0 0 0 4px rgba($asce-vert, 0.05); }
 }
 
 // --- Bouton Recherche avancée ---
@@ -429,7 +429,7 @@ $transition: 200ms ease;
   align-items: center;
   gap: 8px;
 
-  lucide-icon { color: $asce-rouge; flex-shrink: 0; }
+  lucide-icon { color: $asce-vert; flex-shrink: 0; }
 
   &__label { flex: 1; font-size: var(--text-sm); color: $gris-700; font-weight: 500; }
 
@@ -437,8 +437,8 @@ $transition: 200ms ease;
     font-size: var(--text-md);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    background: $asce-rouge-clair;
-    color: $asce-rouge-fonce;
+    background: $asce-vert-clair;
+    color: $asce-vert-fonce;
     padding: 2px 10px;
     border-radius: 10px;
     min-width: 28px;

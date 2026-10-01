@@ -315,8 +315,6 @@ $transition: 200ms ease;
       color: $gris-700;
       border-bottom: 1px solid $gris-200;
       font-size: var(--text-sm);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
 
       &.col-montant, &.col-actions {
         text-align: right;
@@ -544,8 +542,6 @@ $transition: 200ms ease;
     font-size: var(--text-xs);
     font-weight: 700;
     color: $asce-rouge-fonce;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
     margin-bottom: 6px;
 
     lucide-icon { color: $asce-rouge-fonce; }

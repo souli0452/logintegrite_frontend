@@ -19,7 +19,7 @@
   &__content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-lg);
+    padding: 28px 32px 48px;
 
     @media (max-width: 600px) {
       padding: var(--spacing-md) var(--spacing-sm);

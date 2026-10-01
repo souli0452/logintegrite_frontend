@@ -20,8 +20,8 @@ $radius: 6px;
 $transition: 200ms ease;
 
 .admin-page {
-  padding: 20px 32px 40px;
-  background: $gris-50;
+  padding: 0;
+  background: transparent;
   min-height: 100%;
 }
 
@@ -116,8 +116,6 @@ $transition: 200ms ease;
   &__label {
     font-size: var(--text-sm);
     color: $gris-500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
     font-weight: 500;
   }
 

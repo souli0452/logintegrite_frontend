@@ -39,8 +39,6 @@
     font-weight: 700;
     color: var(--asce-black);
     margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
   &__form {
@@ -185,7 +183,6 @@
     border-bottom: 1px solid var(--asce-border);
     padding: 12px 16px;
     background: var(--asce-gray-bg);
-    text-transform: uppercase;
   }
 
   td.mat-mdc-cell {

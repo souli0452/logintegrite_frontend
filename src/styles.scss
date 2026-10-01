@@ -44,6 +44,19 @@ html {
   --mat-form-field-filled-focus-label-text-color: #15803D;
   --mat-form-field-filled-caret-color: #15803D;
 
+  /* Champs de formulaire : angles arrondis, filet doux, hauteur resserree (le theme impose des angles droits et 56 px) */
+  --mat-form-field-container-height: 46px;
+  --mat-form-field-container-vertical-padding: 12px;
+  --mat-form-field-outlined-outline-color: #cbd5e1;
+  --mat-form-field-outlined-label-text-color: #475569;
+  --mat-form-field-outlined-label-text-size: 14px;
+  --mat-form-field-container-text-size: 14px;
+  --mat-form-field-subscript-text-size: 12px;
+  --mat-form-field-outlined-container-shape: 8px;
+  --mat-form-field-outlined-outline-width: 1px;
+  --mat-form-field-outlined-focus-outline-width: 2px;
+  --mat-select-trigger-text-size: 14px;
+
   /* Surfaces Material : blanc franc (le theme par defaut applique un beige-vert #f9faf3 a tous les tableaux,
      dialogues, listes deroulantes et calendriers) et filets legers entre les lignes (#73796e par defaut). */
   --mat-table-background-color: #ffffff;
@@ -289,3 +302,17 @@ a {
 @media (max-height: 780px) {
   :root { --entete-hauteur: 60px; }
 }
+
+/* Page : largeur maximale et centrage, identiques pour tous les ecrans (l'ecran fournit deja la marge) */
+.app-shell__content > :not(router-outlet) {
+  display: block;
+  max-width: 1480px;
+  margin-inline: auto;
+}
+
+/* Angles des champs : la forme du contour passe par une regle, pas seulement par le jeton */
+.mdc-text-field--outlined .mdc-notched-outline__leading { border-radius: 8px 0 0 8px; }
+.mdc-text-field--outlined .mdc-notched-outline__trailing { border-radius: 0 8px 8px 0; }
+
+/* Icone au debut d'un champ : respiration a gauche (elle touchait le bord) */
+.mat-mdc-form-field-icon-prefix { padding-left: 14px; }

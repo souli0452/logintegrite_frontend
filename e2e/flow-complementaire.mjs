@@ -156,7 +156,7 @@ const lancer = {
     await page.getByRole('tab', { name: /Peines/ }).click(); await pause(page, 700);
     await page.screenshot({ path: '/out/flow2-peine-02-onglet.png' });
     const texte = await page.locator('body').innerText();
-    ok('la peine apparait dans l\'onglet Peines & sanctions', /Amende|2\s?000\s?000/.test(texte) && /Peines & sanctions \(1\)/.test(texte));
+    ok('la peine apparait dans l\'onglet Peines & sanctions', /Amende|2\s?000\s?000/.test(texte) && /Peines & sanctions\s*1/.test(texte));
     ok('aucune erreur JavaScript', erreurs.length === 0, erreurs.slice(0, 2).join(' | '));
     await ctx.close();
   },

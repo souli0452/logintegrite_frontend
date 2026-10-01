@@ -46,13 +46,13 @@ async function parcours(nom, viewport) {
   await page.fill('#password', PW);
   await page.click('#kc-login');
   await page.waitForURL(/localhost:4200/, { timeout: 30000 }); await page.locator('app-topbar').waitFor({ timeout: 30000 });
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('load'); await page.waitForTimeout(1500);
 
   const lignes = [];
   const visiter = async (route, etiquette) => {
     problemes = [];
     if (route) await page.goto('http://localhost:4200' + route);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load'); await page.waitForTimeout(1500);
     await page.waitForTimeout(600);
     const texte = (await page.locator('body').innerText()).replace(/\s+/g, ' ').trim();
     const debordement = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2);

@@ -107,8 +107,6 @@ $gris-50: #f8f8f6;
   &__nature {
     font-size: var(--text-sm);
     color: $gris-500;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
     margin-top: 2px;
   }
 
@@ -140,8 +138,6 @@ $gris-50: #f8f8f6;
       font-size: var(--text-xs);
       font-weight: 600;
       color: $gris-500;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
       margin-bottom: 4px;
     }
 
@@ -177,8 +173,6 @@ $gris-50: #f8f8f6;
     font-size: var(--text-xs);
     font-weight: 600;
     color: $gris-500;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
   }
 
   &__valeur {

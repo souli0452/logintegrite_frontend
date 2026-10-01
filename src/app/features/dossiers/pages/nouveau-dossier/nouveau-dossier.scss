@@ -214,8 +214,6 @@
   &__label {
     font-size: var(--text-xs);
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
     font-weight: 500;
   }
 
@@ -456,8 +454,6 @@
     font-size: var(--text-sm);
     font-weight: 600;
     color: var(--asce-green-strong);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
     margin: 0 0 var(--spacing-sm) 0;
     padding-bottom: var(--spacing-xs);
     border-bottom: 1px solid var(--border-default);

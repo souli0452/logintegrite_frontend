@@ -4,7 +4,7 @@
       <mat-label>Filtrer par entité</mat-label>
       <mat-select [value]="filtreEntite()" (selectionChange)="changerFiltreEntite($event.value)">
         @for (e of entitesDisponibles; track e) {
-          <mat-option [value]="e">{{ e || 'Toutes les entites' }}</mat-option>
+          <mat-option [value]="e">{{ e || 'Toutes les entités' }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
