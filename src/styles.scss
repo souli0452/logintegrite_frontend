@@ -400,3 +400,17 @@ a {
   .mat-mdc-paginator-page-size-label { display: none; }
   .mat-mdc-paginator-container { justify-content: center; padding: 8px; }
 }
+
+/* Pagination : le selecteur de lignes (boite de 36 px, valeur lisible a 13 px) */
+.mat-mdc-paginator {
+  --mat-paginator-select-trigger-text-size: 13px;
+}
+.mat-mdc-paginator .mat-mdc-select-value,
+.mat-mdc-paginator .mat-mdc-select-value-text,
+.mat-mdc-paginator .mat-mdc-select-min-line { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.mat-mdc-paginator .mat-mdc-form-field-infix {
+  min-height: 36px;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+.mat-mdc-paginator .mat-mdc-select-arrow-wrapper { transform: scale(0.85); }
