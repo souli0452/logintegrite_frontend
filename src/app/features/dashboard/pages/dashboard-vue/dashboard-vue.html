@@ -27,51 +27,48 @@
     </section>
   }
 
-  <!-- Indicateurs cles : la couleur indique le sens (vert = acquis, jaune = a traiter, rouge = refuse) -->
+  <!-- Indicateurs cles : la couleur indique le sens (vert = acquis, jaune = a traiter, rouge = refuse).
+       Chaque carte ouvre la liste correspondante quand le role le permet. -->
   <div class="dashboard-cartes">
-    <app-stat-card-executif
-      libelle="Personnes impliquées"
-      [valeur]="d.totalPersonnesImpliquees"
-      [delta]="d.deltaPersonnes" />
-    <app-stat-card-executif
-      libelle="Dossiers ouverts"
-      [valeur]="d.totalDossiers"
-      [delta]="d.deltaDossiers" />
-    <app-stat-card-executif
-      libelle="Dossiers validés"
-      ton="succes"
-      [valeur]="d.totalDossiersValides"
-      [delta]="d.deltaValides" />
-    <app-stat-card-executif
-      libelle="En attente"
-      ton="attention"
-      [valeur]="d.totalDossiersEnAttente"
-      [delta]="d.deltaEnAttente" />
-    <app-stat-card-executif
-      libelle="Dossiers rejetés"
-      ton="danger"
-      [valeur]="d.totalDossiersRejetes"
-      [delta]="d.deltaRejetes" />
+    <a class="carte-lien" [routerLink]="lien('/personnes', ['AGENT', 'ADMIN'])">
+      <app-stat-card-executif libelle="Personnes impliquées" [valeur]="d.totalPersonnesImpliquees" [delta]="d.deltaPersonnes" />
+    </a>
+    <a class="carte-lien" [routerLink]="lien('/dossiers', ['AGENT', 'ADMIN'])">
+      <app-stat-card-executif libelle="Dossiers ouverts" [valeur]="d.totalDossiers" [delta]="d.deltaDossiers" />
+    </a>
+    <a class="carte-lien" [routerLink]="lien('/registre-officiel', [])">
+      <app-stat-card-executif libelle="Dossiers validés" ton="succes" [valeur]="d.totalDossiersValides" [delta]="d.deltaValides" />
+    </a>
+    <a class="carte-lien" [routerLink]="lien('/validation', ['VALIDATEUR', 'ADMIN'])">
+      <app-stat-card-executif libelle="En attente" ton="attention" [valeur]="d.totalDossiersEnAttente" [delta]="d.deltaEnAttente" />
+    </a>
+    <a class="carte-lien" [routerLink]="lien('/validation', ['VALIDATEUR', 'ADMIN'])">
+      <app-stat-card-executif libelle="Dossiers rejetés" ton="danger" [valeur]="d.totalDossiersRejetes" [delta]="d.deltaRejetes" />
+    </a>
   </div>
 
-  <!-- Actions rapides -->
+  <!-- Raccourcis : seulement ceux que le role peut utiliser -->
   <div class="quick-actions">
-    <button mat-stroked-button color="primary" routerLink="/personnes/nouveau">
-      <lucide-icon [name]="icons['Users']" [size]="16"></lucide-icon>
-      <span>Nouvelle personne</span>
-    </button>
-    <button mat-stroked-button routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
-      <lucide-icon [name]="icons['FolderPlus']" [size]="16"></lucide-icon>
-      <span>Nouveau dossier</span>
-    </button>
-    <button mat-stroked-button routerLink="/validation">
-      <lucide-icon [name]="icons['CheckSquare']" [size]="16"></lucide-icon>
-      <span>Validation</span>
-    </button>
-    <button mat-stroked-button routerLink="/rapports">
-      <lucide-icon [name]="icons['FileText']" [size]="16"></lucide-icon>
+    @if (auth.hasAnyRole('AGENT', 'ADMIN')) {
+      <a mat-stroked-button routerLink="/personnes/nouveau">
+        <lucide-icon [name]="icons['Users']" [size]="18" [strokeWidth]="1.75"></lucide-icon>
+        <span>Nouvelle personne</span>
+      </a>
+      <a mat-stroked-button routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
+        <lucide-icon [name]="icons['FolderPlus']" [size]="18" [strokeWidth]="1.75"></lucide-icon>
+        <span>Nouveau dossier</span>
+      </a>
+    }
+    @if (auth.hasAnyRole('VALIDATEUR', 'ADMIN')) {
+      <a mat-stroked-button routerLink="/validation">
+        <lucide-icon [name]="icons['CheckSquare']" [size]="18" [strokeWidth]="1.75"></lucide-icon>
+        <span>Valider des faits</span>
+      </a>
+    }
+    <a mat-stroked-button routerLink="/rapports">
+      <lucide-icon [name]="icons['FileText']" [size]="18" [strokeWidth]="1.75"></lucide-icon>
       <span>Rapports</span>
-    </button>
+    </a>
   </div>
 
   <!-- Performance operationnelle -->

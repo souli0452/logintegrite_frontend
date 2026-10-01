@@ -1,4 +1,11 @@
+:host { display: block; height: 100%; }
+
 .carte-kpi {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  height: 100%;
   padding: var(--spacing-lg);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-default);
@@ -14,7 +21,6 @@
     font-size: var(--text-sm);
     color: var(--text-secondary);
     font-weight: 500;
-    margin-bottom: var(--spacing-sm);
   }
 
   &__valeur {
@@ -27,7 +33,7 @@
   }
 
   &__delta {
-    margin-top: var(--spacing-sm);
+    margin-top: 0;
     font-size: var(--text-xs);
     color: var(--text-secondary);
   }

@@ -29,7 +29,7 @@
   /* Dimensions du menu (redefinies plus bas selon la hauteur) */
   --nav-texte: 1.0714rem;    /* 15 px */
   --nav-icone: 20px;
-  --nav-ligne: 44px;
+  --nav-ligne: 42px;
 
   height: 100vh;
   height: 100dvh;
@@ -238,6 +238,17 @@
   height: calc(var(--nav-icone) - 4px);
 }
 
+/* Fenetre haute mais pas immense (900 px ou moins) : lignes un peu plus serrees, pour que le menu tienne
+   MEME avec "Gestion des personnes" ouvert. */
+@media (max-height: 900px) {
+  .sidebar {
+    --nav-ligne: 38px;
+
+    &__nav { gap: 10px; padding-top: 10px; }
+    &__brand { padding-top: 6px; padding-bottom: 6px; }
+  }
+}
+
 /* Fenetre de hauteur moyenne (portables, Windows agrandi a 125 %) : compact, sans rien retirer. */
 @media (max-height: 780px) {
   .sidebar {
@@ -253,14 +264,26 @@
   }
 }
 
-/* Fenetre courte (Windows agrandi a 150 %) */
-@media (max-height: 640px) {
+/* Fenetre courte (700 px ou moins) : lignes et titres plus serres, pour tenir meme avec un groupe ouvert */
+@media (max-height: 700px) {
   .sidebar {
     --nav-ligne: 32px;
 
     &__item, &__group-header, &__bascule { padding-top: 5px; padding-bottom: 5px; }
-    &__section + &__section { margin-top: 10px; }
-    &__section-titre { margin-bottom: 1px; }
+    &__section + &__section { margin-top: 8px; }
+    &__section-titre { margin-bottom: 0; line-height: 1.2; }
+  }
+}
+
+/* Fenetre tres courte (640 px ou moins, Windows a 150 %) : les titres de rubrique deviennent de simples filets */
+@media (max-height: 640px) {
+  .sidebar {
+    &__section-titre { display: none; }
+    &__section + &__section {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
   }
 }
 

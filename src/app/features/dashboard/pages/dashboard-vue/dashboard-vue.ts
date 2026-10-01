@@ -63,6 +63,11 @@ export class DashboardVue implements OnDestroy {
     this.destruireGraphiques();
   }
 
+  /** Adresse de destination d'une carte d'indicateur, ou null si le role ne permet pas d'y aller (la carte reste alors informative). */
+  lien(route: string, roles: string[]): string | null {
+    return roles.length === 0 || this.auth.hasAnyRole(...roles) ? route : null;
+  }
+
   charger(): void {
     this.chargement.set(true);
     
@@ -187,7 +192,7 @@ export class DashboardVue implements OnDestroy {
         cutout: '70%',
         plugins: {
           legend: {
-            position: 'right',
+            position: 'bottom',
             labels: { 
               color: '#1D1D1B',
               boxWidth: 10, 
