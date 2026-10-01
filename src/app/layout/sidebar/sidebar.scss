@@ -244,12 +244,8 @@
     &__brand { padding: 6px 14px; }
     &__logo-img { max-width: 124px; &--pliee { max-width: 38px; } }
     &__nav { gap: 0; padding-top: 8px; }
-    &__section-titre { display: none; }
-    &__section + &__section {
-      margin-top: 7px;
-      padding-top: 7px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
+    &__section-titre { margin: 0 0 1px; padding-left: 12px; }
+    &__section + &__section { margin-top: 8px; }
     &__item, &__group-header, &__bascule { gap: 11px; padding-top: 6px; padding-bottom: 6px; padding-left: 12px; padding-right: 12px; }
     &__enfants { padding-left: 10px; margin-left: 23px; }
   }
@@ -262,7 +258,8 @@
 
     &__logo-img { max-width: 104px; }
     &__item, &__group-header, &__bascule { padding-top: 5px; padding-bottom: 5px; }
-    &__section + &__section { margin-top: 5px; padding-top: 5px; }
+    &__section + &__section { margin-top: 5px; }
+    &__section-titre { margin-bottom: 0; }
   }
 }
 
