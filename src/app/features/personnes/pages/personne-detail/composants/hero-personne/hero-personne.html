@@ -97,14 +97,6 @@
 
         <!-- 🔴 MODIFIÉ : Wrapper conteneur des badges d'identifiant -->
         <div class="identite__badges-ids">
-          <!-- ID Personne (existant) -->
-          <button type="button" class="identite__id" (click)="copierId()"
-                  matTooltip="Cliquer pour copier l'ID complet">
-            <span class="identite__id-label">ID Personne :</span>
-            <span class="identite__id-value">{{ idPersonne() }}</span>
-            <lucide-icon [name]="icons['Copy']" [size]="11"></lucide-icon>
-          </button>
-
           <!-- 🔴 NOUVEAU : Badge NIP CNIB (physique uniquement) -->
           @if (nipAffichage()) {
             <button type="button" class="identite__id identite__id--nip" (click)="copierNip()"

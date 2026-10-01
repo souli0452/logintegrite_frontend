@@ -44,6 +44,22 @@ html {
   --mat-form-field-filled-focus-label-text-color: #15803D;
   --mat-form-field-filled-caret-color: #15803D;
 
+  /* Surfaces Material : blanc franc (le theme par defaut applique un beige-vert #f9faf3 a tous les tableaux,
+     dialogues, listes deroulantes et calendriers) et filets legers entre les lignes (#73796e par defaut). */
+  --mat-table-background-color: #ffffff;
+  --mat-table-row-item-outline-color: #e8edf3;
+  --mat-table-header-container-height: 48px;
+  --mat-dialog-container-color: #ffffff;
+  --mat-select-panel-background-color: #ffffff;
+  --mat-autocomplete-background-color: #ffffff;
+  --mat-datepicker-calendar-container-background-color: #ffffff;
+  --mat-paginator-container-background-color: #ffffff;
+  --mat-card-outlined-container-color: #ffffff;
+  --mat-expansion-container-background-color: #ffffff;
+  --mat-stepper-container-color: #ffffff;
+  --mat-bottom-sheet-container-background-color: #ffffff;
+  --mat-timepicker-container-background-color: #ffffff;
+
   /* Composants Material : vert du projet (boutons, selections, onglets, calendrier, chargements) */
   --mat-button-filled-container-color: #15803D;
   --mat-button-filled-label-text-color: #ffffff;

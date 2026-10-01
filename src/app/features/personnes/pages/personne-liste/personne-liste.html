@@ -4,7 +4,7 @@
   <div class="en-tete-section">
     <div class="en-tete-section__gauche">
       <h1 class="titre-page">Identification des personnes</h1>
-      <p class="sous-titre">{{ totalElements() }} personne(s) enregistrée(s) au total.</p>
+      <p class="sous-titre">{{ totalElements() }} {{ totalElements() > 1 ? 'personnes enregistrées' : 'personne enregistrée' }}</p>
     </div>
 
     <div class="actions-groupe">
@@ -37,66 +37,35 @@
     </app-empty-state>
   } @else {
 
-    <!-- Filtre principal : contexte d'ancrage -->
-    <div class="barre-ancrage">
-      <span class="barre-ancrage__label">Contexte</span>
-      <div class="filtres-chips">
-        <button type="button"
-                class="filtre-chip filtre-chip--ancrage"
-                [class.filtre-chip--actif]="filtreAncrage() === 'TOUS'"
-                (click)="changerFiltreAncrage('TOUS')">
-          Toutes
-        </button>
-        <button type="button"
-                class="filtre-chip filtre-chip--ancrage filtre-chip--instruction"
-                [class.filtre-chip--actif]="filtreAncrage() === 'EN_INSTRUCTION'"
-                (click)="changerFiltreAncrage('EN_INSTRUCTION')">
-          <lucide-icon [name]="icons['FileText']" [size]="14"></lucide-icon>
-          En instruction
-        </button>
-        <button type="button"
-                class="filtre-chip filtre-chip--ancrage filtre-chip--officiel"
-                [class.filtre-chip--actif]="filtreAncrage() === 'REGISTRE_OFFICIEL'"
-                (click)="changerFiltreAncrage('REGISTRE_OFFICIEL')">
-          <lucide-icon [name]="icons['FolderOpen']" [size]="14"></lucide-icon>
-          Registre officiel
-        </button>
-      </div>
-    </div>
-
-    <!-- Barre recherche + filtres type -->
+    <!-- Une seule barre : recherche, statut, type -->
     <div class="barre-outils">
       <div class="recherche-wrapper">
-        <lucide-icon [name]="icons['Search']" [size]="16" class="icone-recherche"></lucide-icon>
+        <lucide-icon [name]="icons['Search']" [size]="17" [strokeWidth]="1.75" class="icone-recherche"></lucide-icon>
         <input
           type="text"
           [value]="termeRecherche()"
           (input)="changerRecherche($any($event.target).value)"
-          placeholder="Rechercher par nom, dénomination ou référence..."
+          placeholder="Rechercher par nom, dénomination ou référence"
+          aria-label="Rechercher une personne par nom, dénomination ou référence"
           class="champ-recherche">
       </div>
 
-      <div class="filtres-chips">
-        <button type="button"
-                class="filtre-chip"
-                [class.filtre-chip--actif]="filtreType() === 'TOUS'"
-                (click)="changerFiltreType('TOUS')">
-          Toutes
-        </button>
-        <button type="button"
-                class="filtre-chip"
-                [class.filtre-chip--actif]="filtreType() === 'PHYSIQUE'"
-                (click)="changerFiltreType('PHYSIQUE')">
-          <lucide-icon [name]="icons['User']" [size]="14"></lucide-icon>
-          Physiques
-        </button>
-        <button type="button"
-                class="filtre-chip"
-                [class.filtre-chip--actif]="filtreType() === 'MORALE'"
-                (click)="changerFiltreType('MORALE')">
-          <lucide-icon [name]="icons['Building2']" [size]="14"></lucide-icon>
-          Morales
-        </button>
+      <div class="segments" role="group" aria-label="Filtrer par statut">
+        <button type="button" class="segment" [class.segment--actif]="filtreAncrage() === 'TOUS'"
+                [attr.aria-pressed]="filtreAncrage() === 'TOUS'" (click)="changerFiltreAncrage('TOUS')">Toutes</button>
+        <button type="button" class="segment" [class.segment--actif]="filtreAncrage() === 'EN_INSTRUCTION'"
+                [attr.aria-pressed]="filtreAncrage() === 'EN_INSTRUCTION'" (click)="changerFiltreAncrage('EN_INSTRUCTION')">En instruction</button>
+        <button type="button" class="segment" [class.segment--actif]="filtreAncrage() === 'REGISTRE_OFFICIEL'"
+                [attr.aria-pressed]="filtreAncrage() === 'REGISTRE_OFFICIEL'" (click)="changerFiltreAncrage('REGISTRE_OFFICIEL')">Registre officiel</button>
+      </div>
+
+      <div class="segments" role="group" aria-label="Filtrer par type de personne">
+        <button type="button" class="segment" [class.segment--actif]="filtreType() === 'TOUS'"
+                [attr.aria-pressed]="filtreType() === 'TOUS'" (click)="changerFiltreType('TOUS')">Tous types</button>
+        <button type="button" class="segment" [class.segment--actif]="filtreType() === 'PHYSIQUE'"
+                [attr.aria-pressed]="filtreType() === 'PHYSIQUE'" (click)="changerFiltreType('PHYSIQUE')">Physiques</button>
+        <button type="button" class="segment" [class.segment--actif]="filtreType() === 'MORALE'"
+                [attr.aria-pressed]="filtreType() === 'MORALE'" (click)="changerFiltreType('MORALE')">Morales</button>
       </div>
     </div>
 

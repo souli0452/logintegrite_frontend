@@ -47,7 +47,6 @@
       <!-- Onglet 0 : Aperçu -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
           <span>Aperçu</span>
         </ng-template>
         <div class="onglet-contenu">
@@ -71,7 +70,6 @@
       <!-- Onglet 1 : Fiche identitaire -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <lucide-icon [name]="icons['IdCard']" [size]="16"></lucide-icon>
           <span>Fiche identitaire</span>
         </ng-template>
         <div class="onglet-contenu">
@@ -167,7 +165,11 @@
       </mat-tab>
 
       <!-- Onglet 2 : Dossiers & implications -->
-      <mat-tab [label]="'Dossiers & implications (' + d.dossiers.length + ')'">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span>Dossiers &amp; implications</span>
+          <span class="onglet-compteur" [class.onglet-compteur--vide]="(d.dossiers.length) === 0">{{ d.dossiers.length }}</span>
+        </ng-template>
         <div class="onglet-contenu">
           <app-onglet-dossiers-implications
             [personneId]="d.resume.id"
@@ -181,7 +183,11 @@
       </mat-tab>
 
       <!-- Onglet 3 : Peines & sanctions -->
-      <mat-tab [label]="'Peines & sanctions (' + nombrePeines() + ')'">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span>Peines &amp; sanctions</span>
+          <span class="onglet-compteur" [class.onglet-compteur--vide]="(nombrePeines()) === 0">{{ nombrePeines() }}</span>
+        </ng-template>
         <div class="onglet-contenu">
           <app-onglet-peines
             [implicationFaits]="d.implicationFaits"
@@ -201,7 +207,11 @@
       </mat-tab>
 
       <!-- Onglet 5 : Documents -->
-      <mat-tab [label]="'Documents (' + (d.documents.length || 0) + ')'">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span>Documents</span>
+          <span class="onglet-compteur" [class.onglet-compteur--vide]="(d.documents.length || 0) === 0">{{ d.documents.length || 0 }}</span>
+        </ng-template>
         <div class="onglet-contenu">
           <app-onglet-documents
             [personneId]="d.resume.id"

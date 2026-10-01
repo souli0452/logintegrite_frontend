@@ -462,3 +462,22 @@
     }
   }
 }
+
+/* Compteur d'un onglet : pastille discrete, grisee quand il est a zero */
+.onglet-compteur {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--asce-green-tint);
+  color: var(--asce-green-dark);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &--vide { background: var(--bg-hover); color: var(--text-muted); }
+}
