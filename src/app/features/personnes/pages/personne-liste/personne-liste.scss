@@ -437,13 +437,15 @@
 }
 
 /* Pagination */
+/* Pied de liste : une seule barre, au meme style que le tableau */
 .pagination-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
-  padding: var(--spacing-md) 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .pagination-info {

@@ -10,6 +10,6 @@ describe('PaginatorFrancais', () => {
   });
 
   it('traduit les libelles', () => {
-    expect(paginator.itemsPerPageLabel).toBe('Éléments par page');
+    expect(paginator.itemsPerPageLabel).toBe('Lignes par page');
   });
 });

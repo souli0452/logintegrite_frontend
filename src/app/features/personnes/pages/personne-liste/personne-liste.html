@@ -217,10 +217,6 @@
 
       <!-- Pagination -->
       <div class="pagination-footer">
-        <div class="pagination-info">
-          Affichage {{ debutAffichage() }} - {{ finAffichage() }} sur {{ totalElements() }}
-        </div>
-
         <mat-paginator
           [length]="totalElements()"
           [pageSize]="taillePage()"

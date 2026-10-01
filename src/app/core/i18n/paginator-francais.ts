@@ -4,7 +4,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 /** Libelles francais de la pagination des tableaux (Material les fournit en anglais par defaut). */
 @Injectable()
 export class PaginatorFrancais extends MatPaginatorIntl {
-  override itemsPerPageLabel = 'Éléments par page';
+  override itemsPerPageLabel = 'Lignes par page';
   override nextPageLabel = 'Page suivante';
   override previousPageLabel = 'Page précédente';
   override firstPageLabel = 'Première page';

@@ -349,3 +349,54 @@ a {
 
 /* Menus deroulants : les separateurs ne doivent pas creer de grands vides entre deux groupes d'actions */
 .mat-mdc-menu-panel .mat-divider { margin: 4px 0; }
+
+/* ==========================================================================
+   Pagination : une barre compacte, alignee a droite, lisible
+   ========================================================================== */
+.mat-mdc-paginator {
+  background: transparent;
+  --mat-form-field-container-height: 36px;
+  --mat-form-field-container-vertical-padding: 6px;
+  --mat-select-trigger-text-size: 13px;
+  --mat-paginator-container-text-size: 13px;
+  --mat-paginator-container-text-color: var(--text-secondary);
+}
+:not(.pagination-footer) > .mat-mdc-paginator { border-top: 1px solid #e8edf3; }
+
+.mat-mdc-paginator-container {
+  min-height: 56px;
+  padding: 0 12px;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.mat-mdc-paginator-page-size { align-items: center; margin-right: 8px; }
+.mat-mdc-paginator-page-size-label { margin: 0 8px 0 0; font-size: 13px; color: var(--text-secondary); }
+.mat-mdc-paginator-page-size-select { width: 76px; margin: 0; }
+.mat-mdc-paginator .mat-mdc-form-field-infix { min-height: 36px; }
+.mat-mdc-paginator .mat-mdc-select-value { font-size: 13px; }
+
+.mat-mdc-paginator-range-label {
+  margin: 0 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-paginator-navigation-previous,
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-paginator-navigation-next,
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-paginator-navigation-first,
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-paginator-navigation-last {
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 8px;
+}
+.mat-mdc-paginator .mat-mdc-paginator-icon { width: 20px; fill: currentColor; }
+.mat-mdc-paginator .mat-mdc-icon-button:not([disabled]) { color: var(--text-primary); }
+.mat-mdc-paginator .mat-mdc-icon-button:not([disabled]):hover { background: var(--asce-green-tint); color: var(--asce-green-dark); }
+
+@media (max-width: 600px) {
+  .mat-mdc-paginator-page-size-label { display: none; }
+  .mat-mdc-paginator-container { justify-content: center; padding: 8px; }
+}
