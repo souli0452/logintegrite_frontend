@@ -188,11 +188,12 @@
     border-left: 1px solid rgba(255, 255, 255, 0.16);
   }
 
+  /* Meme taille de texte que les elements principaux : seul le retrait distingue un sous-element. */
   &__item--enfant {
-    min-height: calc(var(--nav-ligne) - 8px);
+    min-height: calc(var(--nav-ligne) - 6px);
     padding: 6px 12px;
-    font-size: calc(var(--nav-texte) - 1px);
-    color: rgba(255, 255, 255, 0.82);
+    font-size: var(--nav-texte);
+    color: rgba(255, 255, 255, 0.86);
   }
 
   /* Pied : reduire / deplier, discret, ne recouvre jamais le menu. */
