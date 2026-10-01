@@ -20,8 +20,12 @@
   text-align: right;
 }
 
+/* Neutre au repos, rouge seulement quand on vise le bouton */
 .icone-danger {
-  color: var(--status-danger);
+  color: var(--text-secondary);
+}
+button:hover .icone-danger {
+  color: #b91c1c;
 }
 
 // ─── 🆕 Header d'onglet avec bouton d'ajout ─────────────────────────────────
