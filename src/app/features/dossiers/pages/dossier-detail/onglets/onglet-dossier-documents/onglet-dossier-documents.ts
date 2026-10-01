@@ -1,9 +1,9 @@
 import { Component, OnInit, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 import {
   LucideAngularModule,
@@ -21,10 +21,9 @@ import { environment } from '../../../../../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-dossier-documents',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CommonModule, DatePipe,
-    MatTooltipModule, MatProgressSpinnerModule,
-    LucideAngularModule,
+    MatTooltipModule, LucideAngularModule,
     EmptyState
   ],
   templateUrl: './onglet-dossier-documents.html',

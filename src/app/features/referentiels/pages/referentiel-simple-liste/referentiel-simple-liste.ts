@@ -1,9 +1,9 @@
 import { Component, inject, input, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { Router } from '@angular/router';                           // 🆕
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -28,9 +28,8 @@ interface ItemGenerique {
 @Component({
   selector: 'app-referentiel-simple-liste',
   standalone: true,
-  imports: [
-    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
-    LucideAngularModule,
+  imports: [ChargementListe, 
+    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],
   templateUrl: './referentiel-simple-liste.html',

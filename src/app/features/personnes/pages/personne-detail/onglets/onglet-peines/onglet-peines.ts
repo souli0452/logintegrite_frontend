@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, output, signal, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule, Gavel, Scale, Calendar, FolderOpen, LucideIconData } from 'lucide-angular';
 import { forkJoin, of } from 'rxjs';
 
@@ -18,9 +18,9 @@ interface PeineAvecContexte extends PeineResponse {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-peines',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CurrencyPipe, DatePipe,
-    MatProgressSpinnerModule, LucideAngularModule,
+    LucideAngularModule,
     EmptyState
   ],
   templateUrl: './onglet-peines.html',

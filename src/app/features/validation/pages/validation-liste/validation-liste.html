@@ -4,7 +4,7 @@
 </app-page-header>
 
 @if (chargement()) {
-  <div class="loader-zone"><mat-spinner diameter="40"></mat-spinner></div>
+  <div class="loader-zone"><app-chargement-liste /></div>
 } @else {
 
   <mat-tab-group class="onglets-validation"

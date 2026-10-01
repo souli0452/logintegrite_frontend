@@ -65,7 +65,7 @@
 
   <!-- CONTENU -->
   @if (chargement()) {
-    <div class="loader-zone"><mat-spinner diameter="42"></mat-spinner></div>
+    <div class="loader-zone"><app-chargement-liste /></div>
   } @else if (utilisateurs().length === 0) {
     <div class="empty-etat">
       <div class="empty-etat__icone"><lucide-icon [name]="icons['Users']" [size]="48"></lucide-icon></div>

@@ -12,7 +12,7 @@
 
   @if (chargement()) {
     <div class="loading">
-      <mat-spinner diameter="40"></mat-spinner>
+      <app-chargement-liste />
     </div>
   } @else if (entries().length === 0) {
     <app-empty-state

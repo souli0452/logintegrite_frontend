@@ -1,4 +1,5 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -6,7 +7,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, debounceTime } from 'rxjs';
 import { LucideAngularModule, Plus, Eye, FolderOpen, Search, LucideIconData } from 'lucide-angular';
@@ -26,10 +26,9 @@ type FiltreStatut = StatutDossier | '';
   selector: 'app-dossier-liste',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     DatePipe, RouterLink,
-    MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
-    LucideAngularModule,
+    MatTableModule, MatButtonModule, MatPaginatorModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],
   templateUrl: './dossier-liste.html',

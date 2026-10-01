@@ -1,9 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -30,10 +30,10 @@ import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-i
 @Component({
   selector: 'app-type-piece-identite-liste',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CommonModule,
     MatTableModule, MatButtonModule, MatIconModule,
-    MatProgressSpinnerModule, MatTooltipModule, NomAccessibleInfobulle, MatSlideToggleModule,
+    MatTooltipModule, NomAccessibleInfobulle, MatSlideToggleModule,
     LucideAngularModule
   ],
   templateUrl: './type-piece-identite-liste.html',

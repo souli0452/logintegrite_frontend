@@ -1,8 +1,8 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
+import { ChargementListe } from '../../../shared/ui/chargement-liste/chargement-liste';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Subscription } from 'rxjs';
@@ -24,9 +24,9 @@ type FiltreStatut = 'TOUS' | 'ACTIFS' | 'INACTIFS';
 @Component({
   selector: 'app-administration-page',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     ReactiveFormsModule,
-    MatMenuModule, MatProgressSpinnerModule, MatDialogModule,
+    MatMenuModule, MatDialogModule,
     LucideAngularModule
   ],
   templateUrl: './administration-page.html',

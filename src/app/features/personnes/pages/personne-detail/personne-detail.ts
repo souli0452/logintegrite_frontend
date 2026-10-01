@@ -1,9 +1,9 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -69,10 +69,9 @@ interface StatutJudiciaireCourant {
 @Component({
   selector: 'app-personne-detail',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CommonModule, DatePipe,
-    MatTabsModule, MatProgressSpinnerModule,
-    LucideAngularModule,
+    MatTabsModule, LucideAngularModule,
     HeroPersonne, KpiBarPersonne,
     OngletApercu, OngletInfos, OngletDocuments, OngletDossiersImplications, OngletPeines, OngletTimeline
   ],

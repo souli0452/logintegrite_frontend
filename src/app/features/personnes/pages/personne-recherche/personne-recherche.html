@@ -165,7 +165,7 @@
 
     @if (chargement()) {
       <div class="resultats-loading">
-        <mat-spinner diameter="40"></mat-spinner>
+        <app-chargement-liste />
       </div>
     } @else if (rechercheEffectuee()) {
       @if (resultats().length === 0) {

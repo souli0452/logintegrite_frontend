@@ -1,6 +1,6 @@
 <app-page-header
   titre="Dossiers"
-  [sousTitre]="totalElements() + (totalElements() > 1 ? (filtreActif() ? ' dossiers correspondants' : ' dossiers enregistrés') : (filtreActif() ? ' dossier correspondant' : ' dossier enregistré'))">
+  [sousTitre]="chargement() ? 'Chargement…' : totalElements() + (totalElements() > 1 ? (filtreActif() ? ' dossiers correspondants' : ' dossiers enregistrés') : (filtreActif() ? ' dossier correspondant' : ' dossier enregistré'))">
   @if (auth.hasAnyRole('AGENT', 'ADMIN')) {
     <a mat-flat-button color="primary" routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
       <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
@@ -33,7 +33,7 @@
 
 @if (chargement()) {
   <div class="liste-loading">
-    <mat-spinner diameter="40"></mat-spinner>
+    <app-chargement-liste />
   </div>
 } @else if (dossiers().length === 0) {
   @if (filtreActif()) {

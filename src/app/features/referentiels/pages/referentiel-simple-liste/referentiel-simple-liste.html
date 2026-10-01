@@ -15,7 +15,7 @@
 
 @if (chargement()) {
   <div class="liste-loading">
-    <mat-spinner diameter="40"></mat-spinner>
+    <app-chargement-liste />
   </div>
 } @else if (items().length === 0) {
   <app-empty-state titre="Aucun élément" message="Créez le premier avec le bouton ci-dessus." />

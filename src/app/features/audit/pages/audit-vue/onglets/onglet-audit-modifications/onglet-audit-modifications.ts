@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { DatePipe, SlicePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
@@ -20,10 +20,10 @@ import { PaginatorFrancais } from '../../../../../../core/i18n/paginator-francai
   selector: 'app-onglet-audit-modifications',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     DatePipe,SlicePipe,
     MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule,
-    MatProgressSpinnerModule, MatTooltipModule, MatButtonModule,
+    MatTooltipModule, MatButtonModule,
     LucideAngularModule,
     StatusBadge, EmptyState
   ],

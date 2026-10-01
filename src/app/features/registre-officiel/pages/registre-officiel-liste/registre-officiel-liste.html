@@ -63,7 +63,7 @@
 
   <!-- ============ CONTENU ============ -->
   @if (chargement()) {
-    <div class="loader-zone"><mat-spinner diameter="42"></mat-spinner></div>
+    <div class="loader-zone"><app-chargement-liste /></div>
   } @else if (personnes().length === 0 && nbFiltresActifs() === 0 && filtreType() === 'TOUS') {
     <div class="empty-officiel">
       <div class="empty-officiel__icone"><lucide-icon [name]="icons['Shield']" [size]="48"></lucide-icon></div>

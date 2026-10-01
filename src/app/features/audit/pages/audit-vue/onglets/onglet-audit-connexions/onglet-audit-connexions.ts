@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { EmptyState } from '../../../../../../shared/ui/empty-state/empty-state';
@@ -17,7 +17,7 @@ const TAILLE = 25;
 @Component({
   selector: 'app-onglet-audit-connexions',
   standalone: true,
-  imports: [DatePipe, MatTableModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatProgressSpinnerModule, EmptyState],
+  imports: [ChargementListe, DatePipe, MatTableModule, MatFormFieldModule, MatSelectModule, MatButtonModule, EmptyState],
   templateUrl: './onglet-audit-connexions.html',
   styleUrl: '../onglet-audit-consultations/onglet-audit-consultations.scss'
 })

@@ -70,7 +70,7 @@
   <!-- Contenu principal : loader / empty / tableau -->
   @if (chargement()) {
     <div class="loader-zone">
-      <mat-spinner diameter="32"></mat-spinner>
+      <app-chargement-liste />
     </div>
   } @else if (documents().length === 0 && !modeSelectionDossier()) {
     <app-empty-state

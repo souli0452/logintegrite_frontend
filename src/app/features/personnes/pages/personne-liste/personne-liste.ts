@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -34,7 +35,7 @@ type FiltreAncrage = 'TOUS' | 'EN_INSTRUCTION' | 'REGISTRE_OFFICIEL';
   selector: 'app-personne-liste',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     RouterLink, DatePipe,
     MatTableModule, MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule,
     LucideAngularModule,

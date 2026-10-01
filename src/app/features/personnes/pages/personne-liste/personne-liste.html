@@ -4,7 +4,7 @@
   <div class="en-tete-section">
     <div class="en-tete-section__gauche">
       <h1 class="titre-page">Identification des personnes</h1>
-      <p class="sous-titre">{{ totalElements() }} {{ totalElements() > 1 ? 'personnes enregistrées' : 'personne enregistrée' }}</p>
+      <p class="sous-titre">@if (!chargement()) { {{ totalElements() }} {{ totalElements() > 1 ? 'personnes enregistrées' : 'personne enregistrée' }} } @else { Chargement… }</p>
     </div>
 
     <div class="actions-groupe">
@@ -24,7 +24,7 @@
 
   @if (chargement()) {
     <div class="loader-zone">
-      <mat-spinner diameter="40"></mat-spinner>
+      <app-chargement-liste />
     </div>
   } @else if (personnes().length === 0 && filtreAncrage() === 'TOUS' && filtreType() === 'TOUS' && termeRecherche() === '') {
     <app-empty-state

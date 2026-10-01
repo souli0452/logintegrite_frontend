@@ -11,7 +11,7 @@
   </div>
 
   @if (chargement()) {
-    <div class="loading"><mat-spinner diameter="40"></mat-spinner></div>
+    <div class="loading"><app-chargement-liste /></div>
   } @else if (entries().length === 0) {
     <app-empty-state titre="Aucun événement" message="Aucune connexion ne correspond à ces critères." />
   } @else {

@@ -22,7 +22,7 @@
   <main class="referentiel-page__corps">
     @if (chargement()) {
       <div class="etat-chargement">
-        <mat-spinner diameter="32"></mat-spinner>
+        <app-chargement-liste />
         <p>Chargement…</p>
       </div>
     } @else if (types().length === 0) {

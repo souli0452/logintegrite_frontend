@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { LucideAngularModule, Plus, Pencil, Trash2, LucideIconData } from 'lucide-angular';
@@ -19,9 +19,8 @@ import { NomAccessibleInfobulle } from '../../../../shared/a11y/nom-accessible-i
 @Component({
   selector: 'app-types-infraction-page',
   standalone: true,
-  imports: [
-    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
-    LucideAngularModule,
+  imports: [ChargementListe, 
+    MatTableModule, MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule,
     PageHeader, StatusBadge, EmptyState
   ],
   templateUrl: './types-infraction-page.html',

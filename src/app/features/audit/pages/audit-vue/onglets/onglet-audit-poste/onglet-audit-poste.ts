@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 import { EmptyState } from '../../../../../../shared/ui/empty-state/empty-state';
@@ -17,7 +17,7 @@ import { PaginatorFrancais } from '../../../../../../core/i18n/paginator-francai
   selector: 'app-onglet-audit-poste',
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }],
   standalone: true,
-  imports: [DatePipe, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule, MatProgressSpinnerModule, EmptyState],
+  imports: [ChargementListe, DatePipe, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatSelectModule, EmptyState],
   templateUrl: './onglet-audit-poste.html',
   styleUrl: '../onglet-audit-consultations/onglet-audit-consultations.scss'
 })

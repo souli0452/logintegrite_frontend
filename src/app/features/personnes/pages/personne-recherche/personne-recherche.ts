@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +13,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { LucideAngularModule, Search, X, Eye, LucideIconData, FilterX } from 'lucide-angular';
 
@@ -38,13 +38,12 @@ import { PaginatorFrancais } from '../../../../core/i18n/paginator-francais';
 @Component({
   selector: 'app-personne-recherche',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     ReactiveFormsModule,
     MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule,
     MatExpansionModule, // <-- AJOUT ICI
     MatButtonModule, MatCardModule, MatTableModule, MatPaginatorModule,
-    MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
-    LucideAngularModule,
+    MatTooltipModule, NomAccessibleInfobulle, LucideAngularModule,
     PageHeader, EmptyState
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: PaginatorFrancais }, provideFrenchDateAdapter()],

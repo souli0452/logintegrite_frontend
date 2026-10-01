@@ -1,9 +1,9 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule, PageEvent, MatPaginatorIntl } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -37,10 +37,9 @@ type TriOrdre = 'RECENT' | 'ANCIEN' | 'PLUS_DE_DOSSIERS';
 @Component({
   selector: 'app-registre-officiel-liste',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     DatePipe, ReactiveFormsModule,
-    MatPaginatorModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule,
+    MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
     MatDatepickerModule, MatExpansionModule,
     LucideAngularModule
   ],

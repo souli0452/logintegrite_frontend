@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { Router } from '@angular/router';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -37,10 +37,9 @@ type OngletActif = 'EN_ATTENTE' | 'REJETES';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-validation-liste',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CommonModule, DatePipe, DecimalPipe,
-    MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, MatTabsModule,
+    MatButtonModule, MatTooltipModule, NomAccessibleInfobulle, MatFormFieldModule, MatInputModule, MatSelectModule, MatTabsModule,
     LucideAngularModule,
     PageHeader, EmptyState
   ],

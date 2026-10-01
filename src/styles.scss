@@ -343,3 +343,6 @@ a {
   body * { display: none !important; }
   body::after { content: "Impression interdite depuis le navigateur."; display: block; font: 16px sans-serif; padding: 40px; }
 }
+
+/* Le squelette de chargement occupe toute la largeur de la page : pas de retrait autour */
+:is(.loader-zone, .loading, .liste-loading, .etat-chargement, .chargement):has(> app-chargement-liste) { padding: 0; display: block; }

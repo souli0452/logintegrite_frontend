@@ -1,6 +1,6 @@
 <div class="onglet-panel">
   @if (chargement()) {
-    <div class="loader-zone"><mat-spinner diameter="32"></mat-spinner></div>
+    <div class="loader-zone"><app-chargement-liste /></div>
   } @else if (peines().length === 0) {
     <app-empty-state
       titre="Aucune peine enregistrée"

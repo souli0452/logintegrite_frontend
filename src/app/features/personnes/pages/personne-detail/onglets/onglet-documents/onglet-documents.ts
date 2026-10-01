@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { ChargementListe } from '../../../../../../shared/ui/chargement-liste/chargement-liste';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,10 +26,9 @@ import { environment } from '../../../../../../../environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-documents',
   standalone: true,
-  imports: [
+  imports: [ChargementListe, 
     CommonModule, DatePipe,
-    MatTooltipModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatSelectModule, MatButtonModule,
+    MatTooltipModule, MatFormFieldModule, MatSelectModule, MatButtonModule,
     LucideAngularModule,
     EmptyState
   ],
