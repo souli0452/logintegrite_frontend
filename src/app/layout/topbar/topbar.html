@@ -1,26 +1,37 @@
 <mat-toolbar class="topbar">
+  <!-- Ou suis-je : rubrique et page, deduites du menu -->
+  @if (filAriane(); as fil) {
+    <nav class="topbar__fil" aria-label="Fil d'Ariane">
+      <span class="topbar__fil-rubrique">{{ fil.rubrique }}</span>
+      <lucide-icon class="topbar__fil-sep" [name]="icons['ChevronRight']" [size]="15" aria-hidden="true"></lucide-icon>
+      <span class="topbar__fil-page" aria-current="page">{{ fil.page }}</span>
+    </nav>
+  }
+
+  <span class="topbar__spacer"></span>
+
   <form class="topbar__search" role="search" (submit)="rechercher($event, champ.value)">
-    <lucide-icon [name]="icons['Search']" [size]="18" class="topbar__search-icon"></lucide-icon>
+    <lucide-icon [name]="icons['Search']" [size]="17" [strokeWidth]="1.75" class="topbar__search-icon" aria-hidden="true"></lucide-icon>
     <input #champ
            type="search"
            name="q"
            autocomplete="off"
            aria-label="Rechercher une personne par nom, dénomination ou référence"
-           placeholder="Rechercher une personne par nom, dénomination ou référence"
+           aria-keyshortcuts="/"
+           placeholder="Nom ou référence d'une personne"
            class="topbar__search-input">
+    <kbd class="topbar__raccourci" aria-hidden="true">/</kbd>
   </form>
-  <span class="topbar__spacer"></span>
 
-  <button mat-button [matMenuTriggerFor]="userMenu" class="topbar__user" aria-label="Menu du compte">
-    <div class="topbar__user-avatar" aria-hidden="true">
-      <lucide-icon [name]="icons['User']" [size]="16"></lucide-icon>
-    </div>
-    <div class="topbar__user-info">
-      <div class="topbar__user-name">{{ auth.username() ?? '...' }}</div>
-      <span class="role-badge" [ngClass]="roleAffiche().classe">{{ roleAffiche().libelle }}</span>
-    </div>
+  <button mat-button [matMenuTriggerFor]="menuCompte" class="topbar__compte" aria-label="Menu du compte">
+    <span class="topbar__avatar" aria-hidden="true">{{ initiales() }}</span>
+    <span class="topbar__identite">
+      <span class="topbar__nom">{{ auth.username() ?? '…' }}</span>
+      <span class="topbar__role">{{ roleLibelle() }}</span>
+    </span>
+    <lucide-icon class="topbar__chevron" [name]="icons['ChevronDown']" [size]="16" aria-hidden="true"></lucide-icon>
   </button>
-  <mat-menu #userMenu="matMenu">
+  <mat-menu #menuCompte="matMenu" xPosition="before">
     <button mat-menu-item (click)="auth.logout()">
       <lucide-icon [name]="icons['LogOut']" [size]="16"></lucide-icon>
       <span>Déconnexion</span>

@@ -62,21 +62,25 @@
   }
 
   /* Logo : sur fond blanc pour rester fidele a la charte (le noir du logo est illisible sur le vert). */
+  /* Bandeau du logo : meme hauteur que la barre du haut (le filet du drapeau, au-dessus, prend les 4 px restants). */
   &__brand {
     flex: 0 0 auto;
+    box-sizing: border-box;
+    height: calc(var(--entete-hauteur) - 4px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 18px;
+    padding: 8px 16px;
     background-color: #ffffff;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
   }
 
   &__logo-img {
-    width: 100%;
-    max-width: 168px;
-    height: auto;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
     display: block;
-    transition: max-width 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 
     &--pliee { max-width: 44px; }
   }
@@ -241,8 +245,6 @@
     --nav-icone: 17px;
     --nav-ligne: 34px;
 
-    &__brand { padding: 6px 14px; }
-    &__logo-img { max-width: 124px; &--pliee { max-width: 38px; } }
     &__nav { gap: 0; padding-top: 8px; }
     &__section-titre { margin: 0 0 2px; padding-left: 12px; }
     &__section + &__section { margin-top: 14px; }
@@ -256,7 +258,6 @@
   .sidebar {
     --nav-ligne: 32px;
 
-    &__logo-img { max-width: 104px; }
     &__item, &__group-header, &__bascule { padding-top: 5px; padding-bottom: 5px; }
     &__section + &__section { margin-top: 10px; }
     &__section-titre { margin-bottom: 1px; }

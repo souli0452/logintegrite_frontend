@@ -160,6 +160,9 @@ html {
   --text-2xl: 2rem;       /* 28 px : grands chiffres */
   /* Graisses : 400 (texte), 500 (libelles), 600 (titres, elements actifs), 700 (chiffres cles) */
 
+  /* Hauteur de l'en-tete : bandeau du logo (menu) et barre du haut ont la meme hauteur */
+  --entete-hauteur: 72px;
+
   /* Espacements */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -264,4 +267,9 @@ a {
   border-radius: var(--radius-md);
   color: var(--asce-green-dark);
   font-size: 0.8125rem;
+}
+
+/* Fenetres peu hautes : en-tete plus bas */
+@media (max-height: 780px) {
+  :root { --entete-hauteur: 60px; }
 }

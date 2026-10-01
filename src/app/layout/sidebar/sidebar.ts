@@ -4,38 +4,15 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter, map, startWith } from 'rxjs';
 import {
   LucideAngularModule,
-  LayoutDashboard,
-  Users,
-  Search,
-  FolderOpen,
-  CheckSquare,
-  ShieldCheck,
   ChevronRight,
   ChevronDown,
-  UserPlus,
-  FileText,
-  Database,
-  UserCog,
-  ScrollText,
   PanelLeftClose,
   PanelLeftOpen,
   LucideIconData
 } from 'lucide-angular';
 import { AuthService } from '../../core/auth/auth.service';
 import { SidebarStateService } from '../../core/services/sidebar-state.service';
-
-interface MenuItem {
-  route?: string;
-  label: string;
-  icone: LucideIconData;
-  roles?: string[];
-  enfants?: MenuItem[];
-}
-
-interface MenuSection {
-  titre: string;
-  items: MenuItem[];
-}
+import { MENU_PRINCIPAL, MenuSection } from '../menu.config';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,49 +35,8 @@ export class Sidebar {
     this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd), map((e) => e.urlAfterRedirects), startWith(this.router.url)),
     { initialValue: this.router.url });
 
-  /** Le menu suit le parcours de travail : consulter le registre, traiter les dossiers, piloter, administrer. */
-  private readonly menu: MenuSection[] = [
-    {
-      // Pilotage en premier : le tableau de bord est toujours la premiere entree du menu
-      titre: 'Pilotage',
-      items: [
-        { route: '/tableau-de-bord', label: 'Tableaux de bord', icone: LayoutDashboard, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
-        { route: '/rapports', label: 'Rapports', icone: FileText, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] }
-      ]
-    },
-    {
-      titre: 'Registre',
-      items: [
-        { route: '/registre-officiel', label: 'Répertoire officiel', icone: ShieldCheck },
-        {
-          label: 'Gestion des personnes',
-          icone: Users,
-          roles: ['AGENT', 'ADMIN'],
-          enfants: [
-            { route: '/personnes/nouveau', label: 'Nouvelle personne', icone: UserPlus },
-            { route: '/personnes', label: 'Identification personnes', icone: Users }
-          ]
-        },
-        { route: '/personnes/recherche', label: 'Recherche avancée', icone: Search }
-      ]
-    },
-    {
-      titre: 'Traitement',
-      items: [
-        { route: '/dossiers', label: 'Gestion des dossiers', icone: FolderOpen, roles: ['AGENT', 'ADMIN'] },
-        { route: '/validation', label: 'Validation', icone: CheckSquare, roles: ['VALIDATEUR', 'ADMIN'] }
-      ]
-    },
-    {
-      // Tout ce qui releve de la configuration, reuni sous une seule rubrique
-      titre: 'Administration',
-      items: [
-        { route: '/referentiels', label: 'Référentiels', icone: Database, roles: ['ADMIN'] },
-        { route: '/administration', label: 'Gestion des utilisateurs', icone: UserCog, roles: ['ADMIN'] },
-        { route: '/audit', label: 'Audit des actions', icone: ScrollText, roles: ['ADMIN'] }
-      ]
-    }
-  ];
+  /** Definition partagee avec le fil d'Ariane de la barre du haut (voir menu.config.ts). */
+  private readonly menu: MenuSection[] = MENU_PRINCIPAL;
 
   readonly sectionsVisibles = computed<MenuSection[]>(() =>
     this.menu

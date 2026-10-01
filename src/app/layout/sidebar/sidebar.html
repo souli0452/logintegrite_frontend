@@ -1,11 +1,11 @@
 <aside class="sidebar" [class.sidebar--pliee]="state.pliee()" aria-label="Menu principal">
+  <div class="sidebar__drapeau" aria-hidden="true"></div>
   <div class="sidebar__brand">
     <img src="images/logo-asce.png"
          alt="ASCE-LC, Autorité Supérieure de Contrôle d'État et de Lutte contre la Corruption"
          class="sidebar__logo-img"
          [class.sidebar__logo-img--pliee]="state.pliee()">
   </div>
-  <div class="sidebar__drapeau" aria-hidden="true"></div>
 
   <nav class="sidebar__nav">
     @for (section of sectionsVisibles(); track $index) {
