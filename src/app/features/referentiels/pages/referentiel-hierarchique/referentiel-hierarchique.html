@@ -1,6 +1,6 @@
 <app-page-header
   [titre]="titrePage()"
-  [sousTitre]="sousTitrePage() + ' ' + items().length + ' element(s).'">
+  [sousTitre]="sousTitrePage() + ' ' + items().length + (items().length > 1 ? ' éléments.' : ' élément.')">
   <button mat-flat-button color="primary" (click)="ouvrir(null)">
     <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
     <span>Nouvelle {{ libelleSingulier() }}</span>

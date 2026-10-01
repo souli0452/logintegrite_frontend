@@ -10,7 +10,7 @@ import { StatutJudiciaireService } from '../../services/statut-judiciaire.servic
   template: `
     <app-referentiel-simple-liste
       titrePage="Statuts judiciaires"
-      sousTitrePage="Etats possibles d'une affaire judiciaire."
+      sousTitrePage="États possibles d'une affaire judiciaire."
       libelleSingulier="statut judiciaire"
       [service]="service"
       [avecActif]="true" />

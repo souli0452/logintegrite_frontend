@@ -6,7 +6,7 @@
   </button>
 }
 
-<app-page-header [titre]="titrePage()" [sousTitre]="sousTitrePage() + ' ' + items().length + ' element(s).'">
+<app-page-header [titre]="titrePage()" [sousTitre]="sousTitrePage() + ' ' + items().length + (items().length > 1 ? ' éléments.' : ' élément.')">
   <button mat-flat-button color="primary" (click)="ouvrir(null)">
     <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>
     <span>Nouveau {{ libelleSingulier() }}</span>
@@ -18,7 +18,7 @@
     <mat-spinner diameter="40"></mat-spinner>
   </div>
 } @else if (items().length === 0) {
-  <app-empty-state titre="Aucun element" message="Creez le premier via le bouton ci-dessus." />
+  <app-empty-state titre="Aucun élément" message="Créez le premier avec le bouton ci-dessus." />
 } @else {
   <div class="liste-table">
     <table mat-table [dataSource]="items()">

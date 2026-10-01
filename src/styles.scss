@@ -316,3 +316,10 @@ a {
 
 /* Icone au debut d'un champ : respiration a gauche (elle touchait le bord) */
 .mat-mdc-form-field-icon-prefix { padding-left: 14px; }
+
+/* Boutons-icones des tableaux : taille unique, neutres au repos ; la suppression ne devient rouge qu'au survol */
+.mat-mdc-icon-button lucide-icon svg { width: 18px; height: 18px; }
+.mat-mdc-icon-button lucide-icon { color: var(--text-secondary); }
+.mat-mdc-icon-button:hover lucide-icon { color: var(--asce-green-dark); }
+.mat-mdc-icon-button lucide-icon.icone-danger { color: var(--text-secondary); }
+.mat-mdc-icon-button:hover lucide-icon.icone-danger { color: #b91c1c; }

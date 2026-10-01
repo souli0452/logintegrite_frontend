@@ -1,6 +1,6 @@
 <app-page-header
   titre="Dossiers"
-  [sousTitre]="totalElements() + (filtreActif() ? ' dossier(s) correspondant(s).' : ' dossier(s) enregistré(s).')">
+  [sousTitre]="totalElements() + (totalElements() > 1 ? (filtreActif() ? ' dossiers correspondants' : ' dossiers enregistrés') : (filtreActif() ? ' dossier correspondant' : ' dossier enregistré'))">
   @if (auth.hasAnyRole('AGENT', 'ADMIN')) {
     <a mat-flat-button color="primary" routerLink="/personnes" [queryParams]="{ pour: 'dossier' }">
       <lucide-icon [name]="icons['Plus']" [size]="16"></lucide-icon>

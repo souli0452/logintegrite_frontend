@@ -187,8 +187,8 @@ export class UploadDocumentDialog {
       const ok = resultats.filter((r) => r.ok).length;
       const ko = resultats.length - ok;
 
-      if (ok > 0) this.toastr.success(`${ok} document(s) enregistre(s) avec succes`);
-      if (ko > 0) this.toastr.warning(`${ko} document(s) en echec - vous pouvez reessayer`);
+      if (ok > 0) this.toastr.success(`${ok} document(s) enregistré(s)`);
+      if (ko > 0) this.toastr.warning(`${ko} document(s) en échec : vous pouvez réessayer`);
 
       // Fermeture automatique si tout est en succes
       // On laisse 1.5s pour que l'utilisateur voie les badges "Scelle"
