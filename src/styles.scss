@@ -346,3 +346,6 @@ a {
 
 /* Le squelette de chargement occupe toute la largeur de la page : pas de retrait autour */
 :is(.loader-zone, .loading, .liste-loading, .etat-chargement, .chargement):has(> app-chargement-liste) { padding: 0; display: block; }
+
+/* Menus deroulants : les separateurs ne doivent pas creer de grands vides entre deux groupes d'actions */
+.mat-mdc-menu-panel .mat-divider { margin: 4px 0; }
