@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ChargementListe } from '../../../shared/ui/chargement-liste/chargement-liste';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -8,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Subscription } from 'rxjs';
 import {
   LucideAngularModule, UserPlus, Users, MoreVertical, Shield, ShieldOff,
-  Trash2, UserCheck, UserX, Search, Mail, LucideIconData
+  Trash2, UserCheck, UserX, Search, Mail, CalendarClock, LucideIconData
 } from 'lucide-angular';
 
 import { UtilisateurService } from '../services/utilisateur.service';
@@ -18,13 +19,14 @@ import {
 } from '../models/utilisateur.models';
 import { ConfirmationService } from '../../../shared/services/confirmation.service';
 import { CreerUtilisateurDialog } from '../creer-utilisateur-dialog/creer-utilisateur-dialog';
+import { DialogDate, DialogDateData, DialogDateResultat } from '../../../shared/ui/dialog-date/dialog-date';
 
 type FiltreStatut = 'TOUS' | 'ACTIFS' | 'INACTIFS';
 
 @Component({
   selector: 'app-administration-page',
   standalone: true,
-  imports: [ChargementListe, 
+  imports: [ChargementListe, DatePipe,
     ReactiveFormsModule,
     MatMenuModule, MatDialogModule,
     LucideAngularModule
@@ -42,7 +44,7 @@ export class AdministrationPage implements OnDestroy {
 
   readonly icons: Record<string, LucideIconData> = {
     UserPlus, Users, MoreVertical, Shield, ShieldOff,
-    Trash2, UserCheck, UserX, Search, Mail
+    Trash2, UserCheck, UserX, Search, Mail, CalendarClock
   };
 
   // Etat
@@ -123,6 +125,48 @@ export class AdministrationPage implements OnDestroy {
   }
 
   // ===== Actions =====
+  /** Aujourd'hui au format AAAA-MM-JJ (comparable directement aux dates du serveur). */
+  private aujourdhui(): string { return new Date().toISOString().slice(0, 10); }
+
+  /** Un compte expire le lendemain de sa date : la date elle-meme est le dernier jour d'acces. */
+  estExpire(u: UtilisateurResponse): boolean {
+    return !!u.dateExpiration && u.dateExpiration < this.aujourdhui();
+  }
+
+  joursAvantExpiration(u: UtilisateurResponse): number {
+    if (!u.dateExpiration) return Infinity;
+    return Math.round((Date.parse(u.dateExpiration) - Date.parse(this.aujourdhui())) / 86_400_000);
+  }
+
+  /** Compte de consultation seule : sa date d'expiration ne peut pas etre retiree. */
+  private consultationSeule(u: UtilisateurResponse): boolean {
+    return u.roles.length > 0 && u.roles.every((r) => r.code === 'CONSULTANT');
+  }
+
+  modifierExpiration(u: UtilisateurResponse): void {
+    const consultation = this.consultationSeule(u);
+    const data: DialogDateData = {
+      titre: u.dateExpiration ? "Modifier l'expiration du compte" : "Définir l'expiration du compte",
+      message: `${u.prenom} ${u.nom} : le compte est refusé à partir du lendemain de cette date.`
+        + (this.estExpire(u) ? ' Enregistrer une nouvelle date réactive le compte.' : ''),
+      label: "Date d'expiration",
+      valeur: u.dateExpiration ?? null,
+      minimum: this.aujourdhui(),
+      peutRetirer: !consultation
+    };
+    this.dialog.open<DialogDate, DialogDateData, DialogDateResultat>(DialogDate, { data, width: '440px', maxWidth: '92vw' })
+      .afterClosed().subscribe((resultat) => {
+        if (!resultat) return;
+        this.utilisateurService.modifierExpiration(u.id, resultat.date).subscribe({
+          next: (maj) => {
+            this.utilisateurs.update(list => list.map(x => x.id === u.id ? maj : x));
+            this.toastr.success(resultat.date ? 'Expiration enregistrée' : 'Expiration retirée');
+          },
+          error: (e) => this.toastr.error(e?.error?.detail ?? e?.error?.message ?? "Impossible de modifier l'expiration")
+        });
+      });
+  }
+
   basculerActivation(u: UtilisateurResponse): void {
     const nouvelleActivation = !u.actif;
     const libelle = nouvelleActivation ? 'activer' : 'désactiver';

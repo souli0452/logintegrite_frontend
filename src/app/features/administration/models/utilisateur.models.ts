@@ -13,6 +13,8 @@ export interface UtilisateurResponse {
   prenom: string;
   email: string;
   actif: boolean;
+  /** AAAA-MM-JJ ; null : le compte n'expire pas. */
+  dateExpiration?: string | null;
   roles: RoleHabilitationResponse[];
 }
 
@@ -23,4 +25,5 @@ export interface UtilisateurCreationRequest {
   telephone?: string;
   motDePasseTemporaire: string;
   roleInitial: CodeRole;
+  dateExpiration?: string;
 }

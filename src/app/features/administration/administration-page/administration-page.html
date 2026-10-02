@@ -115,7 +115,13 @@
               <span class="pastille-statut"
                     [class.pastille-statut--actif]="u.actif"
                     [class.pastille-statut--inactif]="!u.actif"></span>
-              <span>{{ u.actif ? 'Actif' : 'Inactif' }}</span>
+              <span>{{ u.actif ? 'Actif' : (estExpire(u) ? 'Expiré' : 'Inactif') }}</span>
+              @if (u.dateExpiration) {
+                <span class="expiration" [class.expiration--proche]="!estExpire(u) && joursAvantExpiration(u) <= 30"
+                      [class.expiration--passee]="estExpire(u)">
+                  · {{ estExpire(u) ? 'depuis le' : "jusqu'au" }} {{ u.dateExpiration | date:'dd/MM/yyyy':'':'fr' }}
+                </span>
+              }
             </div>
 
             <!-- Actions -->
@@ -141,6 +147,12 @@
                     <span>Retirer un rôle</span>
                   </button>
                 }
+
+                <!-- Expiration -->
+                <button mat-menu-item (click)="modifierExpiration(u)">
+                  <lucide-icon [name]="icons['CalendarClock']" [size]="14"></lucide-icon>
+                  <span>{{ u.dateExpiration ? "Modifier l'expiration" : "Définir l'expiration" }}</span>
+                </button>
 
                 <!-- Activation -->
                 <button mat-menu-item (click)="basculerActivation(u)">

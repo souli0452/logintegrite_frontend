@@ -25,6 +25,11 @@ export class UtilisateurService {
     return this.http.patch<UtilisateurResponse>(`${this.baseUrl}/${id}/activation`, { actif });
   }
 
+  /** Fixe ou prolonge l'expiration d'un compte (date AAAA-MM-JJ), ou la retire (null). */
+  modifierExpiration(id: string, dateExpiration: string | null): Observable<UtilisateurResponse> {
+    return this.http.patch<UtilisateurResponse>(`${this.baseUrl}/${id}/expiration`, { dateExpiration });
+  }
+
   supprimer(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

@@ -62,6 +62,15 @@
       }
     </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Date d'expiration du compte{{ consultation() ? '' : ' (facultatif)' }}</mat-label>
+      <input matInput type="date" formControlName="dateExpiration" [min]="aujourdhui">
+      <mat-hint>{{ consultation() ? 'Obligatoire pour la consultation : 6 mois proposés.' : "Sans date, le compte n'expire jamais." }}</mat-hint>
+      @if (formulaire.controls.dateExpiration.hasError('required')) {
+        <mat-error>La date d'expiration est obligatoire pour la consultation.</mat-error>
+      }
+    </mat-form-field>
+
     <div class="champ-mdp">
       <mat-form-field appearance="outline" class="champ-mdp__field">
         <mat-label>Mot de passe temporaire</mat-label>

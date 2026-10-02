@@ -51,8 +51,27 @@ export class CreerUtilisateurDialog {
     email: ['', [Validators.required, Validators.email]],
     telephone: [''],
     motDePasseTemporaire: ['', [Validators.required, validerMotDePasse]],
-    roleInitial: ['' as CodeRole | '', Validators.required]
+    roleInitial: ['' as CodeRole | '', Validators.required],
+    dateExpiration: ['']
   });
+
+  /** Aujourd'hui, au format AAAA-MM-JJ (date minimale du champ). */
+  readonly aujourdhui = new Date().toISOString().slice(0, 10);
+  readonly consultation = signal(false);
+
+  constructor() {
+    // Un compte de consultation expire toujours : on propose 6 mois, modifiables.
+    this.formulaire.controls.roleInitial.valueChanges.subscribe((role) => {
+      const estConsultation = role === 'CONSULTANT';
+      this.consultation.set(estConsultation);
+      const champ = this.formulaire.controls.dateExpiration;
+      if (estConsultation && !champ.value) {
+        const d = new Date();
+        d.setMonth(d.getMonth() + 6);
+        champ.setValue(d.toISOString().slice(0, 10));
+      }
+    });
+  }
 
   basculerVisibiliteMDP(): void {
     this.afficherMotDePasse.update(v => !v);
@@ -80,6 +99,11 @@ export class CreerUtilisateurDialog {
     }
 
     const v = this.formulaire.getRawValue();
+    if (v.roleInitial === 'CONSULTANT' && !v.dateExpiration) {
+      this.formulaire.controls.dateExpiration.setErrors({ required: true });
+      this.formulaire.controls.dateExpiration.markAsTouched();
+      return;
+    }
     this.enCours.set(true);
 
     this.utilisateurService.creer({
@@ -88,7 +112,8 @@ export class CreerUtilisateurDialog {
       email: v.email!,
       telephone: v.telephone || undefined,
       motDePasseTemporaire: v.motDePasseTemporaire!,
-      roleInitial: v.roleInitial as CodeRole
+      roleInitial: v.roleInitial as CodeRole,
+      dateExpiration: v.dateExpiration || undefined
     }).subscribe({
       next: (cree) => {
         this.enCours.set(false);

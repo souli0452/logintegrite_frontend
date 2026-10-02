@@ -406,3 +406,13 @@ $transition: 200ms ease;
 
   .recherche-wrapper { min-width: 100%; }
 }
+
+/* Expiration du compte : discrete, orange a moins de 30 jours, rouge une fois passee */
+.expiration {
+  margin-left: 4px;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+
+  &--proche { color: #92400e; font-weight: 600; }
+  &--passee { color: #991b1b; font-weight: 600; }
+}

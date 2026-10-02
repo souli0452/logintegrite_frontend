@@ -44,6 +44,7 @@ export class OngletAuditPoste {
     DEMANDE_EXPORT: "Demande d'export",
     DEMANDE_EXPORT_ACCORDEE: 'Demande accordée',
     DEMANDE_EXPORT_REFUSEE: 'Demande refusée',
+    COMPTE_EXPIRE: 'Compte désactivé (expiration)',
   };
   readonly types = [{ valeur: '', libelle: 'Tous les événements' },
     ...Object.entries(this.libelles).map(([valeur, libelle]) => ({ valeur, libelle }))];
