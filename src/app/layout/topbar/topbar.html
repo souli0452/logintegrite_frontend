@@ -10,6 +10,8 @@
 
   <span class="topbar__spacer"></span>
 
+  <!-- La recherche avancee est reservee au personnel de saisie : un consultant passe par la verification. -->
+  @if (auth.hasAnyRole('AGENT', 'ADMIN')) {
   <form class="topbar__search" role="search" (submit)="rechercher($event, champ.value)">
     <lucide-icon [name]="icons['Search']" [size]="17" [strokeWidth]="1.75" class="topbar__search-icon" aria-hidden="true"></lucide-icon>
     <input #champ
@@ -22,6 +24,7 @@
            class="topbar__search-input">
     <kbd class="topbar__raccourci" aria-hidden="true">/</kbd>
   </form>
+  }
 
   <button mat-button [matMenuTriggerFor]="menuCompte" class="topbar__compte" aria-label="Menu du compte">
     <span class="topbar__avatar" aria-hidden="true">{{ initiales() }}</span>

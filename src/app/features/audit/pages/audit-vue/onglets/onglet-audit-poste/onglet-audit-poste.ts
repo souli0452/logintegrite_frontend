@@ -31,7 +31,7 @@ export class OngletAuditPoste {
   readonly taille = signal(20);
   readonly chargement = signal(true);
   readonly filtre = signal('');
-  readonly colonnes = ['date', 'type', 'utilisateur', 'page', 'adresseIp'];
+  readonly colonnes = ['date', 'type', 'utilisateur', 'detail', 'adresseIp'];
 
   private readonly libelles: Record<string, string> = {
     COPIE_TENTEE: 'Tentative de copie',
@@ -40,6 +40,10 @@ export class OngletAuditPoste {
     MENU_CONTEXTUEL: 'Clic droit',
     CAPTURE_SUSPECTE: 'Touche « Impr. écran »',
     OUTILS_DEVELOPPEUR: 'Outils de développement',
+    VERIFICATION_RECHERCHE: 'Recherche de vérification',
+    DEMANDE_EXPORT: "Demande d'export",
+    DEMANDE_EXPORT_ACCORDEE: 'Demande accordée',
+    DEMANDE_EXPORT_REFUSEE: 'Demande refusée',
   };
   readonly types = [{ valeur: '', libelle: 'Tous les événements' },
     ...Object.entries(this.libelles).map(([valeur, libelle]) => ({ valeur, libelle }))];

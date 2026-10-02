@@ -6,6 +6,14 @@ describe('menu', () => {
     expect(MENU_PRINCIPAL[0].items[0].route).toBe('/tableau-de-bord');
   });
 
+  it('offre la verification d une personne a tous les roles, et reserve la liste complete au personnel', () => {
+    const registre = MENU_PRINCIPAL.find((s) => s.titre === 'Registre')!;
+    const verification = registre.items.find((i) => i.route === '/verification')!;
+    expect(verification.roles).toBeUndefined();
+    const repertoire = registre.items.find((i) => i.route === '/registre-officiel')!;
+    expect(repertoire.roles).not.toContain('CONSULTANT');
+  });
+
   it('garde les quatre rubriques dans l ordre attendu', () => {
     expect(MENU_PRINCIPAL.map((s) => s.titre)).toEqual(['Pilotage', 'Registre', 'Traitement', 'Administration']);
   });

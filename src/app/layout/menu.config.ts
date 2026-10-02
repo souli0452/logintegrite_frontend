@@ -10,6 +10,8 @@ import {
   Database,
   UserCog,
   ScrollText,
+  ScanSearch,
+  Inbox,
   LucideIconData
 } from 'lucide-angular';
 
@@ -42,7 +44,7 @@ export const MENU_PRINCIPAL: MenuSection[] = [
   {
     titre: 'Registre',
     items: [
-      { route: '/registre-officiel', label: 'Répertoire officiel', icone: ShieldCheck },
+      { route: '/registre-officiel', label: 'Répertoire officiel', icone: ShieldCheck, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
       {
         label: 'Gestion des personnes',
         icone: Users,
@@ -52,7 +54,10 @@ export const MENU_PRINCIPAL: MenuSection[] = [
           { route: '/personnes', label: 'Identification personnes', icone: Users }
         ]
       },
-      { route: '/personnes/recherche', label: 'Recherche avancée', icone: Search }
+      { route: '/personnes/recherche', label: 'Recherche avancée', icone: Search, roles: ['AGENT', 'ADMIN'] },
+      // Porte d'entree d'un compte de consultation : une personne precise, jamais une liste
+      { route: '/verification', label: 'Vérifier une personne', icone: ScanSearch },
+      { route: '/verification/mes-demandes', label: 'Mes demandes de dossier', icone: Inbox, roles: ['CONSULTANT'] }
     ]
   },
   {
@@ -68,6 +73,7 @@ export const MENU_PRINCIPAL: MenuSection[] = [
     items: [
       { route: '/referentiels', label: 'Référentiels', icone: Database, roles: ['ADMIN'] },
       { route: '/administration', label: 'Gestion des utilisateurs', icone: UserCog, roles: ['ADMIN'] },
+      { route: '/demandes-export', label: 'Demandes de dossier', icone: Inbox, roles: ['ADMIN'] },
       { route: '/audit', label: 'Audit des actions', icone: ScrollText, roles: ['ADMIN'] }
     ]
   }

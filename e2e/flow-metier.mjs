@@ -138,16 +138,17 @@ const attendre = (page) => page.waitForLoadState('networkidle').then(() => page.
 // ─────────────── CONSULTANT ───────────────
 {
   const { ctx, page } = await session('consultant.test');
+  // Le consultant ne parcourt plus le repertoire : il verifie une personne precise (voir flow-consultation.mjs).
   await page.goto('http://localhost:4200/registre-officiel'); await attendre(page);
   const registre = await page.locator('body').innerText();
   await page.screenshot({ path: '/out/flow-08-consultant-registre.png' });
-  ok('CONSULTANT voit la personne validee au registre officiel', registre.includes(NOM));
+  ok('CONSULTANT est renvoye du repertoire complet vers la verification', page.url().includes('/verification') && !registre.includes(NOM), page.url().replace('http://localhost:4200', ''));
   await page.goto('http://localhost:4200/personnes/nouveau'); await attendre(page);
   ok('CONSULTANT est renvoye du formulaire de creation', !page.url().includes('/personnes/nouveau'), page.url().replace('http://localhost:4200', ''));
   await page.goto('http://localhost:4200/audit'); await attendre(page);
   ok('CONSULTANT n\'accede pas a l\'audit', !page.url().includes('/audit'), page.url().replace('http://localhost:4200', ''));
   const menu = await page.locator('aside, nav').first().innerText().catch(() => '');
-  await page.goto('http://localhost:4200/registre-officiel'); await attendre(page);
+  await page.goto('http://localhost:4200/verification'); await attendre(page);
   ok('CONSULTANT ne voit pas le menu de creation ni d\'administration', !/Nouvelle personne|Gestion des utilisateurs|Audit des actions/.test(await page.locator('body').innerText()));
   await ctx.close();
 }

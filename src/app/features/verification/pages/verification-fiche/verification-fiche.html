@@ -1,0 +1,109 @@
+<a class="retour" routerLink="/verification">
+  <lucide-icon [name]="icons.ArrowLeft" [size]="16"></lucide-icon>
+  <span>Nouvelle vérification</span>
+</a>
+
+@if (chargement()) {
+  <app-chargement-liste [nombre]="4" />
+} @else if (introuvable() || !fiche()) {
+  <section class="vide" role="status">
+    <h2>Aucun dossier validé pour cette personne</h2>
+    <p>Cette fiche n'existe pas ou n'est pas disponible à la consultation.</p>
+  </section>
+} @else if (fiche(); as f) {
+  <header class="entete">
+    <div>
+      <h1>{{ f.nomAffichage }}</h1>
+      <p class="meta">
+        <span class="numero">{{ f.numeroPersonne }}</span>
+        <span>{{ f.typePersonne === 'MORALE' ? 'Personne morale' : 'Personne physique' }}</span>
+        @if (f.dateNaissance) { <span>Né(e) le {{ f.dateNaissance | date:'dd/MM/yyyy':'':'fr' }}</span> }
+        @if (f.nationalite) { <span>{{ f.nationalite }}</span> }
+        @if (f.profession) { <span>{{ f.profession }}</span> }
+        @if (f.formeJuridique) { <span>{{ f.formeJuridique }}{{ f.sigle ? ' · ' + f.sigle : '' }}</span> }
+      </p>
+    </div>
+    <button mat-stroked-button type="button" (click)="demanderExport()">
+      <lucide-icon [name]="icons.Download" [size]="18" [strokeWidth]="1.75"></lucide-icon>
+      <span>Demander l'export du dossier complet</span>
+    </button>
+  </header>
+
+  <p class="avis">
+    <lucide-icon [name]="icons.Info" [size]="16" aria-hidden="true"></lucide-icon>
+    <span>Seuls les dossiers entièrement validés sont affichés. Le statut judiciaire indique la situation de la personne
+      pour chaque fait, y compris les relaxes et acquittements.</span>
+  </p>
+
+  <h2 class="titre-section">{{ f.dossiers.length }} {{ f.dossiers.length > 1 ? 'dossiers validés' : 'dossier validé' }}</h2>
+
+  @for (d of f.dossiers; track d.id) {
+    <article class="dossier">
+      <header class="dossier__tete">
+        <div>
+          <h3>{{ d.intitule }}</h3>
+          <p class="meta">
+            <span class="numero">{{ d.numeroDossier }}</span>
+            <span>Ouvert le {{ d.dateOuverture | date:'dd/MM/yyyy':'':'fr' }}</span>
+          </p>
+        </div>
+        <span class="role">{{ d.role }}</span>
+      </header>
+
+      @if (d.fonction || d.entite || d.dateDebut) {
+        <dl class="contexte">
+          @if (d.fonction) { <div><dt>Fonction</dt><dd>{{ d.fonction }}</dd></div> }
+          @if (d.entite) { <div><dt>Entité</dt><dd>{{ d.entite }}</dd></div> }
+          @if (d.dateDebut) {
+            <div><dt>Période</dt>
+              <dd>{{ d.dateDebut | date:'dd/MM/yyyy':'':'fr' }}{{ d.dateFin ? ' → ' + (d.dateFin | date:'dd/MM/yyyy':'':'fr') : ' → en cours' }}</dd></div>
+          }
+        </dl>
+      }
+
+      @for (fait of d.faits; track fait.id) {
+        <section class="fait">
+          <div class="fait__haut">
+            <div>
+              <h4>{{ fait.typeInfraction }}</h4>
+              <p class="meta">
+                @if (fait.categorie) { <span>{{ fait.categorie }}</span> }
+                <span>Faits du {{ fait.dateFaits | date:'dd/MM/yyyy':'':'fr' }}</span>
+                @if (fait.lieu) { <span>{{ fait.lieu }}</span> }
+              </p>
+            </div>
+            <span class="statut" [class]="'statut statut--' + ton(fait)">{{ fait.statutJudiciaire }}
+              @if (fait.dateStatut) { <small>· {{ fait.dateStatut | date:'dd/MM/yyyy':'':'fr' }}</small> }
+            </span>
+          </div>
+
+          @if (fait.description) { <p class="description">{{ fait.description }}</p> }
+
+          @if (fait.montantPrejudice) {
+            <p class="montants">
+              Préjudice estimé : <strong>{{ fait.montantPrejudice | number:'1.0-0':'fr' }} {{ fait.devise }}</strong>
+              @if (fait.montantConfirmeJustice) {
+                · Confirmé par la justice : <strong>{{ fait.montantConfirmeJustice | number:'1.0-0':'fr' }} {{ fait.devise }}</strong>
+              }
+            </p>
+          }
+
+          @if (fait.peines.length) {
+            <ul class="peines">
+              @for (p of fait.peines; track $index) {
+                <li>
+                  <strong>{{ p.typePeine }}{{ p.natureSanction ? ' · ' + p.natureSanction : '' }}</strong>
+                  @if (p.duree) { <span> — {{ p.duree }}</span> }
+                  @if (p.montantAmende) { <span> — Amende {{ p.montantAmende | number:'1.0-0':'fr' }}</span> }
+                  @if (p.dateDecision) { <span> — décision du {{ p.dateDecision | date:'dd/MM/yyyy':'':'fr' }}</span> }
+                </li>
+              }
+            </ul>
+          }
+        </section>
+      } @empty {
+        <p class="aucun-fait">Aucun fait rattaché à cette personne dans ce dossier.</p>
+      }
+    </article>
+  }
+}

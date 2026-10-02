@@ -17,7 +17,7 @@ export const authGuard: CanActivateFn = async () => {
  * Guard base sur les roles.
  * - Non authentifie -> redirect vers Keycloak
  * - Authentifie avec le bon role -> autorise
- * - Authentifie CONSULTANT sans le bon role -> redirect vers /registre-officiel (sa page d'accueil)
+ * - Authentifie CONSULTANT sans le bon role -> redirect vers sa page d'accueil (/verification)
  * - Authentifie sans le bon role -> redirect vers /acces-refuse
  */
 export const roleGuard = (...rolesRequis: string[]): CanActivateFn => {
@@ -36,7 +36,7 @@ export const roleGuard = (...rolesRequis: string[]): CanActivateFn => {
     // est ramene vers sa page d'accueil naturelle plutot que sur
     // /acces-refuse (qui serait deroutant pour lui).
     if (auth.hasRole('CONSULTANT')) {
-      router.navigate(['/registre-officiel']);
+      router.navigate([auth.pageAccueil()]);
     } else {
       router.navigate(['/acces-refuse']);
     }

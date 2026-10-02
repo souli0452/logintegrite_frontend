@@ -1,0 +1,37 @@
+<app-page-header
+  titre="Mes demandes de dossier"
+  sousTitre="L'export d'un dossier complet est accordé ou refusé par un administrateur, sur demande motivée." />
+
+@if (chargement()) {
+  <app-chargement-liste [nombre]="3" />
+} @else if (erreur()) {
+  <p class="erreur" role="alert">Vos demandes sont momentanément indisponibles. Réessayez dans un instant.</p>
+} @else if (demandes().length === 0) {
+  <app-empty-state
+    titre="Aucune demande"
+    message="Vérifiez une personne, puis demandez l'export de son dossier complet depuis sa fiche.">
+    <a mat-flat-button color="primary" routerLink="/verification">Vérifier une personne</a>
+  </app-empty-state>
+} @else {
+  <ul class="liste">
+    @for (d of demandes(); track d.id) {
+      <li class="demande">
+        <div class="demande__haut">
+          <div>
+            <h3>{{ d.personne }}</h3>
+            <p class="meta">Demandée le {{ d.dateDemande | date:'dd/MM/yyyy HH:mm':'':'fr' }}</p>
+          </div>
+          <span class="statut" [class]="'statut statut--' + d.statut">{{ libelle(d.statut) }}</span>
+        </div>
+        <p class="motif"><span class="etiquette">Motif</span> {{ d.motif }}</p>
+        @if (d.statut !== 'EN_ATTENTE') {
+          <p class="decision">
+            <span class="etiquette">Décision</span>
+            {{ d.statut === 'ACCORDEE' ? 'Accordée' : 'Refusée' }} le {{ d.dateTraitement | date:'dd/MM/yyyy':'':'fr' }}
+            @if (d.commentaire) { — {{ d.commentaire }} }
+          </p>
+        }
+      </li>
+    }
+  </ul>
+}

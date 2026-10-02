@@ -1,0 +1,93 @@
+<app-page-header
+  titre="Vérifier une personne"
+  sousTitre="Savoir si une personne précise est impliquée dans un dossier validé du registre officiel." />
+
+<section class="carte-recherche">
+  <div class="segments" role="group" aria-label="Mode de recherche">
+    <button type="button" class="segment" [class.segment--actif]="mode() === 'IDENTITE'"
+            [attr.aria-pressed]="mode() === 'IDENTITE'" (click)="changerMode('IDENTITE')">Par identité</button>
+    <button type="button" class="segment" [class.segment--actif]="mode() === 'NUMERO'"
+            [attr.aria-pressed]="mode() === 'NUMERO'" (click)="changerMode('NUMERO')">Par numéro</button>
+  </div>
+
+  <form class="formulaire" (submit)="$event.preventDefault(); verifier()" autocomplete="off">
+    @if (mode() === 'IDENTITE') {
+      <p class="aide">Indiquez le nom, les prénoms et la date de naissance : les trois sont nécessaires pour identifier la personne sans ambiguïté.</p>
+      <div [formGroup]="identite" class="grille">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nom" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Prénoms</mat-label>
+          <input matInput formControlName="prenoms" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Date de naissance</mat-label>
+          <input matInput type="date" formControlName="dateNaissance" required>
+        </mat-form-field>
+      </div>
+    } @else {
+      <p class="aide">Un numéro propre à la personne ou à l'entreprise suffit. Le nom seul ne permet pas de chercher.</p>
+      <div [formGroup]="numero" class="grille grille--numero">
+        <mat-form-field appearance="outline">
+          <mat-label>Type de numéro</mat-label>
+          <mat-select formControlName="type">
+            @for (t of typesNumero; track t.valeur) {
+              <mat-option [value]="t.valeur">{{ t.libelle }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Numéro</mat-label>
+          <input matInput formControlName="valeur" required>
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="actions">
+      <button mat-flat-button color="primary" type="submit" [disabled]="!peutVerifier() || enCours()">
+        <lucide-icon [name]="icons.Search" [size]="18" [strokeWidth]="1.75"></lucide-icon>
+        <span>{{ enCours() ? 'Vérification…' : 'Vérifier' }}</span>
+      </button>
+    </div>
+  </form>
+
+  @if (erreur(); as e) {
+    <p class="erreur" role="alert">{{ e }}</p>
+  }
+</section>
+
+@if (resultats(); as liste) {
+  @if (liste.length === 0) {
+    <section class="vide" role="status">
+      <h2>Aucun dossier validé trouvé</h2>
+      <p>Aucune implication validée n'est enregistrée au registre officiel pour ces éléments.</p>
+      <p class="reserve">Ce résultat ne vaut pas certificat de non-implication : il porte uniquement sur les dossiers
+        entièrement validés à ce jour, et dépend de l'exactitude des informations saisies.</p>
+    </section>
+  } @else {
+    <section class="resultats" aria-live="polite">
+      <h2 class="titre-resultats">{{ liste.length }} {{ liste.length > 1 ? 'correspondances' : 'correspondance' }} au registre officiel</h2>
+      @for (r of liste; track r.id) {
+        <article class="resultat">
+          <div class="resultat__avatar" aria-hidden="true">
+            <lucide-icon [name]="r.typePersonne === 'MORALE' ? icons.Building2 : icons.User" [size]="20"></lucide-icon>
+          </div>
+          <div class="resultat__corps">
+            <h3>{{ r.nomAffichage }}</h3>
+            <p class="meta">
+              <span class="numero">{{ r.numeroPersonne }}</span>
+              @if (r.dateNaissance) { <span>Né(e) le {{ r.dateNaissance | date:'dd/MM/yyyy':'':'fr' }}</span> }
+              @if (r.nationalite) { <span>{{ r.nationalite }}</span> }
+            </p>
+          </div>
+          <div class="resultat__fin">
+            <span class="pastille">{{ r.nombreDossiers }} {{ r.nombreDossiers > 1 ? 'dossiers validés' : 'dossier validé' }}</span>
+            <button mat-flat-button color="primary" type="button" (click)="ouvrir(r)">Voir la fiche</button>
+          </div>
+        </article>
+      }
+    </section>
+  }
+}

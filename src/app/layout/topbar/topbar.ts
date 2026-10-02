@@ -76,6 +76,7 @@ export class Topbar {
   @HostListener('document:keydown', ['$event'])
   surRaccourci(evenement: KeyboardEvent): void {
     if (evenement.key !== '/' || evenement.ctrlKey || evenement.metaKey || evenement.altKey) return;
+    if (!this.auth.hasAnyRole('AGENT', 'ADMIN')) return;
     const cible = evenement.target as HTMLElement | null;
     if (cible && (['INPUT', 'TEXTAREA', 'SELECT'].includes(cible.tagName) || cible.isContentEditable)) return;
     evenement.preventDefault();

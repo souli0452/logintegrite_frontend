@@ -5,7 +5,7 @@ import { roleGuard } from './auth.guard';
 
 describe('roleGuard', () => {
   const router = { navigate: vi.fn() };
-  const auth = { isAuthenticated: vi.fn(), hasAnyRole: vi.fn(), hasRole: vi.fn(), login: vi.fn() };
+  const auth = { isAuthenticated: vi.fn(), hasAnyRole: vi.fn(), hasRole: vi.fn(), login: vi.fn(), pageAccueil: vi.fn() };
 
   function executer(...roles: string[]): unknown {
     return TestBed.runInInjectionContext(() =>
@@ -37,12 +37,13 @@ describe('roleGuard', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
-  it('ramene un CONSULTANT vers le registre officiel', () => {
+  it('ramene un CONSULTANT vers sa page d accueil (la verification d une personne)', () => {
     auth.isAuthenticated.mockReturnValue(true);
     auth.hasAnyRole.mockReturnValue(false);
     auth.hasRole.mockImplementation((r: string) => r === 'CONSULTANT');
+    auth.pageAccueil.mockReturnValue('/verification');
     expect(executer('ADMIN')).toBe(false);
-    expect(router.navigate).toHaveBeenCalledWith(['/registre-officiel']);
+    expect(router.navigate).toHaveBeenCalledWith(['/verification']);
   });
 
   it('envoie tout autre utilisateur sans droit vers /acces-refuse', () => {

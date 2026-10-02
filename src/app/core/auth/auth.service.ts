@@ -35,6 +35,16 @@ export class AuthService {
     return this.roles().includes(role.toUpperCase());
   }
 
+  /** Compte de consultation seule : ni agent, ni validateur, ni administrateur. */
+  estConsultantSeul(): boolean {
+    return this.hasRole('CONSULTANT') && !this.hasAnyRole('AGENT', 'VALIDATEUR', 'ADMIN');
+  }
+
+  /** Page d'accueil naturelle du profil : un consultant verifie une personne, les autres ouvrent le registre. */
+  pageAccueil(): string {
+    return this.estConsultantSeul() ? '/verification' : '/registre-officiel';
+  }
+
   hasAnyRole(...roles: string[]): boolean {
     return roles.some((r) => this.hasRole(r));
   }

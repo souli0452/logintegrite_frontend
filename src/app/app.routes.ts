@@ -1,4 +1,6 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { AuthService } from './core/auth/auth.service';
 import { authGuard, roleGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
@@ -7,11 +9,39 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./layout/main-layout/main-layout').then((m) => m.MainLayout),
     children: [
-      { path: '', redirectTo: 'registre-officiel', pathMatch: 'full' },
+      { path: '', pathMatch: 'full', redirectTo: () => (inject(AuthService).pageAccueil().slice(1)) },
 
-      // ---- Registre Officiel : ACCESSIBLE À TOUS (y compris CONSULTANT) ----
+      // ---- Verification d'une personne precise : TOUS LES ROLES (seule porte d'entree d'un compte de consultation) ----
+      {
+        path: 'verification',
+        loadComponent: () =>
+          import('./features/verification/pages/verification-recherche/verification-recherche')
+            .then((m) => m.VerificationRecherche)
+      },
+      {
+        path: 'verification/mes-demandes',
+        loadComponent: () =>
+          import('./features/verification/pages/mes-demandes/mes-demandes').then((m) => m.MesDemandes)
+      },
+      {
+        path: 'verification/personnes/:id',
+        loadComponent: () =>
+          import('./features/verification/pages/verification-fiche/verification-fiche')
+            .then((m) => m.VerificationFiche)
+      },
+
+      // ---- Demandes d'export d'un dossier complet : ADMIN ----
+      {
+        path: 'demandes-export',
+        canActivate: [roleGuard('ADMIN')],
+        loadComponent: () =>
+          import('./features/verification/pages/demandes-export/demandes-export').then((m) => m.DemandesExport)
+      },
+
+      // ---- Registre Officiel (liste complete) : AGENT + VALIDATEUR + ADMIN. Un consultant passe par la verification. ----
       {
         path: 'registre-officiel',
+        canActivate: [roleGuard('AGENT', 'VALIDATEUR', 'ADMIN')],
         loadComponent: () =>
           import('./features/registre-officiel/pages/registre-officiel-liste/registre-officiel-liste')
             .then((m) => m.RegistreOfficielListe)

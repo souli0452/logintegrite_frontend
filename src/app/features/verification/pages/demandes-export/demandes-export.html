@@ -1,0 +1,46 @@
+<app-page-header
+  titre="Demandes de dossier"
+  sousTitre="Demandes d'export d'un dossier complet déposées par les comptes de consultation." />
+
+<div class="segments" role="group" aria-label="Filtrer les demandes">
+  <button type="button" class="segment" [class.segment--actif]="filtre() === 'EN_ATTENTE'"
+          [attr.aria-pressed]="filtre() === 'EN_ATTENTE'" (click)="afficher('EN_ATTENTE')">En attente</button>
+  <button type="button" class="segment" [class.segment--actif]="filtre() === ''"
+          [attr.aria-pressed]="filtre() === ''" (click)="afficher('')">Toutes</button>
+</div>
+
+@if (chargement()) {
+  <app-chargement-liste [nombre]="3" />
+} @else if (demandes().length === 0) {
+  <app-empty-state
+    titre="Aucune demande"
+    [message]="filtre() === 'EN_ATTENTE' ? 'Aucune demande n\'attend de décision.' : 'Aucune demande n\'a encore été déposée.'" />
+} @else {
+  <ul class="liste">
+    @for (d of demandes(); track d.id) {
+      <li class="demande">
+        <div class="demande__haut">
+          <div>
+            <h3>{{ d.personne }}</h3>
+            <p class="meta">Demandée par {{ d.demandeur }} le {{ d.dateDemande | date:'dd/MM/yyyy HH:mm':'':'fr' }}</p>
+          </div>
+          <span class="statut" [class]="'statut statut--' + d.statut">{{ libelle(d.statut) }}</span>
+        </div>
+        <p class="motif"><span class="etiquette">Motif</span> {{ d.motif }}</p>
+        @if (d.statut === 'EN_ATTENTE') {
+          <div class="actions-demande">
+            <button mat-stroked-button type="button" (click)="refuser(d)">Refuser</button>
+            <button mat-flat-button color="primary" type="button" (click)="accorder(d)">Accorder</button>
+          </div>
+        } @else {
+          <p class="decision">
+            <span class="etiquette">Décision</span>
+            {{ d.statut === 'ACCORDEE' ? 'Accordée' : 'Refusée' }} par {{ d.traitePar }}
+            le {{ d.dateTraitement | date:'dd/MM/yyyy':'':'fr' }}
+            @if (d.commentaire) { — {{ d.commentaire }} }
+          </p>
+        }
+      </li>
+    }
+  </ul>
+}
