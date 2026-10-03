@@ -38,7 +38,6 @@ export class HeroDossier {
   readonly imprimer = output<void>();
   readonly cloturer = output<void>();
   readonly modifier = output<void>();
-  readonly supprimer = output<void>();
 
   // ─── Icônes ────────────────────────────────────────────────────────────────
   readonly icons: Record<string, LucideIconData> = {

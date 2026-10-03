@@ -56,7 +56,7 @@ export class OngletDossierImplications {
           this.toastr.success('Personne retirée du dossier');
           this.implicationSupprimee.emit(implication.id);
         },
-        error: () => this.toastr.error('Suppression impossible')
+        error: (e) => this.toastr.error(e?.error?.detail ?? 'Suppression impossible')
       });
     });
   }

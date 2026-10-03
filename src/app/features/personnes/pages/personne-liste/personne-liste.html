@@ -143,9 +143,11 @@
                 <button class="btn-icone" title="Éditer" (click)="editer(p, $event)">
                   <lucide-icon [name]="icons['Pencil']" [size]="16"></lucide-icon>
                 </button>
-                <button class="btn-icone btn-icone--danger" title="Supprimer" (click)="supprimer(p, $event)">
-                  <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
-                </button>
+                @if (auth.hasRole('ADMIN')) {
+                  <button class="btn-icone btn-icone--danger" title="Supprimer" (click)="supprimer(p, $event)">
+                    <lucide-icon [name]="icons['Trash2']" [size]="16"></lucide-icon>
+                  </button>
+                }
               </div>
             </td>
           </ng-container>

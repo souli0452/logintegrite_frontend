@@ -33,6 +33,10 @@ export class DossierService {
     return this.http.post<DossierResponse>(this.baseUrl, request);
   }
 
+  modifier(id: string, request: DossierRequest): Observable<DossierResponse> {
+    return this.http.put<DossierResponse>(`${this.baseUrl}/${id}`, request);
+  }
+
   cloturer(id: string): Observable<DossierResponse> {
     return this.http.patch<DossierResponse>(`${this.baseUrl}/${id}/cloturer`, {});
   }

@@ -10,7 +10,9 @@ import {
   LucideIconData
 } from 'lucide-angular';
 
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
+import { ModifierDossierDialog } from './modifier-dossier-dialog/modifier-dossier-dialog';
 import { DossierService } from '../../services/dossier.service';
 import { RapportService } from '../../../rapports/services/rapport.service';
 import {
@@ -44,6 +46,7 @@ export class DossierDetail {
   private readonly rapportService = inject(RapportService);
   private readonly toastr = inject(ToastrService);
   private readonly confirmation = inject(ConfirmationService);
+  private readonly dialog = inject(MatDialog);
 
   readonly dossier = signal<DossierResponse | null>(null);
   readonly implications = signal<ImplicationResponse[]>([]);
@@ -128,29 +131,17 @@ export class DossierDetail {
           this.dossier.set(updated);
           this.toastr.success('Dossier clôturé');
         },
-        error: () => this.toastr.error('Clôture impossible')
+        error: (e) => this.toastr.error(e?.error?.detail ?? 'Clôture impossible')
       });
     });
   }
 
   modifierDossier(): void {
-    // TODO : à brancher sur le formulaire d'édition
-    this.toastr.info('Modification du dossier — en cours d\'implémentation');
-  }
-
-  supprimerDossier(): void {
     const d = this.dossier();
     if (!d) return;
-    this.confirmation.demander({
-      titre: 'Supprimer le dossier',
-      message: `Supprimer définitivement le dossier "${d.numeroDossier ?? d.id}" ? Cette action est irréversible.`,
-      libelleConfirmer: 'Supprimer',
-      danger: true
-    }).subscribe((confirme) => {
-      if (!confirme) return;
-      // TODO : à brancher sur le service.supprimer une fois l'endpoint prêt
-      this.toastr.info('Suppression du dossier — en cours d\'implémentation');
-    });
+    this.dialog.open<ModifierDossierDialog, DossierResponse, DossierResponse>(ModifierDossierDialog, {
+      data: d, width: '600px', maxWidth: '92vw'
+    }).afterClosed().subscribe((maj) => { if (maj) this.dossier.set(maj); });
   }
 
   // ─── Événements des onglets ────────────────────────────────────────────────

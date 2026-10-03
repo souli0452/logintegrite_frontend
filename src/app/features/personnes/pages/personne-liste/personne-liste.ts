@@ -17,6 +17,7 @@ import {
 } from 'lucide-angular';
 
 import { EmptyState } from '../../../../shared/ui/empty-state/empty-state';
+import { AuthService } from '../../../../core/auth/auth.service';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 import { messageErreurHttp } from '../../../../shared/utils/http-error.util';
 import { PersonneService, PersonneSearchParams } from '../../services/personne.service';
@@ -63,6 +64,8 @@ export class PersonneListe implements OnDestroy {
   private readonly dialog = inject(MatDialog);
   private readonly toastr = inject(ToastrService);
   private readonly confirmation = inject(ConfirmationService);
+  /** Profil de l'utilisateur : la suppression d'une personne est reservee a l'administrateur. */
+  protected readonly auth = inject(AuthService);
 
   readonly icons: Record<string, LucideIconData> = {
     Plus, Eye, User, Building2, Users, Search, FolderOpen,
