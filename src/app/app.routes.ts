@@ -125,6 +125,14 @@ export const routes: Routes = [
           import('./features/rapports/rapports-page/rapports-page').then((m) => m.RapportsPage)
       },
 
+      // ---- Etats trimestriels : VALIDATEUR + ADMIN ----
+      {
+        path: 'etats-trimestriels',
+        canActivate: [roleGuard('VALIDATEUR', 'ADMIN')],
+        loadComponent: () =>
+          import('./features/rapports/etats-trimestriels-page/etats-trimestriels-page').then((m) => m.EtatsTrimestrielsPage)
+      },
+
       // ---- Documents : AGENT + VALIDATEUR + ADMIN ----
       {
         path: 'documents',

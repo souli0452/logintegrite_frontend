@@ -12,6 +12,7 @@ import {
   ScrollText,
   ScanSearch,
   Inbox,
+  CalendarClock,
   LucideIconData
 } from 'lucide-angular';
 
@@ -38,7 +39,8 @@ export const MENU_PRINCIPAL: MenuSection[] = [
     titre: 'Pilotage',
     items: [
       { route: '/tableau-de-bord', label: 'Tableaux de bord', icone: LayoutDashboard, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
-      { route: '/rapports', label: 'Rapports', icone: FileText, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] }
+      { route: '/rapports', label: 'Rapports', icone: FileText, roles: ['AGENT', 'VALIDATEUR', 'ADMIN'] },
+      { route: '/etats-trimestriels', label: 'États trimestriels', icone: CalendarClock, roles: ['VALIDATEUR', 'ADMIN'] }
     ]
   },
   {
