@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideFrenchDateAdapter } from '../../../../core/i18n/french-date-adapter';
+import { versIso } from '../../../../core/i18n/dates-iso';
 import { LucideAngularModule, Search, Building2, User } from 'lucide-angular';
 
 import { PageHeader } from '../../../../shared/ui/page-header/page-header';
@@ -25,9 +28,10 @@ type TypeNumero = 'numeroPiece' | 'rccm' | 'ifu' | 'numeroPersonne';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+    DatePipe, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule,
     LucideAngularModule, PageHeader
   ],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './verification-recherche.html',
   styleUrl: './verification-recherche.scss'
 })
@@ -53,7 +57,7 @@ export class VerificationRecherche {
   protected readonly identite = new FormGroup({
     nom: new FormControl('', { nonNullable: true }),
     prenoms: new FormControl('', { nonNullable: true }),
-    dateNaissance: new FormControl('', { nonNullable: true }),
+    dateNaissance: new FormControl<Date | null>(null),
   });
 
   protected readonly numero = new FormGroup({
@@ -78,7 +82,7 @@ export class VerificationRecherche {
   protected verifier(): void {
     if (!this.peutVerifier() || this.enCours()) return;
     const criteres: CriteresVerification = this.mode() === 'IDENTITE'
-      ? { ...this.identite.getRawValue() }
+      ? { ...this.identite.getRawValue(), dateNaissance: versIso(this.identite.getRawValue().dateNaissance) }
       : { [this.numero.getRawValue().type]: this.numero.getRawValue().valeur };
 
     this.enCours.set(true);

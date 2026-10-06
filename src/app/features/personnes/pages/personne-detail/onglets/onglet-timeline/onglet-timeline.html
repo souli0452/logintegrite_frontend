@@ -10,8 +10,10 @@
       @for (evt of evenements(); track $index) {
         <div class="timeline-item">
           <div class="timeline-item__date">
-            <div class="timeline-item__jour">{{ evt.date }}</div>
-            <div class="timeline-item__heure">{{ evt.heure }}</div>
+            <div class="timeline-item__jour">{{ evt.date | date:'dd/MM/yyyy' }}</div>
+            @if (evt.heure && evt.heure !== '00:00') {
+              <div class="timeline-item__heure">{{ evt.heure }}</div>
+            }
           </div>
 
           <div class="timeline-item__pastille" [attr.data-couleur]="couleurType(evt.type)">

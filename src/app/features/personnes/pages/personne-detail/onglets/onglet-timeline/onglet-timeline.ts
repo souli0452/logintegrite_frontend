@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { LucideAngularModule, LucideIconData,
   CheckCircle2, FileText, PenLine, AlertTriangle, Search, Flag } from 'lucide-angular';
@@ -33,7 +34,7 @@ interface EvenementTimeline {
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-onglet-timeline',
   standalone: true,
-  imports: [LucideAngularModule, EmptyState],
+  imports: [DatePipe, LucideAngularModule, EmptyState],
   templateUrl: './onglet-timeline.html',
   styleUrl: './onglet-timeline.scss'
 })

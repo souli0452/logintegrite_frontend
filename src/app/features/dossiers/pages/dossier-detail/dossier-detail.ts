@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthService } from '../../../../core/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import {
@@ -62,6 +63,18 @@ export class DossierDetail {
   };
 
   readonly dossierOuvert = computed(() => this.dossier()?.statutDossier === 'OUVERT');
+  protected readonly auth = inject(AuthService);
+  readonly peutReprendre = computed(() => this.dossierOuvert() && this.auth.hasAnyRole('AGENT', 'ADMIN'));
+
+  reprendreFait(fait: FaitReprocheResponse): void {
+    this.service.reprendreFait(fait.id).subscribe({
+      next: (maj) => {
+        this.faits.update((liste) => liste.map((f) => (f.id === maj.id ? maj : f)));
+        this.toastr.success('Le fait est de nouveau en attente de validation');
+      },
+      error: (e) => this.toastr.error(e?.error?.detail ?? 'Impossible de représenter ce fait')
+    });
+  }
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');

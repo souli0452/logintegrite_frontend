@@ -176,7 +176,7 @@
                               @if (peutAjouterPeine(fait)) {
                                 <button mat-menu-item (click)="ajouterPeine(fait, groupe)">
                                   <lucide-icon [name]="icons['Gavel']" [size]="14"></lucide-icon>
-                                  <span>Ajouter une peine</span>
+                                  <span>Ajouter une peine · {{ fait.typeInfractionLibelle }} ({{ fait.dateFaits | date:'dd/MM/yyyy' }})</span>
                                 </button>
                               }
                             }

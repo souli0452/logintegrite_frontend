@@ -24,7 +24,9 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Date de naissance</mat-label>
-          <input matInput type="date" formControlName="dateNaissance" required>
+          <input matInput [matDatepicker]="pDate" formControlName="dateNaissance" placeholder="jj/mm/aaaa" required>
+          <mat-datepicker-toggle matIconSuffix [for]="pDate"></mat-datepicker-toggle>
+        <mat-datepicker #pDate></mat-datepicker>
         </mat-form-field>
       </div>
     } @else {

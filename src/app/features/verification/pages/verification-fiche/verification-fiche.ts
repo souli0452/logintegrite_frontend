@@ -10,7 +10,7 @@ import { LucideAngularModule, ArrowLeft, Download, Info } from 'lucide-angular';
 import { ChargementListe } from '../../../../shared/ui/chargement-liste/chargement-liste';
 import { DialogMotif, DialogMotifData } from '../../../../shared/ui/dialog-motif/dialog-motif';
 import { VerificationService } from '../../verification.service';
-import { FaitVerification, FicheVerification } from '../../verification.models';
+import { FaitVerification, FicheVerification, PeineVerification } from '../../verification.models';
 
 type Ton = 'favorable' | 'defavorable' | 'en-cours';
 
@@ -55,6 +55,17 @@ export class VerificationFiche {
   protected retour(): void { this.router.navigate(['/verification']); }
 
   /** Vert : relaxe, acquittement, non-lieu, classement. Rouge : condamnation. Orange : procedure en cours. */
+  private static readonly TYPES_PEINE: Record<string, string> = {
+    PRISON: 'Peine de prison', AMENDE: 'Amende', CONFISCATION: 'Confiscation', RADIATION: 'Radiation', AUTRE: 'Autre sanction'
+  };
+
+  /** Libelle lisible d'une peine ; la nature n'est ajoutee que si elle apporte une precision. */
+  protected libellePeine(p: PeineVerification): string {
+    const type = p.typePeine ? (VerificationFiche.TYPES_PEINE[p.typePeine] ?? p.typePeine) : 'Sanction';
+    const nature = p.natureSanction?.trim();
+    return nature && nature.toLowerCase() !== type.toLowerCase() ? type + ' · ' + nature : type;
+  }
+
   protected ton(f: FaitVerification): Ton {
     if (f.issueFavorable) return 'favorable';
     return /condamn/i.test(f.statutJudiciaire) ? 'defavorable' : 'en-cours';

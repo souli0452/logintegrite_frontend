@@ -1,3 +1,6 @@
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideFrenchDateAdapter } from '../../../core/i18n/french-date-adapter';
+import { versIso } from '../../../core/i18n/dates-iso';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -26,9 +29,10 @@ interface DialogData {
   imports: [
     ReactiveFormsModule,
     MatDialogModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, MatProgressSpinnerModule,
+    MatSelectModule, MatProgressSpinnerModule, MatDatepickerModule,
     LucideAngularModule
   ],
+  providers: [provideFrenchDateAdapter()],
   templateUrl: './creer-utilisateur-dialog.html',
   styleUrl: './creer-utilisateur-dialog.scss'
 })
@@ -52,11 +56,11 @@ export class CreerUtilisateurDialog {
     telephone: [''],
     motDePasseTemporaire: ['', [Validators.required, validerMotDePasse]],
     roleInitial: ['' as CodeRole | '', Validators.required],
-    dateExpiration: ['']
+    dateExpiration: [null as Date | null]
   });
 
   /** Aujourd'hui, au format AAAA-MM-JJ (date minimale du champ). */
-  readonly aujourdhui = new Date().toISOString().slice(0, 10);
+  readonly aujourdhui = new Date();
   readonly consultation = signal(false);
 
   constructor() {
@@ -68,7 +72,7 @@ export class CreerUtilisateurDialog {
       if (estConsultation && !champ.value) {
         const d = new Date();
         d.setMonth(d.getMonth() + 6);
-        champ.setValue(d.toISOString().slice(0, 10));
+        champ.setValue(d);
       }
     });
   }
@@ -113,7 +117,7 @@ export class CreerUtilisateurDialog {
       telephone: v.telephone || undefined,
       motDePasseTemporaire: v.motDePasseTemporaire!,
       roleInitial: v.roleInitial as CodeRole,
-      dateExpiration: v.dateExpiration || undefined
+      dateExpiration: versIso(v.dateExpiration) || undefined
     }).subscribe({
       next: (cree) => {
         this.enCours.set(false);

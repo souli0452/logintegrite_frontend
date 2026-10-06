@@ -27,10 +27,22 @@
         <th mat-header-cell *matHeaderCellDef>Statut</th>
         <td mat-cell *matCellDef="let f">
           <app-status-badge [libelle]="f.statutValidation" [type]="typeStatut(f.statutValidation)" />
+          @if (f.statutValidation === 'REJETEE' && f.motifRejet) {
+            <div class="motif-rejet"><strong>Motif :</strong> {{ f.motifRejet }}</div>
+          }
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
-      <tr mat-row *matRowDef="let row; columns: colonnes;"></tr>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let f">
+          @if (f.statutValidation === 'REJETEE') {
+            <button mat-stroked-button type="button" (click)="reprendre.emit(f)"
+                    title="Remet le fait en attente : le validateur le réexaminera">Représenter à la validation</button>
+          }
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="colonnes()"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonnes();"></tr>
     </table>
   } @else {
     <app-empty-state

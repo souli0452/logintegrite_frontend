@@ -4,6 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideFrenchDateAdapter } from '../../../core/i18n/french-date-adapter';
+import { depuisIso, versIso } from '../../../core/i18n/dates-iso';
 
 export interface DialogDateData {
   titre: string;
@@ -25,14 +28,17 @@ export interface DialogDateResultat { date: string | null }
   selector: 'app-dialog-date',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule],
+  providers: [provideFrenchDateAdapter()],
   template: `
     <h2 mat-dialog-title>{{ data.titre }}</h2>
     <mat-dialog-content>
       @if (data.message) { <p class="message">{{ data.message }}</p> }
       <mat-form-field appearance="outline" class="champ">
         <mat-label>{{ data.label }}</mat-label>
-        <input matInput type="date" [formControl]="date" [min]="data.minimum" cdkFocusInitial>
+        <input matInput [matDatepicker]="pDate" [formControl]="date" [min]="minimum" placeholder="jj/mm/aaaa" cdkFocusInitial>
+        <mat-datepicker-toggle matIconSuffix [for]="pDate"></mat-datepicker-toggle>
+        <mat-datepicker #pDate></mat-datepicker>
         @if (date.invalid && date.touched) { <mat-error>Choisissez une date à partir d'aujourd'hui.</mat-error> }
       </mat-form-field>
     </mat-dialog-content>
@@ -54,9 +60,9 @@ export class DialogDate {
   protected readonly data = inject<DialogDateData>(MAT_DIALOG_DATA);
   private readonly ref = inject(MatDialogRef<DialogDate, DialogDateResultat>);
 
-  protected readonly date = new FormControl(this.data.valeur ?? '', {
-    nonNullable: true,
-    validators: [Validators.required, (c) => (c.value && c.value < this.data.minimum ? { passe: true } : null)]
+  protected readonly minimum = depuisIso(this.data.minimum);
+  protected readonly date = new FormControl<Date | null>(depuisIso(this.data.valeur), {
+    validators: [Validators.required, (c) => (c.value && this.minimum && c.value < this.minimum ? { passe: true } : null)]
   });
 
   protected annuler(): void { this.ref.close(); }
@@ -64,6 +70,6 @@ export class DialogDate {
 
   protected valider(): void {
     this.date.markAsTouched();
-    if (this.date.valid) this.ref.close({ date: this.date.value });
+    if (this.date.valid) this.ref.close({ date: versIso(this.date.value) });
   }
 }

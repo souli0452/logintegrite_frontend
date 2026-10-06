@@ -92,9 +92,9 @@
             <ul class="peines">
               @for (p of fait.peines; track $index) {
                 <li>
-                  <strong>{{ p.typePeine }}{{ p.natureSanction ? ' · ' + p.natureSanction : '' }}</strong>
+                  <strong>{{ libellePeine(p) }}</strong>
                   @if (p.duree) { <span> — {{ p.duree }}</span> }
-                  @if (p.montantAmende) { <span> — Amende {{ p.montantAmende | number:'1.0-0':'fr' }}</span> }
+                  @if (p.montantAmende) { <span> — {{ p.montantAmende | number:'1.0-0':'fr' }} FCFA</span> }
                   @if (p.dateDecision) { <span> — décision du {{ p.dateDecision | date:'dd/MM/yyyy':'':'fr' }}</span> }
                 </li>
               }

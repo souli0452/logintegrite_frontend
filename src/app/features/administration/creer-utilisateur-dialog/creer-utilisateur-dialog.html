@@ -64,7 +64,9 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Date d'expiration du compte{{ consultation() ? '' : ' (facultatif)' }}</mat-label>
-      <input matInput type="date" formControlName="dateExpiration" [min]="aujourdhui">
+      <input matInput [matDatepicker]="pExp" formControlName="dateExpiration" [min]="aujourdhui" placeholder="jj/mm/aaaa">
+      <mat-datepicker-toggle matIconSuffix [for]="pExp"></mat-datepicker-toggle>
+        <mat-datepicker #pExp></mat-datepicker>
       <mat-hint>{{ consultation() ? 'Obligatoire pour la consultation : 6 mois proposés.' : "Sans date, le compte n'expire jamais." }}</mat-hint>
       @if (formulaire.controls.dateExpiration.hasError('required')) {
         <mat-error>La date d'expiration est obligatoire pour la consultation.</mat-error>

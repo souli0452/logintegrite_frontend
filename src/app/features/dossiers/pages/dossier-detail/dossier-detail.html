@@ -63,7 +63,10 @@
             <span class="tab-badge">{{ faits().length }}</span>
           </ng-template>
           <div class="onglet-contenu">
-            <app-onglet-dossier-faits [faits]="faits()" />
+            <app-onglet-dossier-faits [faits]="faits()" [peutReprendre]="peutReprendre()" (reprendre)="reprendreFait($event)" />
+            @if (peutReprendre()) {
+              <p class="astuce-faits">Pour ajouter un fait à ce dossier, ouvrez la fiche de la personne concernée, onglet « Dossiers & implications ».</p>
+            }
           </div>
         </mat-tab>
 
