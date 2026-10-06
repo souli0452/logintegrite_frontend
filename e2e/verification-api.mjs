@@ -16,7 +16,9 @@ async function jeton(user) {
   await page.goto('http://localhost:4200'); await page.waitForURL(/8180.*auth/);
   await page.fill('#username', user); await page.fill('#password', process.env.UI_PASSWORD); await page.click('#kc-login');
   await page.waitForURL(/localhost:4200/); await page.locator('app-topbar').waitFor({ timeout: 30000 });
-  for (let i = 0; i < 20 && !t; i++) await page.waitForTimeout(300);
+  for (let i = 0; i < 10 && !t; i++) await page.waitForTimeout(300);
+  // La page d'accueil du consultant n'appelle pas l'API : on ouvre « Mes demandes » pour obtenir un jeton.
+  if (!t) { await page.goto('http://localhost:4200/verification/mes-demandes'); for (let i = 0; i < 20 && !t; i++) await page.waitForTimeout(300); }
   return t;
 }
 const api = (t) => async (methode, chemin, corps) => {
