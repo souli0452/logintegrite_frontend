@@ -56,4 +56,4 @@ export async function choisir(page, nom, texte) {
 
 export const suivant = async (page) => { await page.getByRole('button', { name: /Suivant/ }).click(); await page.waitForTimeout(800); };
 
-export const FICTIF = { nom: 'EXEMPLE', prenoms: 'Aminata', nip: 'FORMATION00000001', morale: 'ENTREPRISE EXEMPLE SARL' };
+export const FICTIF = { nom: process.env.NOM ?? 'EXEMPLE', prenoms: process.env.PRENOMS ?? 'Aminata', nip: process.env.NIP ?? 'FORMATION00000001', morale: 'ENTREPRISE EXEMPLE SARL' };
