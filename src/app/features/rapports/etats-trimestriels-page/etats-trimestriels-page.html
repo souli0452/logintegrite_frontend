@@ -1,0 +1,61 @@
+<div class="etats-page">
+  <app-page-header titre="États trimestriels"
+                   sousTitre="États officiels des personnes fichées remis à la hiérarchie, générés chaque trimestre"/>
+
+  @if (peutGenerer()) {
+    <section class="etats-generer">
+      <mat-form-field appearance="outline">
+        <mat-label>Trimestre</mat-label>
+        <mat-select [value]="trimestreChoisi()" (selectionChange)="trimestreChoisi.set($event.value)">
+          @for (t of trimestres; track t.libelle) {
+            <mat-option [value]="t">{{ t.libelle }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button class="btn-generer" [disabled]="enGeneration() || !trimestreChoisi()" (click)="generer()">
+        @if (enGeneration()) {
+          <mat-spinner diameter="16"></mat-spinner><span>Génération...</span>
+        } @else {
+          <lucide-icon [name]="icons['RefreshCw']" [size]="14"></lucide-icon><span>Générer maintenant</span>
+        }
+      </button>
+    </section>
+  }
+
+  @if (chargement()) {
+    <p class="etats-info">Chargement...</p>
+  } @else if (erreur()) {
+    <p class="etats-erreur" role="alert">{{ erreur() }}</p>
+  } @else if (etats().length === 0) {
+    <p class="etats-info">Aucun état archivé pour le moment. Le premier sera généré automatiquement au début du prochain trimestre.</p>
+  } @else {
+    <table class="etats-table">
+      <thead>
+        <tr>
+          <th>Période</th><th>Date d'arrêt</th><th>Établi le</th><th>Généré par</th>
+          <th>Personnes</th><th>Empreinte PDF</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of etats(); track e.id) {
+          <tr [class.etats-table__remplace]="e.remplace">
+            <td>{{ libelle(e) }} @if (e.remplace) { <span class="badge-remplace">remplacé</span> }</td>
+            <td>{{ e.dateArret | date:'dd/MM/yyyy' }}</td>
+            <td>{{ e.dateGeneration | date:'dd/MM/yyyy' }}</td>
+            <td>{{ e.generePar }}</td>
+            <td>{{ e.nbPersonnes }}</td>
+            <td class="etats-table__hash" [title]="e.sha256Pdf">{{ e.sha256Pdf.substring(0, 12) }}…</td>
+            <td class="etats-table__actions">
+              <button (click)="telechargerPdf(e)">
+                <lucide-icon [name]="icons['FileText']" [size]="14"></lucide-icon> PDF
+              </button>
+              <button (click)="telechargerExcel(e)">
+                <lucide-icon [name]="icons['FileSpreadsheet']" [size]="14"></lucide-icon> Excel
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
